@@ -271,6 +271,43 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
   const pleinEcran = fond === "video-plein";
   const peutCharger = usePeutChargerLaVideo(estVideo && !reduceMotion);
   const [videoPrete, setVideoPrete] = useState(false);
+  // La vidéo a renoncé : réseau coupé, format refusé, fichier absent. C'est ce
+  // qui rend la photo de repli à nouveau visible — sans cet état, un échec
+  // laisserait un hero noir, puisque la photo est masquée dès qu'on attend une
+  // vidéo (voir plus bas).
+  const [videoEchouee, setVideoEchouee] = useState(false);
+  // Vrai dans la dernière seconde de la boucle. Pilote le fondu qui masque le
+  // saut de la fin vers le début.
+  const [finDeBoucle, setFinDeBoucle] = useState(false);
+
+  // ── LA PHOTO S'EFFACE QUAND UNE VIDÉO EST ATTENDUE ────────────────────────
+  //
+  // Évite l'enchaînement « photo, puis vidéo » : les deux n'ont pas le même
+  // cadrage ni le même instant, et la bascule se voyait comme une saute. Le
+  // temps de la mise en mémoire tampon, on montre le noir du fond de page —
+  // qui est la couleur du hero de toute façon — et la vidéo y apparaît en
+  // fondu.
+  //
+  // ⚠️ LA CONDITION REPOSE SUR `estVideo`, PAS SUR `peutCharger`, et c'est
+  // tout l'enjeu. `peutCharger` est décidé par un effet, donc FAUX au rendu
+  // serveur : bâti dessus, le serveur émettait une photo prioritaire et son
+  // `<link rel="preload">` sur `/home-v2` comme sur `/`. Le navigateur se
+  // mettait donc à télécharger la photo en priorité avant même d'avoir lu le
+  // moindre octet de vidéo. Corrigé côté client seulement, le mal était déjà
+  // fait — la balise est dans le HTML initial.
+  //
+  // `estVideo` vient de la prop `fond` : le serveur la connaît. La photo part
+  // donc masquée dès le premier octet servi, et le preload n'est jamais émis
+  // sur les variantes vidéo.
+  //
+  // `hydrate` rattrape le seul cas où ce pari est mauvais : un client qui ne
+  // peut PAS charger la vidéo — écran étroit, mode économie de données, réseau
+  // lent. On ne l'apprend qu'après l'hydratation ; la photo redevient alors
+  // visible. Elle reste à `false` au premier rendu client comme au rendu
+  // serveur, donc les deux HTML coïncident et React ne signale aucun écart.
+  const [hydrate, setHydrate] = useState(false);
+  useEffect(() => setHydrate(true), []);
+  const attendLaVideo = estVideo && !videoEchouee && (!hydrate || peutCharger);
 
   // Plein cadre : le média couvre toute la section, bord à bord.
   //
@@ -348,7 +385,31 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
             alt="Vince, magicien en Picardie, en costume avec une flamme dans les mains"
             width={1672}
             height={941}
-            fetchPriority="high"
+            /* ⚠️ `fetchPriority` N'EST PLUS « high » QUAND UNE VIDÉO EST
+               ATTENDUE, et ce n'est pas un réglage de confort. React émet
+               automatiquement un `<link rel="preload" as="image">` dans le
+               `<head>` pour toute image marquée prioritaire — vérifié dans le
+               HTML servi. Sur `/home-v2` et `/home-v3`, ce preload faisait donc
+               télécharger la photo EN PRIORITÉ, avant et contre la vidéo qui
+               allait la recouvrir : deux fichiers en concurrence pour la même
+               bande passante, et c'est le gros des deux qui perdait.
+               Sur `/`, où la photo EST le fond, elle reste prioritaire — c'est
+               l'image LCP. La condition porte sur `estVideo`, connu du serveur,
+               et non sur `attendLaVideo` qui dépend de l'hydratation : c'est le
+               HTML SERVI qui porte la balise de preload, la corriger après coup
+               n'annule rien. */
+            {...(estVideo
+              ? // ⚠️ NI `fetchPriority` NI `loading="eager"` sur les variantes
+                // vidéo. React précharge toute image rendue en chargement
+                // immédiat dès qu'elle porte un `fetchPriority`, MÊME à
+                // « auto » — vérifié dans le HTML servi, la balise
+                // `<link rel="preload" as="image" fetchPriority="auto">` y
+                // était encore après le passage de « high » à « auto ».
+                // Les deux attributs retirés, il ne reste rien à précharger et
+                // la photo n'est demandée que si le repli en a besoin.
+                { loading: "lazy" as const }
+              : { fetchPriority: "high" as const, loading: "eager" as const })}
+            style={{ opacity: attendLaVideo ? 0 : 1 }}
             /* La photo est calée sur la HAUTEUR, pas sur la largeur, et alignée
                à droite. Sa largeur suit son format d'origine (`w-auto`).
 
@@ -385,7 +446,7 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
                En dessous, quand la largeur calculée dépasse déjà les 90 %, le
                plancher ne s'applique pas et rien ne change — c'est le cadrage
                des écrans étroits, qui convient tel quel. */
-            className={cadrageMedia}
+            className={`${cadrageMedia} transition-opacity duration-700`}
           />
 
           {/* LA VIDÉO, par-dessus l'image et seulement sur `/home-v2`.
@@ -405,10 +466,15 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
               L'opacité passe à 1 sur `canPlay` et non au montage : sans ça, on
               verrait un rectangle noir recouvrir l'affiche pendant toute la
               mise en mémoire tampon. */}
-          {peutCharger && (
+          {peutCharger && !videoEchouee && (
             <video
               src={VIDEO_AMBIANCE}
-              poster={heroBgImg}
+              /* ⚠️ PAS DE `poster`. Il valait la photo de fond : le navigateur
+                 la peignait donc pendant toute la mise en mémoire tampon, ce
+                 qui ramenait par la fenêtre l'enchaînement « photo puis vidéo »
+                 que le masquage de l'image vient d'écarter. Sans affiche, le
+                 cadre reste au noir du fond de page jusqu'à la première image
+                 — c'est la couleur du hero, cela ne se remarque pas. */
               autoPlay
               muted
               loop
@@ -417,8 +483,40 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
               aria-hidden="true"
               tabIndex={-1}
               onCanPlay={() => setVideoPrete(true)}
-              style={{ opacity: videoPrete ? 1 : 0 }}
-              className={`${cadrageMedia} transition-opacity duration-1000`}
+              /* ── LE FONDU DE FIN DE BOUCLE ──────────────────────────────
+                 `loop` recommence la vidéo d'un seul coup : la dernière image
+                 laisse place à la première sans transition, et la coupure se
+                 voit d'autant plus que ce plan est un fond continu.
+
+                 On atténue donc l'image sur la dernière seconde, et le retour
+                 au début se fait à l'écran noir. Au redémarrage, `reste`
+                 repasse à trente secondes, la condition tombe d'elle-même et
+                 l'image revient en fondu. Aucun minuteur à tenir, aucun état à
+                 remettre à zéro : la position de lecture suffit.
+
+                 ⚠️ `loop` EST CONSERVÉ, et le fondu ne fait que l'habiller. La
+                 tentation est de retirer `loop` pour piloter le redémarrage à
+                 la main sur `ended` — mais alors un `timeupdate` manqué arrête
+                 la vidéo pour de bon. Ici, si le fondu rate, il ne reste qu'une
+                 coupure un peu sèche.
+
+                 UNE SEULE BALISE, et non deux qui se croiseraient. Un vrai
+                 fondu enchaîné demanderait un second lecteur lisant le même
+                 fichier avec un décalage : deux décodeurs, et le risque que le
+                 navigateur retélécharge 43 Mo au lieu de les relire du cache.
+                 Pour un fond d'ambiance, la traversée du noir suffit.
+
+                 0,9 s de seuil pour 600 ms de transition : `timeupdate` ne se
+                 déclenche que quatre fois par seconde environ, il faut donc de
+                 la marge pour que le fondu soit terminé avant le saut. */
+              onTimeUpdate={(e) => {
+                const v = e.currentTarget;
+                if (!v.duration) return;
+                setFinDeBoucle(v.duration - v.currentTime < 0.9);
+              }}
+              onError={() => setVideoEchouee(true)}
+              style={{ opacity: videoPrete && !finDeBoucle ? 1 : 0 }}
+              className={`${cadrageMedia} transition-opacity duration-[600ms]`}
             />
           )}
         </div>

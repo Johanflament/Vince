@@ -31,23 +31,25 @@
  * lecture de commencer sans attendre la fin du téléchargement.
  *
  * ⚠️ `VIDEO_AMBIANCE` N'EST PAS EN FASTSTART, et c'est le seul vrai défaut du
- * lot. Mesuré sur `Trailer-Vince-Hero-v2.mp4` comme sur celui qu'il remplace :
- * l'ordre des atomes est `ftyp / wide / mdat / … / moov`, donc la table de
- * lecture est à la FIN des 51 Mo. Les navigateurs s'en sortent — R2 répond aux
+ * lot. Mesuré sur les trois fichiers qui se sont succédé à ce poste, celui-ci
+ * compris : l'ordre des atomes est `ftyp / wide / mdat / … / moov`, donc la
+ * table de lecture est à la FIN des 43 Mo. Les navigateurs s'en sortent — R2 répond aux
  * requêtes par plage (`Accept-Ranges: bytes`), donc Chrome et Safari vont
  * chercher la queue du fichier dans une seconde requête — mais cela coûte un
  * aller-retour de plus avant la première image, sur le tout premier élément que
  * le visiteur voit.
  *
- * Et 51 Mo pour 35,4 secondes font 12,1 Mbit/s : le fichier a maigri de 13 Mo
- * mais UNIQUEMENT parce qu'il est plus court — le débit, lui, n'a pas bougé
- * d'un dixième. C'est toujours une dizaine de fois ce qu'un fond muet demande.
+ * Et 43 Mo pour 29,9 secondes font 12,1 Mbit/s. Trois fichiers différents ont
+ * occupé ce poste, de 64 à 51 puis 43 Mo : à chaque fois le fichier a maigri
+ * UNIQUEMENT parce qu'il était plus court, et à chaque fois le débit est
+ * ressorti à 12,1 Mbit/s au dixième près. C'est une dizaine de fois ce qu'un
+ * fond muet demande — c'est le débit qu'il faut reprendre, pas la durée.
  *
  * À réencoder avant mise en ligne. La commande coupe le son — un fond muet n'a
  * aucun usage d'une piste audio qu'il télécharge quand même — et remet l'index
  * en tête :
  *
- *   ffmpeg -i Trailer-Vince-Hero-v2.mp4 -an -t 20 -vf "scale=1920:-2" \
+ *   ffmpeg -i Home-Video-Vince-Magicien.mp4 -an -t 20 -vf "scale=1920:-2" \
  *          -c:v libx264 -crf 26 -preset slow -movflags +faststart hero-boucle.mp4
  *
  * `-movflags +faststart` n'est pas optionnel : c'est lui qui déplace `moov` en
@@ -56,7 +58,7 @@
 
 const R2 = "https://pub-b32556fd6757440f8b8a2c26fe5dfba9.r2.dev";
 
-export const VIDEO_AMBIANCE = `${R2}/Trailer-Vince-Hero-v2.mp4`;
+export const VIDEO_AMBIANCE = `${R2}/Home-Video-Vince-Magicien.mp4`;
 
 export const VIDEO_CLOSE_UP = `${R2}/Bande-annonce-close-up-Vince.mp4`;
 

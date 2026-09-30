@@ -1177,39 +1177,58 @@ function ReviewsAndFaq() {
 
         {/* ── Les questions, sous les avis ───────────────────────────────
             Deux colonnes de `<details>` et non une seule longue liste : à
-            sept questions sur toute la largeur, chaque ligne faisait 1200px
+            six questions sur toute la largeur, chaque ligne faisait 1200px
             pour quatre mots, et le chevron se retrouvait à un demi-mètre de
             sa question.
 
-            ⚠️ `columns` et non `grid` : le contenu d'un `<details>` change de
-            hauteur à l'ouverture. Dans une grille, cela pousse toute la rangée
-            et les questions d'à côté sautent. En colonnes CSS, seule la
-            colonne concernée s'allonge. */}
+            ⚠️ DEUX COLONNES RÉELLES, ET SURTOUT PAS `columns-2`.
+            Les colonnes CSS RÉÉQUILIBRENT leur contenu : elles répartissent le
+            flux pour que les colonnes restent de hauteur comparable. Or un
+            `<details>` grandit à l'ouverture — le moteur recalculait donc la
+            répartition à chaque clic et les questions CHANGEAIENT DE COLONNE,
+            sautant de gauche à droite sous le curseur. `break-inside-avoid`
+            n'y pouvait rien : il empêche de couper un élément en deux, pas de
+            le déplacer.
+
+            Ici la répartition est décidée une fois pour toutes, à la moitié de
+            la liste, et chaque colonne est un bloc indépendant. Ouvrir une
+            question ne pousse plus que ce qui la suit DANS SA COLONNE. Rien ne
+            bouge latéralement, jamais.
+
+            L'ancien commentaire écartait `grid` pour une autre raison, et elle
+            était juste : une grille où chaque question est une cellule pousse
+            toute sa rangée. Le piège était de conclure qu'il fallait des
+            colonnes CSS — il fallait une grille de DEUX COLONNES, chacune
+            contenant sa pile. */}
         {/* `mt-20` seulement s'il y a des avis au-dessus : sans eux, cette marge
             ouvrirait la section sur quatre-vingts pixels de vide. */}
         <div className={reviews.length > 0 ? "mt-20" : ""}>
           <SectionTitle title="Questions fréquentes" />
-          <div className="mt-6 md:columns-2 md:gap-14">
-            {faqs.map((faq) => (
-              <details
-                key={faq.question}
-                className="group break-inside-avoid border-b border-border py-1"
-              >
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-5 text-sm font-normal transition-colors hover:text-[var(--gold)] md:gap-6 md:text-lg">
-                  {faq.question}
-                  {/* Trois réglages pour ramener les questions sur UNE ligne en téléphone,
+          <div className="mt-6 grid items-start gap-x-14 md:grid-cols-2">
+            {[
+              faqs.slice(0, Math.ceil(faqs.length / 2)),
+              faqs.slice(Math.ceil(faqs.length / 2)),
+            ].map((colonne, i) => (
+              <div key={i}>
+                {colonne.map((faq) => (
+                  <details key={faq.question} className="group border-b border-border py-1">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-5 text-sm font-normal transition-colors hover:text-[var(--gold)] md:gap-6 md:text-lg">
+                      {faq.question}
+                      {/* Trois réglages pour ramener les questions sur UNE ligne en téléphone,
                       car aucun ne suffisait seul : la taille passe de 19 à 15px, la graisse
                       de 500 à 400, et l'écart au chevron de 25 à 13px. La plus longue
                       mesurait 369px pour 280px disponibles. */}
-                  <ChevronDown
-                    className="shrink-0 text-[var(--gold)] transition-transform group-open:rotate-180"
-                    size={17}
-                  />
-                </summary>
-                <p className="max-w-xl pb-6 text-base font-light leading-[1.7] text-muted-foreground">
-                  {faq.reponse}
-                </p>
-              </details>
+                      <ChevronDown
+                        className="shrink-0 text-[var(--gold)] transition-transform group-open:rotate-180"
+                        size={17}
+                      />
+                    </summary>
+                    <p className="max-w-xl pb-6 text-base font-light leading-[1.7] text-muted-foreground">
+                      {faq.reponse}
+                    </p>
+                  </details>
+                ))}
+              </div>
             ))}
           </div>
         </div>
