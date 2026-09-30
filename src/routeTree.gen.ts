@@ -10,23 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MentionsLegalesRouteImport } from './routes/mentions-legales'
-import { Route as HomeV3RouteImport } from './routes/home-v3'
-import { Route as HomeV2RouteImport } from './routes/home-v2'
 import { Route as IndexRouteImport } from './routes/index'
 
 const MentionsLegalesRoute = MentionsLegalesRouteImport.update({
   id: '/mentions-legales',
   path: '/mentions-legales',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeV3Route = HomeV3RouteImport.update({
-  id: '/home-v3',
-  path: '/home-v3',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeV2Route = HomeV2RouteImport.update({
-  id: '/home-v2',
-  path: '/home-v2',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,35 +25,27 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/home-v2': typeof HomeV2Route
-  '/home-v3': typeof HomeV3Route
   '/mentions-legales': typeof MentionsLegalesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/home-v2': typeof HomeV2Route
-  '/home-v3': typeof HomeV3Route
   '/mentions-legales': typeof MentionsLegalesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/home-v2': typeof HomeV2Route
-  '/home-v3': typeof HomeV3Route
   '/mentions-legales': typeof MentionsLegalesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/home-v2' | '/home-v3' | '/mentions-legales'
+  fullPaths: '/' | '/mentions-legales'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/home-v2' | '/home-v3' | '/mentions-legales'
-  id: '__root__' | '/' | '/home-v2' | '/home-v3' | '/mentions-legales'
+  to: '/' | '/mentions-legales'
+  id: '__root__' | '/' | '/mentions-legales'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  HomeV2Route: typeof HomeV2Route
-  HomeV3Route: typeof HomeV3Route
   MentionsLegalesRoute: typeof MentionsLegalesRoute
 }
 
@@ -76,20 +56,6 @@ declare module '@tanstack/react-router' {
       path: '/mentions-legales'
       fullPath: '/mentions-legales'
       preLoaderRoute: typeof MentionsLegalesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home-v3': {
-      id: '/home-v3'
-      path: '/home-v3'
-      fullPath: '/home-v3'
-      preLoaderRoute: typeof HomeV3RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home-v2': {
-      id: '/home-v2'
-      path: '/home-v2'
-      fullPath: '/home-v2'
-      preLoaderRoute: typeof HomeV2RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -104,8 +70,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  HomeV2Route: HomeV2Route,
-  HomeV3Route: HomeV3Route,
   MentionsLegalesRoute: MentionsLegalesRoute,
 }
 export const routeTree = rootRouteImport

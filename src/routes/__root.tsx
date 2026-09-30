@@ -34,7 +34,7 @@ const SITE_URL = "https://vince.johanflament69.workers.dev";
 // prestation absente du site fait arriver le visiteur sur une page qui ne
 // répond pas à ce qu'il a lu dans les résultats de recherche — et c'est la
 // première chose que mesure Google. Les deux formats réellement présentés sont
-// le close-up et le spectacle pour enfants ; elle ne dit plus que ceux-là.
+// le close-up et le spectacle de scène ; elle ne dit plus que ceux-là.
 //
 // ⚠️ « en Picardie » EST CONSERVÉ EN L'ÉTAT. Ce n'est pas une validation : le
 // dépôt se contredit (la biographie situe Vince à Tours, voir README.md) et la
@@ -42,7 +42,7 @@ const SITE_URL = "https://vince.johanflament69.workers.dev";
 // l'autre serait la trancher ici, au milieu du <head>. Elle reste donc alignée
 // sur le reste du site en attendant l'arbitrage.
 const DESCRIPTION =
-  "Vince, magicien en Picardie : close-up et spectacles pour enfants à Amiens, Beauvais et alentour. Une magie drôle, interactive et conviviale.";
+  "Vince, magicien en Picardie : close-up et spectacles de scène, pour un public familial comme adulte, à Amiens, Beauvais et alentour.";
 const TITRE = "Magic Vince — Magicien en Picardie";
 
 function NotFoundComponent() {

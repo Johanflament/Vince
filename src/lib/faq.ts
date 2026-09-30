@@ -38,7 +38,7 @@ export const faqs: QuestionFrequente[] = [
   {
     question: "Quelle est la durée d’une prestation ?",
     reponse:
-      "Elle s’adapte à votre événement. Le close-up accompagne un cocktail ou un dîner et se compte en heures ; le spectacle pour enfants dure de 30 à 40 minutes.",
+      "Elle s’adapte à votre événement. Le close-up accompagne un cocktail ou un dîner et se compte en heures ; le spectacle de scène dure de 30 minutes à 1 h 15, selon ce que vous souhaitez.",
     structuree: true,
   },
   {
@@ -68,9 +68,9 @@ export const faqs: QuestionFrequente[] = [
     structuree: false,
   },
   {
-    question: "À partir de quel âge le spectacle convient-il ?",
+    question: "Le spectacle est-il réservé aux enfants ?",
     reponse:
-      "Il n’y a pas d’âge pour rêver : le spectacle se suit dès trois ans, et il est écrit pour que les adultes en profitent autant que les enfants.",
+      "Non. Il existe en version familiale, qui se suit dès trois ans, et en version tout public adulte pour un gala ou une soirée d’entreprise. Dans les deux cas, l’humour s’adresse à tout le monde.",
     // ⚠️ À VALIDER PAR VINCE.
     structuree: false,
   },

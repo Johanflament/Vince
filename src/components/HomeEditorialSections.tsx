@@ -6,10 +6,8 @@ import {
   Cake,
   ChevronDown,
   Gift,
-  GraduationCap,
   Heart,
   Presentation,
-  Smile,
   Star,
   Users,
   type LucideIcon,
@@ -17,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Visionneuse, type Photo } from "@/components/Visionneuse";
 import { CtaVideo, VideoPleinEcran } from "@/components/VideoPleinEcran";
-import { VIDEO_CLOSE_UP, VIDEO_SPECTACLE_ENFANTS } from "@/lib/medias";
+import { VIDEO_CLOSE_UP, VIDEO_SPECTACLE_SCENE } from "@/lib/medias";
 // ⚠️ Les questions viennent de `lib/faq.ts` et NON d'une liste locale : le même
 // texte alimente le `FAQPage` des données structurées, et Google exige qu'il
 // soit identique à celui affiché. Voir l'en-tête de ce fichier.
@@ -73,9 +71,42 @@ import gBarGroupeImg from "@/assets/photos/closeup-bar-groupe-vignette.webp";
 import gBarGroupeLargeImg from "@/assets/photos/closeup-bar-groupe-large.webp";
 import gParticipationImg from "@/assets/photos/spectacle-enfants-participation-vignette.webp";
 import gParticipationLargeImg from "@/assets/photos/spectacle-enfants-participation-large.webp";
-import gStudioConfettisImg from "@/assets/photos/studio-eventail-confettis-vignette.webp";
 // Portrait de la section Biographie.
-import bioImg from "@/assets/photos/studio-bras-ouverts-large.webp";
+
+// ── Les douze photos ajoutées en septembre 2026, placées en tête de galerie.
+// Trois viennent d'un reportage professionnel, les neuf autres de captations
+// sur le vif. Voir l'avertissement au-dessus de `gallery`.
+import nCloseupCocktailRireInviteeImg from "@/assets/photos/closeup-cocktail-rire-invitee-vignette.webp";
+import nCloseupCocktailRireInviteeLargeImg from "@/assets/photos/closeup-cocktail-rire-invitee-large.webp";
+import nCloseupCocktailPieceMainImg from "@/assets/photos/closeup-cocktail-piece-main-vignette.webp";
+import nCloseupCocktailPieceMainLargeImg from "@/assets/photos/closeup-cocktail-piece-main-large.webp";
+import nCloseupTableBallesRougesImg from "@/assets/photos/closeup-table-balles-rouges-vignette.webp";
+import nCloseupTableBallesRougesLargeImg from "@/assets/photos/closeup-table-balles-rouges-large.webp";
+import nCloseupFlammeOmbrePorteeImg from "@/assets/photos/closeup-flamme-ombre-portee-vignette.webp";
+import nCloseupFlammeOmbrePorteeLargeImg from "@/assets/photos/closeup-flamme-ombre-portee-large.webp";
+import nSceneCaisseLumiereRougeImg from "@/assets/photos/scene-caisse-lumiere-rouge-vignette.webp";
+import nSceneCaisseLumiereRougeLargeImg from "@/assets/photos/scene-caisse-lumiere-rouge-large.webp";
+import nSceneCordeRideauxRosesImg from "@/assets/photos/scene-corde-rideaux-roses-vignette.webp";
+import nSceneCordeRideauxRosesLargeImg from "@/assets/photos/scene-corde-rideaux-roses-large.webp";
+import nSceneSpectatriceInviteeImg from "@/assets/photos/scene-spectatrice-invitee-vignette.webp";
+import nSceneSpectatriceInviteeLargeImg from "@/assets/photos/scene-spectatrice-invitee-large.webp";
+import nSpectacleEnfantFoulardRougeImg from "@/assets/photos/spectacle-enfant-foulard-rouge-vignette.webp";
+import nSpectacleEnfantFoulardRougeLargeImg from "@/assets/photos/spectacle-enfant-foulard-rouge-large.webp";
+import nCloseupBoitesPredictionImg from "@/assets/photos/closeup-boites-prediction-vignette.webp";
+import nCloseupBoitesPredictionLargeImg from "@/assets/photos/closeup-boites-prediction-large.webp";
+import nSpectacleBallonGrangeImg from "@/assets/photos/spectacle-ballon-grange-vignette.webp";
+import nSpectacleBallonGrangeLargeImg from "@/assets/photos/spectacle-ballon-grange-large.webp";
+import nSceneSeauMicroCasqueImg from "@/assets/photos/scene-seau-micro-casque-vignette.webp";
+import nSceneSeauMicroCasqueLargeImg from "@/assets/photos/scene-seau-micro-casque-large.webp";
+import nSceneConfettisMicroCasqueImg from "@/assets/photos/scene-confettis-micro-casque-vignette.webp";
+import nSceneConfettisMicroCasqueLargeImg from "@/assets/photos/scene-confettis-micro-casque-large.webp";
+// Ajoutée après coup, insérée au milieu de la galerie et non en tête.
+import nSceneCaisseBoisApparitionImg from "@/assets/photos/scene-caisse-bois-apparition-vignette.webp";
+import nSceneCaisseBoisApparitionLargeImg from "@/assets/photos/scene-caisse-bois-apparition-large.webp";
+
+// ⚠️ Portrait de la biographie. Photographié SUR FOND NOIR, et c'est ce qui
+// permet son traitement — voir le commentaire du rendu.
+import bioImg from "@/assets/photos/portrait-vince-pieces-large.webp";
 
 /**
  * ⚠️ `mise` CHOISIT LA MISE EN PAGE, et les deux ne sont pas interchangeables.
@@ -236,16 +267,22 @@ const formats: Format[] = [
     // 11 % à 85 %, il reste 2 points d'air à sa gauche et 4 à sa droite.
     // En dessous de 25 % ou au-dessus de 55 %, on lui coupe un bras.
     cadrage: "object-[45%_50%]",
-    surtitre: "Spectacle jeune public",
-    nom: "Spectacles enfants",
-    // ⚠️ L'accroche disait « Cinquante minutes, et personne ne s'ennuie. » Le
-    // texte fourni par Vince annonce 30 à 40 minutes : l'accroche mentait donc
-    // d'un quart d'heure. Elle garde l'idée — le spectacle n'est pas que pour
-    // les enfants — sans plus avancer de durée, que la fiche donne déjà.
-    accroche: "Pour les petits, et pas seulement pour eux.",
+    // ⚠️ « SPECTACLES DE SCÈNE » ET NON « SPECTACLES ENFANTS ». La section ne
+    // s'adresse plus au seul jeune public : le même spectacle se joue devant
+    // une salle d'adultes — gala, soirée d'entreprise — comme devant des
+    // familles. L'ancien nom fermait la porte à la moitié des demandes avant
+    // même qu'on lise le texte, et il contredisait le hero, qui annonce déjà
+    // « Galas » en pointant vers cette section.
+    surtitre: "Sur scène",
+    nom: "Spectacles de scène",
+    // L'accroche a d'abord dit « Cinquante minutes, et personne ne s'ennuie »
+    // — fausse d'un quart d'heure — puis « Pour les petits, et pas seulement
+    // pour eux », qui partait encore des enfants pour concéder les adultes.
+    // Elle met maintenant les deux publics sur le même plan.
+    accroche: "Les adultes rient autant que les enfants.",
     video: {
-      src: VIDEO_SPECTACLE_ENFANTS,
-      titre: "Bande-annonce du spectacle pour enfants de Vince",
+      src: VIDEO_SPECTACLE_SCENE,
+      titre: "Bande-annonce du spectacle de scène de Vince",
     },
     // Texte fourni par Vince, resserré en deux paragraphes.
     //
@@ -260,20 +297,25 @@ const formats: Format[] = [
     // c'est une prestation en plus, pas une description du spectacle, et noyée
     // en fin de paragraphe elle se serait perdue.
     texte: [
-      "Un spectacle féerique à partir de trois ans, où la baguette magique, le chapeau et le lapin sont de rigueur — et où les parents rient autant que les enfants.",
-      "Sur scène pour les plus nombreux, ou en version plus intime dans votre salon : le format s’ajuste au lieu et à l’âge de vos invités.",
+      "Un spectacle de magie et d’humour qui se joue devant une salle : arbre de Noël, gala, soirée d’entreprise ou anniversaire. Le public y monte sur scène autant qu’il applaudit.",
+      "En version familiale, la baguette, le chapeau et le lapin sont de rigueur, et l’on suit dès trois ans. En version adulte, l’humour et la complicité prennent le pas. Le format s’ajuste au lieu comme à la salle.",
     ],
     fiche: [
-      { label: "Durée", valeur: "30 à 40 minutes sur scène" },
-      { label: "Public", valeur: "Dès trois ans, adultes compris" },
+      { label: "Durée", valeur: "De 30 minutes à 1 h 15 (personnalisable)" },
+      { label: "Public", valeur: "Familial dès trois ans, ou tout public adulte" },
       { label: "Sur place", valeur: "Un espace dégagé et une prise de courant" },
       { label: "En plus", valeur: "Sculpture de ballons, sur demande" },
     ],
     occasions: [
-      { Icone: Cake, label: "Anniversaires" },
+      // ⚠️ DEUX OCCASIONS FAMILIALES, DEUX POUR ADULTES, et c'est délibéré :
+      // les quatre pictogrammes sont la première chose qu'on lit dans cette
+      // colonne, et quatre contextes d'enfants auraient contredit le titre.
+      // « Centres de loisirs » a cédé la place aux galas — il reste couvert par
+      // la liste des prestations, plus haut.
       { Icone: Gift, label: "Arbres de Noël" },
-      { Icone: GraduationCap, label: "Écoles" },
-      { Icone: Smile, label: "Centres de loisirs" },
+      { Icone: Cake, label: "Anniversaires" },
+      { Icone: Award, label: "Galas" },
+      { Icone: Users, label: "Soirées d’entreprise" },
     ],
     image: stageImg,
     alt: "Vince en studio, éventail noir à la main, bras levé sous une pluie de confettis dans une lumière violette",
@@ -353,71 +395,152 @@ const reviews: Avis[] = [];
 // des visages d'invités y sont parfaitement reconnaissables et leur diffusion
 // n'est pas confirmée. Leurs fichiers existent, il suffit de les ajouter ici.
 const gallery: Photo[] = [
-  // L'ORDRE N'EST PAS LIBRE : chaque position tombe dans une tuile de forme
+  // ⚠️ L'ORDRE N'EST PAS LIBRE : chaque position reçoit une forme de tuile
   // connue (voir `MOTIF_TUILES`), et la photo doit s'y prêter.
   //
-  //   positions 0, 1, 2 → tuiles CARRÉES  → portraits et cadrages serrés ;
-  //   positions 3, 4, 5 → tuiles 2:1      → paysages, jamais un portrait, qui
-  //                                          s'y ferait couper la tête.
+  //   positions 0, 1, 2 de chaque motif → tuiles CARRÉES → portraits ;
+  //   positions 3, 4, 5                 → tuiles 2:1     → paysages, JAMAIS un
+  //                                        portrait, qui s'y ferait couper la
+  //                                        tête et les jambes.
   //
-  // Le premier motif est celui qu'on voit sans déplier : on y met les photos
-  // qui montrent une RÉACTION, pas un décor. C'est le public qui vend la
-  // prestation, pas le matériel.
+  // Vérification : 9 portraits pour 12 tuiles carrées sur les quatre motifs,
+  // 15 paysages pour 12 bandes. Les trois carrés en trop (motif 4) reçoivent
+  // des paysages, ce qui ne coûte qu'un rognage latéral.
   //
-  // Déplacer une photo, c'est donc la changer de forme. Vérifier qu'elle
-  // supporte sa nouvelle tuile avant, ou ajuster son `cadrage`.
+  // ⚠️ LES DOUZE PHOTOS AJOUTÉES EN SEPTEMBRE 2026 OUVRENT LA GALERIE, mais
+  // pas exactement douze d'affilée : elles comptent SEPT portraits alors que
+  // les deux premiers motifs n'offrent que six carrés. La douzième — la caisse
+  // en lumière rouge — est donc descendue en tête du motif 3, sur le grand
+  // carré, et une photo existante en paysage (la tablée) remonte prendre sa
+  // place sur la dernière bande du motif 2. Toutes les nouvelles sont ainsi
+  // dans les treize premières, et aucune n'est déformée.
+  //
+  // ⚠️ DEUX RÉSERVES AVANT MISE EN LIGNE, à lever avec Vince :
+  //
+  //  1. DROITS PHOTO. Trois de ces clichés — le cocktail avec l'invitée qui
+  //     rit, la pièce au creux de la main, la table aux balles rouges —
+  //     viennent d'un reportage professionnel signé, et le nom du photographe
+  //     figurait dans leur fichier d'origine. Leur publication en ligne
+  //     suppose une cession de droits.
+  //  2. DROIT À L'IMAGE. Plusieurs montrent des visages parfaitement
+  //     reconnaissables, dont celui d'un enfant appelé sur scène. C'est la même
+  //     réserve qui tient trois photos de cocktail de mariage hors de cette
+  //     liste, plus bas : leur diffusion n'était pas confirmée.
 
-  // ── Motif 1 — l'aperçu ──────────────────────────────────────────────────
+  // ── Motif 1 — l'aperçu : ce qu'on voit sans déplier ───────────
   {
-    // Grande tuile : la plus forte image de la série.
-    src: gFlammeImg,
-    grand: gFlammeLargeImg,
-    alt: "Une flamme jaillit entre les mains de Vince pendant une soirée, un invité la fixe de tout près",
+    src: nCloseupTableBallesRougesImg,
+    grand: nCloseupTableBallesRougesLargeImg,
+    alt: "Vince penché vers une invitée, deux balles rouges posées sur la table, devant un rideau rouge",
   },
   {
-    // Seule photo verticale de la galerie : elle ne peut aller que sur un carré.
-    src: gParticipationImg,
-    grand: gParticipationLargeImg,
-    alt: "Une enfant appelée sur scène tend la main vers Vince, devant un public d’enfants",
+    src: nSpectacleEnfantFoulardRougeImg,
+    grand: nSpectacleEnfantFoulardRougeLargeImg,
+    alt: "Un enfant appelé sur scène déploie un grand foulard rouge devant Vince",
+  },
+  {
+    src: nSceneConfettisMicroCasqueImg,
+    grand: nSceneConfettisMicroCasqueLargeImg,
+    alt: "Vince, micro-casque sur la tête, lâche une pluie de confettis sous les rideaux bleus",
+  },
+  {
+    src: nCloseupCocktailRireInviteeImg,
+    grand: nCloseupCocktailRireInviteeLargeImg,
+    alt: "Une invitée éclate de rire pendant un tour de close-up, au milieu d’un cocktail",
+  },
+  {
+    src: nCloseupCocktailPieceMainImg,
+    grand: nCloseupCocktailPieceMainLargeImg,
+    alt: "Vince montre une pièce au creux de sa main à un invité, pendant un cocktail",
+  },
+  {
+    src: nSceneSpectatriceInviteeImg,
+    grand: nSceneSpectatriceInviteeLargeImg,
+    alt: "Une spectatrice invitée sur scène tend la main vers la table de Vince",
+  },
+
+  // ── Motif 2 ───────────────────────────────────────────────────
+  {
+    src: nCloseupFlammeOmbrePorteeImg,
+    grand: nCloseupFlammeOmbrePorteeLargeImg,
+    alt: "Une flamme dans la main de Vince projette son ombre en grand sur le mur derrière lui",
+  },
+  {
+    src: nSceneCordeRideauxRosesImg,
+    grand: nSceneCordeRideauxRosesLargeImg,
+    alt: "Vince tend une corde entre ses mains, seul en scène devant des rideaux roses",
+  },
+  {
+    src: nSceneSeauMicroCasqueImg,
+    grand: nSceneSeauMicroCasqueLargeImg,
+    alt: "Vince, micro-casque sur la tête, au-dessus d’un seau métallique posé sur un tabouret",
+  },
+  {
+    src: nCloseupBoitesPredictionImg,
+    grand: nCloseupBoitesPredictionLargeImg,
+    alt: "Une spectatrice tient une carte devant trois boîtes de prédiction empilées",
+  },
+  {
+    src: nSpectacleBallonGrangeImg,
+    grand: nSpectacleBallonGrangeLargeImg,
+    alt: "Vince présente un ballon blanc à des enfants, dans une grange",
   },
   {
     src: gTableeImg,
     grand: gTableeLargeImg,
     alt: "Une grande tablée de restaurant, une vingtaine de convives bras levés en fin de prestation",
   },
+
+  // ── Motif 3 ───────────────────────────────────────────────────────────
   {
-    // 16:9 à la source, donc la seule qui entre dans une tuile 2:1 sans perdre
-    // quoi que ce soit.
+    // ⚠️ INSÉRÉE ICI, AU MILIEU, ET PAS AILLEURS. Ajouter une photo décale
+    // toutes les suivantes d'un rang, donc CHANGE LEUR FORME DE TUILE : un
+    // portrait qui tenait sur un carré se retrouve sur une bande 2:1, tête et
+    // jambes coupées. Les trois portraits qui suivaient ont donc été
+    // redistribués — deux restent sur les carrés de ce motif, le troisième
+    // descend sur le grand carré du motif 4. Revérifier les 25 positions
+    // avant de déplacer quoi que ce soit ici.
+    src: nSceneCaisseBoisApparitionImg,
+    grand: nSceneCaisseBoisApparitionLargeImg,
+    alt: "Vince soulève le couvercle d’une caisse en bois sur scène, des panneaux en suspension au-dessus",
+  },
+  {
+    src: nSceneCaisseLumiereRougeImg,
+    grand: nSceneCaisseLumiereRougeLargeImg,
+    alt: "Vince ouvre une caisse en bois sur une scène baignée de lumière rouge",
+  },
+  {
+    src: gFlammeImg,
+    grand: gFlammeLargeImg,
+    alt: "Une flamme jaillit entre les mains de Vince pendant une soirée, un invité la fixe de tout près",
+  },
+  {
     src: gGalaRireImg,
     grand: gGalaRireLargeImg,
     alt: "Vince présente une carte à une tablée de gala, un convive éclate de rire à côté de lui",
-  },
-  {
-    src: gEventailImg,
-    grand: gEventailLargeImg,
-    alt: "Vince en studio, éventail noir à la main, sous une pluie de confettis et une lumière violette",
   },
   {
     src: gMariagePierreImg,
     grand: gMariagePierreLargeImg,
     alt: "Close-up dans une salle aux murs de pierre, Vince entouré des invités d’un mariage",
   },
-
-  // ── Motif 2 — au dépliement ─────────────────────────────────────────────
   {
-    // GRAND CARRÉ. Le sujet est debout, bras écartés : il lui faut de la
-    // hauteur, pas de la largeur. Mesuré, il occupe x 20-80 % et toute la
-    // hauteur ; la tuile carrée rogne 33 % de la largeur, soit 16,7 % de
-    // chaque côté au centrage — exactement les marges vides, rien du sujet.
-    // Aucun `cadrage` n'est donc nécessaire, le centre est optimal.
+    cadrage: "50% 100%",
+    src: gFoulardImg,
+    grand: gFoulardLargeImg,
+    alt: "Vince sur la scène d’un théâtre, un foulard bleu entre les mains, entre ses deux guéridons",
+  },
+
+  // ── Motif 4 ───────────────────────────────────────────────────────────
+  {
+    src: gParticipationImg,
+    grand: gParticipationLargeImg,
+    alt: "Une enfant appelée sur scène tend la main vers Vince, devant un public d’enfants",
+  },
+  {
     src: gStudioBrasImg,
     grand: gStudioBrasLargeImg,
     alt: "Vince en studio, bras grands ouverts derrière un guéridon, sur fond clair",
-  },
-  {
-    src: gParapluieImg,
-    grand: gParapluieLargeImg,
-    alt: "Vince ouvre un parapluie multicolore sur scène, une petite fille à côté de lui face au public",
   },
   {
     src: gBarGroupeImg,
@@ -425,29 +548,19 @@ const gallery: Photo[] = [
     alt: "Vince présente un tour à un groupe de jeunes debout, dans la salle d’un bar",
   },
   {
+    src: gParapluieImg,
+    grand: gParapluieLargeImg,
+    alt: "Vince ouvre un parapluie multicolore sur scène, une petite fille à côté de lui face au public",
+  },
+  {
     src: gSilhouetteImg,
     grand: gSilhouetteLargeImg,
     alt: "Vince en contre-jour, réduit à sa silhouette, le bras tendu vers le côté",
   },
   {
-    // BANDE 2:1. Un plan de scène large a besoin de largeur, et surtout
-    // LES 40 % DU HAUT DE CETTE PHOTO SONT VIDES : relevé par bandes, l'écart-
-    // type de luminance y tombe à 1 ou 2 — c'est le noir des cintres. Tout le
-    // sujet vit entre 40 et 100 % de la hauteur.
-    // La bande rogne 33 % de la hauteur : ancrée en bas, elle prend ce vide et
-    // ne perd RIEN. Centrée, elle couperait au contraire le bas du cadre, qui
-    // est la zone la plus dense de l'image.
-    // ⚠️ `cadrage` est ici une VALEUR `object-position` en style inline, pas une
-    // classe Tailwind — contrairement au `cadrage` des sections de format.
-    cadrage: "50% 100%",
-    src: gFoulardImg,
-    grand: gFoulardLargeImg,
-    alt: "Vince sur la scène d’un théâtre, un foulard bleu entre les mains, entre ses deux guéridons",
-  },
-  {
-    src: gStudioConfettisImg,
-    grand: gStudioConfettisLargeImg,
-    alt: "Vince de profil en studio, éventail déployé, confettis en suspension dans une lumière violette",
+    src: gEventailImg,
+    grand: gEventailLargeImg,
+    alt: "Vince en studio, éventail noir à la main, sous une pluie de confettis et une lumière violette",
   },
 ];
 
@@ -461,7 +574,7 @@ export function HomeEditorialSections() {
       <VideoPleinEcran />
       <FormatStories />
       {/* La biographie se place entre la vidéo et les avis, pour suivre l'ordre
-          du menu : Close-up, Spectacles enfants, Biographie, Avis, Contact. */}
+          du menu : Close-up, Spectacles de scène, Biographie, Galerie, Contact. */}
       <Biographie />
       <ReviewsAndFaq />
       <EditorialGallery />
@@ -1058,12 +1171,89 @@ function Biographie() {
         <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
           {/* ── Colonne de gauche : le portrait, puis les citations ──────── */}
           <div>
-            <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-card-lg">
+            {/* ── LE PORTRAIT SANS CADRE ──────────────────────────────────
+                Il était dans une carte arrondie avec une ombre portée. Il n'a
+                plus ni cadre, ni coins, ni ombre : il ÉMERGE DE LA PAGE.
+
+                ⚠️ CE QUI REND CELA POSSIBLE EST DANS LE FICHIER, PAS DANS LE CSS.
+
+                `mix-blend-screen` donne, pour chaque pixel, 1 − (1 − photo) ×
+                (1 − fond) : là où la photo vaut ZÉRO, le résultat EST le fond,
+                au bit près. Le noir devient donc littéralement transparent, et
+                le raccord ne se voit pas parce qu'il n'existe pas.
+
+                Mais « zéro » doit être zéro. La photo sortait du studio avec
+                des noirs à 1 ou 2 sur 255 — invisibles à l'œil nu sur l'image,
+                et pourtant suffisants : en mode écran sur un fond à 12, un
+                pixel à 1 rend 13, un pixel à 4 rend 16. Sur toute la surface,
+                ce delta de 1 à 4 dessinait un rectangle légèrement plus clair
+                que la page. Le fichier est donc réencodé avec une courbe qui
+                écrase tout ce qui est sous 5 : 85 % de ses pixels valent
+                maintenant exactement 0, et l'écart au fond y est de 0,00.
+
+                ⚠️ NE PAS RÉENCODER CETTE PHOTO SANS REFAIRE CET ÉCRASEMENT.
+                Un simple redimensionnement fera revenir le rectangle, sans que
+                rien ne le signale ailleurs qu'à l'œil.
+
+                Le haut est recadré de 15 % et le bas de 8 % : relevé par bandes,
+                la photo n'avait AUCUN pixel au-dessus de 25 avant y = 20 % ni
+                après y = 85 %. C'était du noir payé au poids du fichier et de
+                la hauteur de page.
+
+                Deux choses à ne pas faire :
+                 - remettre `overflow-hidden` + `rounded` : il n'y a plus de
+                   bord à arrondir, et le coin trancherait dans du vide ;
+                 - donner un fond opaque et clair à un ancêtre proche. Le
+                   mélange se fait avec ce qui est DESSOUS dans le même contexte
+                   d'empilement ; sur du clair, le sujet disparaîtrait.
+
+                Sur un navigateur sans `mix-blend-mode` — il n'en reste pas —
+                l'image s'afficherait telle quelle : un rectangle noir sur un
+                fond noir. La dégradation est invisible. */}
+            {/* ⚠️ IL DÉBORDE DE SA COLONNE, VERS LE HAUT ET SUR LES CÔTÉS, et
+                ce n'est possible que parce que ses bords sont transparents : un
+                débordement se verrait aussitôt sur une image encadrée.
+
+                `-mt-12` le fait monter de 48px au-dessus de la ligne où
+                démarre « Biographie », dans la colonne d'en face. Les 48px ne
+                sont pas 48px de sujet : le recadrage laisse environ 5 % de noir
+                au-dessus des pièces, soit une trentaine de pixels invisibles à
+                cette taille. Le sommet visible dépasse donc le mot d'une
+                quinzaine de pixels — « très légèrement », ce qui était la
+                demande. Il remonte dans le `py-28` de la section, largement
+                assez profond pour l'absorber.
+
+                `w-[115%]` avec `-ml-[7.5%]` l'élargit de part et d'autre. Vers
+                la droite il prend 35px sur les 64 de gouttière, il ne touche
+                donc pas la colonne de texte ; vers la gauche il mord sur le
+                rembourrage de page, sans jamais sortir de la fenêtre.
+
+                Tout est en `lg:` : en dessous, les deux colonnes sont empilées,
+                le portrait n'a plus de titre à dépasser et déborderait dans le
+                vide. */}
+            <div className="relative lg:-ml-[7.5%] lg:-mt-12 lg:w-[115%]">
+              {/* Halo doré derrière le sujet, très faible. Il ne se lit pas
+                  comme une lumière mais comme une profondeur, et c'est ce qui
+                  raccroche un noir et blanc à une charte dorée. 9 % seulement :
+                  le halo passe SOUS une image dont 85 % est transparente, donc
+                  il s'affiche presque en entier — au-delà, on voit une tache
+                  et non une profondeur. Il s'éteint bien avant les bords, sans
+                  quoi il redessinerait le rectangle qu'on vient d'effacer. */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(46% 34% at 50% 40%, color-mix(in oklab, var(--gold) 9%, transparent), transparent 70%)",
+                }}
+              />
               <img
                 src={bioImg}
-                alt="Vince en studio, bras grands ouverts derrière un guéridon, sur fond clair"
+                alt="Vince en costume sombre, surgissant du noir, trois pièces en suspension au-dessus de ses mains ouvertes"
+                width={1212}
+                height={1400}
                 loading="lazy"
-                className="h-full w-full object-cover"
+                className="relative w-full mix-blend-screen"
               />
             </div>
 

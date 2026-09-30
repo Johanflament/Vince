@@ -61,7 +61,7 @@ cadrage se fait en CSS via le champ `cadrage` de chaque entrée. Sept sources so
 de cadrage ont été remis au neutre — à réétalonner à l'œil.
 
 **Les vidéos.** Trois désormais, toutes de Vince, déclarées dans `src/lib/medias.ts` :
-`VIDEO_AMBIANCE` (fond des variantes `/home-v2` et `/home-v3`, et bande animée du milieu de page),
+`VIDEO_AMBIANCE` (le fond du hero),
 plus les deux bandes-annonces `VIDEO_CLOSE_UP` et `VIDEO_SPECTACLE_ENFANTS`, ouvertes en plein écran
 par le CTA « Voir la vidéo » de leur section.
 

@@ -52,7 +52,7 @@ const villes = [
 // endroit d'où l'on atteint la section des avis. Ne pas l'y supprimer.
 const navigation = [
   { label: "Close-up", hash: "#close-up" },
-  { label: "Spectacles enfants", hash: "#spectacles" },
+  { label: "Spectacles de scène", hash: "#spectacles" },
   { label: "Biographie", hash: "#biographie" },
   { label: "Galerie", hash: "#galerie" },
   { label: "Avis", hash: "#avis" },

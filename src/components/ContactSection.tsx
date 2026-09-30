@@ -9,7 +9,7 @@ import { Mail, Phone, MapPin, Send, Sparkles } from "lucide-react";
 //
 // « Ateliers & initiation » n'y figure plus : la section a été retirée de la
 // page, une formule proposée ici sans rien pour la décrire ailleurs.
-const formats = ["Close-up", "Spectacle enfant", "Je ne sais pas encore"];
+const formats = ["Close-up", "Spectacle de scène", "Je ne sais pas encore"];
 
 export function ContactSection() {
   const [sent, setSent] = useState(false);

@@ -5,12 +5,17 @@
  * TROIS FILMS, TROIS USAGES DISTINCTS — ne pas les confondre :
  *
  *   `VIDEO_AMBIANCE`          l'ambiance. Muette, en boucle, jamais regardée
- *                             pour elle-même : c'est le fond des variantes
- *                             `/home-v2` et `/home-v3`, et RIEN D'AUTRE depuis
+ *                             pour elle-même : c'est le fond du hero de
+ *                             la page d'accueil, et RIEN D'AUTRE depuis
  *                             que la bande animée du milieu de page a été
- *                             supprimée. Sur `/`, elle ne sert pas du tout.
+ *                             supprimée.
  *   `VIDEO_CLOSE_UP`          la bande-annonce du close-up.
- *   `VIDEO_SPECTACLE_ENFANTS` celle du spectacle pour enfants.
+ *   `VIDEO_SPECTACLE_SCENE`    celle du spectacle de scène.
+ *
+ * ⚠️ Le fichier sur R2 s'appelle encore « Bande-annonce-Spectacle-Enfants » :
+ * la constante a été renommée quand la section a cessé de s'adresser au seul
+ * jeune public, pas le fichier. Ne pas « corriger » l'URL pour la faire
+ * coïncider avec le nom de la constante — elle deviendrait fausse.
  *
  * Les deux bandes-annonces sont des FILMS QU'ON REGARDE : avec le son, avec des
  * contrôles, en plein écran, depuis le bouton de lecture posé sur la photo de
@@ -64,4 +69,4 @@ export const VIDEO_CLOSE_UP = `${R2}/Bande-annonce-close-up-Vince.mp4`;
 
 /* L'espace du nom de fichier est encodé `%20` — il DOIT le rester. Écrit tel
    quel, l'URL est coupée à l'espace et la requête part sur un chemin tronqué. */
-export const VIDEO_SPECTACLE_ENFANTS = `${R2}/Bande-annonce-Spectacle-Enfants%20-%20Vince.m4v`;
+export const VIDEO_SPECTACLE_SCENE = `${R2}/Bande-annonce-Spectacle-Enfants%20-%20Vince.m4v`;

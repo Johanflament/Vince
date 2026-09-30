@@ -208,7 +208,7 @@ const heroFormats = [
   { label: "Close-up", picto: icoCloseup, href: "#close-up" },
   { label: "Séminaires", picto: icoSeminaires, href: "#close-up" },
   { label: "Galas", picto: icoGalas, href: "#spectacles" },
-  { label: "Spectacles enfants", picto: icoSpectacles, href: "#spectacles" },
+  { label: "Spectacles de scène", picto: icoSpectacles, href: "#spectacles" },
 ];
 
 // La signature manuscrite posée à droite du hero. Elle existait en PNG
@@ -222,25 +222,29 @@ const heroFormats = [
 const signatureLignes = ["La magie,", "partout où les gens", "se rencontrent."];
 
 /**
- * Le hero de la page d'accueil, partagé entre `/` et `/home-v2`.
+ * Le hero de la page d'accueil. Il n'y a plus qu'une page d'accueil.
  *
- * `fond` est la SEULE différence entre les deux routes : même titre, mêmes
- * boutons, mêmes formats, même signature. Un composant à variante plutôt que
- * deux copies de page — le site d'origine dont ce dépôt est issu avait deux
- * pages d'accueil parallèles, et toute correction devait y être faite deux
- * fois, quand elle n'était pas simplement oubliée sur l'une des deux.
+ * ⚠️ UN SEUL MODE DÉSORMAIS : la vidéo en plein cadre, bord à bord, qui passe
+ * SOUS une barre de navigation sans fond.
  *
- * - `"photo"` : l'image fixe, calée sur la hauteur et alignée à droite comme
- *   la maquette. C'est la version publiée.
- * - `"video"` : la vidéo en boucle, dans ce même cadrage.
- * - `"video-plein"` : la vidéo en plein cadre, bord à bord, qui couvre toute la
- *   section — y compris sous la barre de navigation, laquelle reste
- *   transparente en haut de page.
+ * Ce composant a porté une prop `fond` à trois valeurs — `"photo"`, `"video"`
+ * et `"video-plein"` — le temps d'arbitrer entre trois pages d'accueil
+ * concurrentes, `/`, `/home-v2` et `/home-v3`. L'arbitrage est fait : c'est
+ * l'ancienne v3 qui l'emporte, les deux autres routes ont été supprimées, et
+ * la prop avec elles. Elle n'aurait plus décrit qu'un choix qui ne se pose
+ * plus, avec deux branches que personne n'emprunte.
  *
- * Dans les deux cas vidéo, l'image reste montée dessous et sert d'affiche,
- * de repli et de fond pour `prefers-reduced-motion`.
+ * Ce qui a disparu avec elle, pour mémoire :
+ *   - `"photo"`      : la photo en fond, sans vidéo du tout ;
+ *   - `"video"`      : la vidéo commençant SOUS une barre opaque, d'où un
+ *                      décalage haut calé sur la hauteur de la barre.
+ *
+ * ⚠️ LA PHOTO, ELLE, RESTE — et ne pas la confondre avec le mode `"photo"`
+ * supprimé. Elle est montée sous la vidéo et tient trois rôles : repli si la
+ * lecture échoue, fond pour les écrans étroits et les connexions limitées, où
+ * l'on refuse de télécharger 43 Mo, et fond pour `prefers-reduced-motion`.
  */
-export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-plein" }) {
+export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   // SORTIE AU SCROLL : UN FONDU, ET RIEN D'AUTRE.
@@ -258,18 +262,11 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const veil = useTransform(scrollYProgress, [0, 0.9], [0, 0.7]);
   const reduceMotion = useReducedMotion();
-  const estVideo = fond !== "photo";
-  // Les deux variantes vidéo sont en plein cadre. Ce qui les sépare est le
-  // point de départ : `"video"` commence sous la barre de navigation, qui reste
-  // opaque au-dessus ; `"video-plein"` part du haut de la fenêtre et passe sous
-  // une barre transparente.
-  const plein = estVideo;
-  const sousLeMenu = fond === "video";
-  // La v3. Elle ne diffère plus de la v2 que par deux choses : le média part du
-  // haut de la fenêtre au lieu de commencer sous la barre, et la signature
-  // manuscrite y est masquée. Ce drapeau ne sert plus qu'à cette seconde.
-  const pleinEcran = fond === "video-plein";
-  const peutCharger = usePeutChargerLaVideo(estVideo && !reduceMotion);
+  // Conservé comme constante plutôt que supprimé partout : il nomme l'intention
+  // aux six endroits qui s'en servent, et c'est lui qu'il faudrait repasser à
+  // `false` pour revenir à un hero en photo seule.
+  const estVideo = true;
+  const peutCharger = usePeutChargerLaVideo(!reduceMotion);
   const [videoPrete, setVideoPrete] = useState(false);
   // La vidéo a renoncé : réseau coupé, format refusé, fichier absent. C'est ce
   // qui rend la photo de repli à nouveau visible — sans cet état, un échec
@@ -291,7 +288,7 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
   // ⚠️ LA CONDITION REPOSE SUR `estVideo`, PAS SUR `peutCharger`, et c'est
   // tout l'enjeu. `peutCharger` est décidé par un effet, donc FAUX au rendu
   // serveur : bâti dessus, le serveur émettait une photo prioritaire et son
-  // `<link rel="preload">` sur `/home-v2` comme sur `/`. Le navigateur se
+  // `<link rel="preload">` sur les variantes vidéo comme sur la photo. Le
   // mettait donc à télécharger la photo en priorité avant même d'avoir lu le
   // moindre octet de vidéo. Corrigé côté client seulement, le mal était déjà
   // fait — la balise est dans le HTML initial.
@@ -316,9 +313,18 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
   // qu'on la recadre. Une vidéo n'a pas cette contrainte : on peut la faire
   // déborder des deux côtés sans rien perdre d'essentiel, et elle occupe alors
   // vraiment toute la largeur.
-  const cadrageMedia = plein
-    ? "absolute inset-0 h-full w-full object-cover object-center"
-    : "absolute inset-y-0 right-0 h-full w-auto min-w-[90%] max-w-none object-cover object-[right_top]";
+  // Le média couvre toute la section, bord à bord. Il existait un second
+  // cadrage, calé sur la HAUTEUR et aligné à droite, pour le mode photo seule :
+  // la photo de la maquette perd son sujet dès qu'on la recadre. Une vidéo n'a
+  // pas cette contrainte, on peut la faire déborder des deux côtés sans rien
+  // perdre d'essentiel.
+  //
+  // ⚠️ LA PHOTO DE REPLI GARDE L'ANCIEN CADRAGE, et il ne faut pas les
+  // réunifier : quand elle s'affiche seule — écran étroit, connexion limitée,
+  // animations réduites — elle a de nouveau besoin d'être vue en entier.
+  const cadrageMedia = "absolute inset-0 h-full w-full object-cover object-center";
+  const cadragePhoto =
+    "absolute inset-y-0 right-0 h-full w-auto min-w-[90%] max-w-none object-cover object-[right_top]";
 
   return (
     // La réserve en haut vaut à TOUTES les tailles, pas seulement sur mobile.
@@ -371,9 +377,7 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
         initial={{ opacity: 0, scale: 1.05 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-        className={`absolute hidden md:block ${
-          sousLeMenu ? "inset-x-0 bottom-0 top-20 lg:top-24" : "inset-0"
-        }`}
+        className="absolute inset-0 hidden md:block"
       >
         {/* Un seul niveau désormais. Il y en avait deux parce que l'entrée et la
             sortie au scroll animaient toutes deux le `scale` et se seraient
@@ -389,7 +393,7 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
                ATTENDUE, et ce n'est pas un réglage de confort. React émet
                automatiquement un `<link rel="preload" as="image">` dans le
                `<head>` pour toute image marquée prioritaire — vérifié dans le
-               HTML servi. Sur `/home-v2` et `/home-v3`, ce preload faisait donc
+               HTML servi. Sur une page à fond vidéo, ce preload faisait donc
                télécharger la photo EN PRIORITÉ, avant et contre la vidéo qui
                allait la recouvrir : deux fichiers en concurrence pour la même
                bande passante, et c'est le gros des deux qui perdait.
@@ -446,10 +450,10 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
                En dessous, quand la largeur calculée dépasse déjà les 90 %, le
                plancher ne s'applique pas et rien ne change — c'est le cadrage
                des écrans étroits, qui convient tel quel. */
-            className={`${cadrageMedia} transition-opacity duration-700`}
+            className={`${cadragePhoto} transition-opacity duration-700`}
           />
 
-          {/* LA VIDÉO, par-dessus l'image et seulement sur `/home-v2`.
+          {/* LA VIDÉO, par-dessus l'image.
               L'image reste montée en dessous et joue trois rôles à la fois :
               affiche le temps que la vidéo se charge, repli si la lecture
               échoue, et fond définitif pour qui a demandé moins d'animations.
@@ -544,13 +548,7 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
           disparaissent. Si le voile doit encore baisser, il faudra vérifier le
           contraste des libellés sur l'image la plus claire de la boucle, pas sur
           la première. */}
-      {sousLeMenu ? null : (
-        <div
-          className={`pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b to-transparent ${
-            plein ? "from-background/45 via-background/15" : "from-background/70 via-background/25"
-          }`}
-        />
-      )}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background/45 via-background/15 to-transparent" />
 
       {/* Voile latéral. Le cadrage de la photo ne laisse pas partout assez de
           place à gauche du magicien : sur une fenêtre 1280x800, le sujet commence
@@ -693,7 +691,7 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
                 tenait pas : elle descendait vers une boucle muette sans début
                 ni fin, qu'on ne « regarde » pas.
 
-                Le close-up plutôt que le spectacle enfants, parce que c'est le
+                Le close-up plutôt que le spectacle de scène, parce que c'est le
                 cœur de l'activité et le premier format de la page. À changer en
                 une ligne si Vince préfère l'autre.
 
@@ -743,7 +741,7 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
 
               Elle était en `flex-wrap` avec des colonnes à leur largeur
               naturelle (`w-auto`). Les quatre libellés n'ayant pas du tout la
-              même longueur — « GALAS » fait 5 signes, « SPECTACLES ENFANTS » en
+              même longueur — « GALAS » fait 5 signes, « SPECTACLES DE SCÈNE » en
               fait 18, soit ~135px une fois interlettré — la rangée réclamait
               plus que la largeur de `.hero-block` dès que la fenêtre passait
               sous ~1280px. La colonne faisant 480px à cette taille, le
@@ -767,7 +765,7 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
                  où une rangée cassée ne l'était pas.
 
               Ne pas remplacer ça par des colonnes égales (`flex-1`) : ça règle
-              aussi la casse, mais « SPECTACLES ENFANTS » passe alors sur deux
+              aussi la casse, mais « SPECTACLES DE SCÈNE » passe alors sur deux
               lignes à TOUTES les tailles, y compris là où la place ne manque
               pas.
 
@@ -815,7 +813,7 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
                   />
                   {/* `min-h` de deux lignes à partir de 640px : entre 768 et
                       1280px la colonne est bloquée à son plancher de 480px et
-                      « SPECTACLES ENFANTS » y passe sur deux lignes. Sans cette
+                      « SPECTACLES DE SCÈNE » y passe sur deux lignes. Sans cette
                       réserve, ce seul format devenait plus haut que les trois
                       autres et la rangée changeait de hauteur en traversant
                       1280px. Avec elle, les quatre icônes restent sur la même
@@ -858,9 +856,7 @@ export function Hero({ fond = "photo" }: { fond?: "photo" | "video" | "video-ple
           un clic destiné à ce qu'il y a derrière. */}
       <motion.div
         style={{ opacity }}
-        className={`pointer-events-none absolute right-[3.4%] top-[34%] z-10 w-[14vw] min-w-[11rem] max-w-[15.5rem] ${
-          pleinEcran ? "hidden" : "hidden lg:block"
-        }`}
+        className={`pointer-events-none absolute right-[3.4%] top-[34%] z-10 w-[14vw] min-w-[11rem] max-w-[15.5rem] ${"hidden"}`}
       >
         <motion.div
           initial={{ opacity: 0, y: 14 }}

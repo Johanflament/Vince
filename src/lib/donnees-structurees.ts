@@ -1,5 +1,5 @@
 import { faqs } from "@/lib/faq";
-import { VIDEO_CLOSE_UP, VIDEO_SPECTACLE_ENFANTS } from "@/lib/medias";
+import { VIDEO_CLOSE_UP, VIDEO_SPECTACLE_SCENE } from "@/lib/medias";
 
 /**
  * LES DONNÉES STRUCTURÉES (JSON-LD) DE LA PAGE D'ACCUEIL.
@@ -148,7 +148,7 @@ const questionsFrequentes = faqs.filter((q) => q.structuree);
  * le jour où une affiche sera produite et la date connue.
  *
  * `AMBIANCE` est absente de cette liste, volontairement : cette vidéo ne joue
- * que sur les variantes `/home-v2` et `/home-v3`, jamais sur `/`. La déclarer
+ * que sur d'anciennes variantes de travail, jamais sur `/`. La déclarer
  * ici affirmerait que la page d'accueil contient une vidéo qu'elle ne contient
  * pas.
  */
@@ -168,10 +168,10 @@ const videos = [
   },
   {
     "@type": "VideoObject",
-    name: "Bande-annonce du spectacle pour enfants de Vince",
+    name: "Bande-annonce du spectacle de scène de Vince",
     description:
-      "Bande-annonce du spectacle pour enfants : baguette, chapeau et participation du jeune public.",
-    contentUrl: VIDEO_SPECTACLE_ENFANTS,
+      "Bande-annonce du spectacle de scène : magie et humour devant une salle, public familial comme adulte.",
+    contentUrl: VIDEO_SPECTACLE_SCENE,
     encodingFormat: "video/mp4",
     duration: "PT1M24S",
     inLanguage: "fr-FR",
@@ -251,7 +251,7 @@ export function donneesStructureesAccueil({
         knowsAbout: [
           "Close-up",
           "Magie de proximité",
-          "Spectacle de magie pour enfants",
+          "Spectacle de magie sur scène",
           "Sculpture de ballons",
         ],
         // Repris mot pour mot de la liste `distinctions` de la biographie.
@@ -357,10 +357,10 @@ export function donneesStructureesAccueil({
         "@type": "Service",
         "@id": `${accueil}#spectacles`,
         url: `${accueil}#spectacles`,
-        name: "Spectacles enfants",
-        serviceType: "Spectacle de magie pour enfants",
+        name: "Spectacles de scène",
+        serviceType: "Spectacle de magie sur scène",
         description:
-          "Spectacle de magie de 30 à 40 minutes à partir de trois ans, sur scène ou en version plus intime à domicile.",
+          "Spectacle de magie et d’humour sur scène, de 30 minutes à 1 h 15 : version familiale dès trois ans, ou version tout public adulte.",
         provider: { "@id": idPersonne },
         areaServed: zone,
         // `suggestedMinAge: 3` est la seule donnée d'âge du site, et elle est

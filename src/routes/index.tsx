@@ -148,8 +148,9 @@ const marqueeGroups = 3;
 // ferait varier la vitesse de défilement sans qu'on comprenne pourquoi.
 const MARQUEE_DUREE = 145;
 
-// Exportés pour que la variante `/home-v2` affiche exactement les mêmes
-// sections que l'accueil : seul le fond du hero doit les distinguer.
+// Exporté du temps où trois pages d'accueil concurrentes devaient afficher
+// exactement les mêmes sections. Il n'en reste qu'une ; l'export ne coûte rien
+// et évite de déplacer le composant et ses données.
 export function Marquee() {
   const reduceMotion = useReducedMotion();
   return (

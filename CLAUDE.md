@@ -122,8 +122,8 @@ exceptions en 500 JSON `{"unhandled":true}` qu'un simple try/catch ne voit jamai
 
 Routage par fichiers dans `src/routes/` (conventions dans `src/routes/README.md`).
 `src/routeTree.gen.ts` est **généré** — ne pas l'éditer. Pas de `src/pages/`, pas de `app/layout.tsx`.
-Trois routes : `/` (`index.tsx`), `/home-v2` (variante de travail, `noindex, nofollow`) et
-`/mentions-legales`. `__root.tsx` est le seul layout :
+Deux routes : `/` (`index.tsx`) et `/mentions-legales`. Il y en a eu quatre, le temps
+d'arbitrer entre trois pages d'accueil concurrentes ; l'arbitrage est fait. `__root.tsx` est le seul layout :
 shell HTML (`<html lang="fr">`), balises `head` (SEO, favicons, Google Fonts) et boundaries 404 / erreur.
 
 ### Composition de la page
@@ -145,33 +145,38 @@ Le gros du contenu éditorial (formats, vidéo, avis, FAQ, galerie) est dans
 photo/vidéo commune aux trois galeries. `LogoLockup.tsx` reconstitue le bloc-logo en texte
 (Playfair) plutôt qu'en image, et est partagé entre la barre et le pied de page.
 
-### Les trois pages d'accueil
+### La page d'accueil
 
-| Route      | Fichier                  | Barre de navigation    | Fond du hero                                                     |
-| ---------- | ------------------------ | ---------------------- | ---------------------------------------------------------------- |
-| `/`        | `src/routes/index.tsx`   | transparente au repos  | photo, calée sur la hauteur, alignée à droite                    |
-| `/home-v2` | `src/routes/home-v2.tsx` | **opaque dès le haut** | vidéo plein cadre, **commençant sous la barre**                  |
-| `/home-v3` | `src/routes/home-v3.tsx` | transparente au repos  | vidéo plein cadre, du haut de la fenêtre ; **signature masquée** |
+Le hero est en **vidéo plein cadre**, bord à bord, passant sous une barre de navigation **sans
+fond** tant qu'on n'a pas défilé. La signature manuscrite y est masquée : en plein écran la vidéo
+occupe aussi la moitié droite et le magicien s'y déplace, le texte se posait sur lui.
 
-Les deux variantes sont en `noindex, nofollow`.
+Le site a porté **trois pages d'accueil concurrentes** — `/`, `/home-v2` et `/home-v3` — qui ne
+différaient que par deux props, `fond` sur le hero et `barreOpaque` sur le menu. L'arbitrage a
+retenu l'ancienne v3 : elle est passée sur `/`, les deux autres fichiers ont été supprimés, et
+avec eux la prop `fond` du hero et la liste `ROUTES_ACCUEIL`, réduite à `["/"]`.
 
-⚠️ **Deux props, et rien d'autre, séparent ces trois pages : `fond` sur le hero et `barreOpaque`
-sur le menu.** Le hero vit dans `src/components/Hero.tsx` ; `Marquee` est
-exportés depuis `index.tsx` et importés par les variantes. Ne jamais dupliquer un bloc pour faire
-diverger deux pages : le site d'origine dont ce dépôt est issu avait deux accueils parallèles, et
-toute correction devait y être faite deux fois — quand elle n'était pas oubliée sur l'une.
-Quand une variante est retenue, reporter ses deux props sur `/`, **supprimer les autres fichiers**
-et réduire `ROUTES_ACCUEIL` à `["/"]`.
+⚠️ **Ce qui reste de cet épisode, et qu'il ne faut pas défaire :** `Marquee` est exporté depuis
+`index.tsx` parce que les variantes l'importaient. L'export ne coûte rien et évite de déplacer le
+composant avec ses données. Et surtout : **ne jamais dupliquer un bloc pour faire diverger deux
+pages.** Le site d'origine dont ce dépôt est issu avait deux accueils parallèles, et toute
+correction devait y être faite deux fois — quand elle n'était pas oubliée sur l'une.
+
+⚠️ **La photo du hero n'a pas disparu avec le mode photo.** Elle est montée sous la vidéo et tient
+trois rôles : repli si la lecture échoue, fond pour les écrans étroits et les connexions limitées
+— où l'on refuse de télécharger 43 Mo — et fond pour `prefers-reduced-motion`. Elle garde son
+propre cadrage (`cadragePhoto`), calé sur la hauteur et aligné à droite, parce qu'affichée seule
+elle doit être vue en entier.
 
 ⚠️ **Ne pas reconfondre « être une page d'accueil » et « avoir une barre transparente ».**
 `SiteNav` et `SiteFooter` testaient `pathname === "/"` en dur pour les deux à la fois, ce qui
-donnait à `/home-v2` la barre opaque des pages intérieures _et_ des liens de menu qui renvoyaient
+donnait à une variante la barre opaque des pages intérieures _et_ des liens de menu qui renvoyaient
 le visiteur sur `/`. Désormais :
 
 - `estAccueil(pathname)` (`src/lib/accueil.ts`) décide des **ancres** — `#contact` est locale sur
   une page d'accueil, elle doit repasser par `/` ailleurs. **Toute nouvelle variante doit y être
   déclarée**, sinon elle éjecte son visiteur au premier clic dans le menu.
-- la prop `barreOpaque` décide de l'**habillage**, indépendamment de l'URL. `/home-v2` s'en sert
+- la prop `barreOpaque` décide de l'**habillage**, indépendamment de l'URL. Une variante s'en servait
   pour garder une barre pleine tout en restant une page d'accueil.
 
 La v3 masque la **signature manuscrite** : en plein écran la vidéo occupe aussi la moitié droite
@@ -619,8 +624,8 @@ référencement, elle fait disparaître le site des résultats. Open Graph n'a p
 absolu ; le canonique, si. **Corriger `SITE_URL` avant la mise en ligne** : tous les `@id` du
 graphe en dépendent.
 
-**`public/robots.txt`** : `Allow: /`. ⚠️ Ne JAMAIS y ajouter de `Disallow` pour `/home-v2`,
-`/home-v3` ou `/mentions-legales` — un `Disallow` empêche Google de *lire* leur `noindex`, et
+**`public/robots.txt`** : `Allow: /`. ⚠️ Ne JAMAIS y ajouter de `Disallow` pour
+`/mentions-legales` — un `Disallow` empêche Google de *lire* leur `noindex`, et
 l'URL peut alors rester indexée sans titre. Pas de `sitemap.xml` : une seule URL indexable,
 atteinte dès la racine.
 

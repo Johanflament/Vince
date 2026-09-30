@@ -8,7 +8,7 @@ import { estAccueil } from "@/lib/accueil";
 const links = [
   { label: "Accueil", href: "#top", inBar: true },
   { label: "Close-up", href: "#close-up", inBar: true },
-  { label: "Spectacles enfants", href: "#spectacles", inBar: true },
+  { label: "Spectacles de scène", href: "#spectacles", inBar: true },
   { label: "Biographie", href: "#biographie", inBar: true },
   { label: "Galerie", href: "#galerie", inBar: true },
   { label: "Contact", href: "#contact", inBar: true },
@@ -98,7 +98,7 @@ function NavAnchor({
  *
  * C'est une prop et non une déduction depuis l'URL, parce que l'apparence de la
  * barre et la nature de la page sont DEUX CHOSES DISTINCTES, ce que le code
- * confondait jusqu'ici. `/home-v2` est bien une page d'accueil — ses ancres
+ * confondait jusqu'ici : une variante était bien une page d'accueil — ses ancres
  * sont locales, `#contact` ne doit pas repasser par « / » — mais elle veut une
  * barre pleine, sous laquelle sa vidéo commence. Déduire l'une de l'autre
  * obligeait à choisir entre les deux comportements.
@@ -114,7 +114,7 @@ export function SiteNav({ barreOpaque = false }: { barreOpaque?: boolean }) {
   //
   // Le test passe par `estAccueil` et non par `pathname === "/"` : les
   // variantes de travail sont aussi des pages d'accueil. Écrit en dur, il
-  // renvoyait le visiteur de `/home-v2` vers `/` au premier clic dans le menu,
+  // renvoyait le visiteur d'une variante vers `/` au premier clic dans le menu,
   // lui faisant perdre la variante qu'il regardait.
   const isHome = estAccueil(pathname);
 
@@ -222,7 +222,7 @@ export function SiteNav({ barreOpaque = false }: { barreOpaque?: boolean }) {
           style={{
             opacity: barrePleine ? 1 : 0,
             // Opaque et non translucide quand l'appelant l'a demandé : sur
-            // `/home-v2` la vidéo commence PILE sous la barre, il ne doit donc
+            // une variante la vidéo commençait PILE sous la barre, il ne devait donc
             // rien s'en deviner au travers, sinon la limite entre les deux se
             // brouille. Au défilement en revanche, le 70 % translucide reste :
             // c'est lui qui laisse le contenu affleurer derrière la barre.
