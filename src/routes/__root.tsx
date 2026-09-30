@@ -161,16 +161,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         { property: "og:description", content: DESCRIPTION },
         { property: "og:type", content: "website" },
         { property: "og:url", content: SITE_URL },
-        // ⚠️ CETTE IMAGE A ÉTÉ REFAITE. C'était encore la photo de partage du
-        // précédent artiste, héritée de la copie du site : chaque partage sur
-        // un réseau montrait le portrait de quelqu'un d'autre, et le texte
-        // alternatif décrivait une carte enflammée qui n'y était même pas.
-        // Elle est désormais fabriquée depuis `studio-bras-ouverts.jpg`, une
-        // vraie photo de Vince, recadrée en 1200 × 630 avec 88 pixels d'air
-        // au-dessus de la tête — le cadrage a été calculé, pas visé à l'œil :
-        // le sujet occupe 93 % de la hauteur d'origine et la fenêtre n'en
-        // garde que 79 %, il fallait donc choisir ce qu'on perd, et c'est le
-        // bas du guéridon.
+        // ⚠️ IMAGE DE PARTAGE. Elle a d'abord été celle du précédent artiste,
+        // héritée de la copie du site — chaque partage montrait le portrait de
+        // quelqu'un d'autre. Puis un portrait de studio de Vince. C'est
+        // maintenant un cliché de reportage : le close-up au milieu des
+        // invités, une pièce au creux de la main.
+        //
+        // ⚠️ ANCRAGE EN HAUT, et ce n'est pas le réglage par défaut. Le cliché
+        // est en 3:2 et la vignette sociale en 1,905 : il faut retirer 21 % de
+        // la hauteur. Centré — ce qu'on ferait spontanément — le cadrage
+        // coupait déjà le front de Vince ; ancré en bas il décapitait les deux
+        // personnages. En haut, les deux visages tiennent entiers.
+        //
+        // ⚠️ DEUX RÉSERVES À LEVER AVEC VINCE. Ce cliché vient d'un reportage
+        // professionnel signé, donc sa diffusion suppose une cession de droits
+        // — et c'est ici l'image la plus diffusée du site, reprise à chaque
+        // partage. Et le visage de l'invité au premier plan est parfaitement
+        // reconnaissable, sans qu'on sache s'il a donné son accord.
         //
         // ⚠️ SEUL FICHIER DU SITE À RESTER EN JPEG, et volontairement : tout le
         // reste est passé en WebP, mais plusieurs robots d'aperçu social ne
@@ -185,7 +192,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         { property: "og:image:height", content: "630" },
         {
           property: "og:image:alt",
-          content: "Vince, magicien, bras grands ouverts derrière son guéridon sur fond clair",
+          content:
+            "Vince présente un tour de close-up à un invité, une pièce au creux de la main, pendant un cocktail",
         },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: TITRE },

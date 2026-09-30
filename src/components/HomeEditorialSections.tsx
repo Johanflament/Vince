@@ -6,7 +6,10 @@ import {
   Cake,
   ChevronDown,
   Gift,
+  Martini,
   Heart,
+  GraduationCap,
+  Home,
   Presentation,
   Star,
   Users,
@@ -223,10 +226,16 @@ const formats: Format[] = [
       { label: "En plus", valeur: "Sculpture de ballons, sur demande" },
     ],
     occasions: [
+      // ⚠️ CES QUATRE OCCASIONS DOIVENT RESTER D'ACCORD AVEC LES TAGS DE LA
+      // CARTE « Close-up » DANS `Prestations.tsx`. Elles ne l'étaient plus :
+      // la carte annonçait mariages, anniversaires, soirées privées et fêtes
+      // de famille, tandis qu'on lisait ici « Team building » et
+      // « Séminaires » — lesquels sont passés aux spectacles de scène. Un
+      // visiteur qui descend de trente centimètres voyait les deux.
       { Icone: Heart, label: "Mariages" },
       { Icone: Cake, label: "Anniversaires" },
-      { Icone: Users, label: "Team building" },
-      { Icone: Presentation, label: "Séminaires" },
+      { Icone: Martini, label: "Soirées privées" },
+      { Icone: Home, label: "Fêtes de famille" },
     ],
     image: closeupImg,
     alt: "Vince en contre-jour, réduit à sa silhouette, le bras tendu vers le côté",
@@ -312,10 +321,13 @@ const formats: Format[] = [
       // colonne, et quatre contextes d'enfants auraient contredit le titre.
       // « Centres de loisirs » a cédé la place aux galas — il reste couvert par
       // la liste des prestations, plus haut.
+      // ⚠️ Idem, d'accord avec les tags de la carte « Spectacles de scène ».
+      // « Séminaires » et « Team building » sont ICI et non au close-up : ce
+      // sont des prestations sur scène, devant une assemblée.
+      { Icone: Presentation, label: "Séminaires" },
+      { Icone: Users, label: "Team building" },
       { Icone: Gift, label: "Arbres de Noël" },
-      { Icone: Cake, label: "Anniversaires" },
-      { Icone: Award, label: "Galas" },
-      { Icone: Users, label: "Soirées d’entreprise" },
+      { Icone: GraduationCap, label: "Écoles" },
     ],
     image: stageImg,
     alt: "Vince en studio, éventail noir à la main, bras levé sous une pluie de confettis dans une lumière violette",

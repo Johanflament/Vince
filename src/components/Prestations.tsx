@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 
@@ -5,6 +6,18 @@ import { ArrowRight } from "lucide-react";
 // dont la couche alpha est la luminance du cliché d'origine et dont le RVB est
 // blanc uni. Voir le commentaire du rendu avant d'y toucher.
 import illustrationImg from "@/assets/photos/portrait-eventail-cartes-large.webp";
+
+// LES DEUX MÊMES PICTOGRAMMES QUE LA RANGÉE DU HERO, et ce n'est pas une
+// économie de fichiers : un visiteur voit les cartes à jouer et le rideau de
+// scène en haut de page, puis les retrouve ici sur les deux cartes, puis les
+// suit jusqu'aux sections. Le même signe désigne la même chose d'un bout à
+// l'autre de la page — c'est ce qui fait qu'on s'y repère sans lire.
+//
+// ⚠️ Ce sont des MASQUES ALPHA (`mask-image`, voir l'utilitaire `picto` dans
+// styles.css) : seule leur couche alpha est lue, `currentColor` les peint.
+// Un fichier sans transparence donnerait un rectangle plein.
+import icoCloseup from "@/assets/icones/cartes.webp";
+import icoScene from "@/assets/icones/spectacle.webp";
 
 /**
  * LES DEUX UNIVERS, et rien d'autre.
@@ -41,6 +54,7 @@ const groupes = [
     titre: "Close-up",
     surtitre: "Au milieu de vos invités",
     href: "#close-up",
+    picto: icoCloseup,
     description:
       "Je passe d’un groupe à l’autre, cartes et pièces en main, à quelques centimètres des regards. Rien à installer : la magie se déplace avec moi.",
     occasions: ["Mariages", "Anniversaires", "Soirées privées", "Fêtes de famille"],
@@ -49,6 +63,7 @@ const groupes = [
     titre: "Spectacles de scène",
     surtitre: "Face à une salle",
     href: "#spectacles",
+    picto: icoScene,
     description:
       "Un spectacle de magie et d’humour de 30 minutes à 1 h 15, en version familiale dès trois ans ou tout public adulte. Un espace dégagé et une prise de courant suffisent.",
     occasions: ["Séminaires", "Team Building", "Arbres de Noël", "Écoles & centres de loisirs"],
@@ -175,10 +190,32 @@ export function Prestations() {
                    d'écran. */
                 className="group block rounded-xl border border-border p-6 transition-colors hover:border-[var(--gold)]/45 hover:bg-white/[0.03] md:p-7"
               >
-                <div className="flex items-baseline gap-5">
-                  <span className="type-action font-title shrink-0 tabular-nums text-[var(--gold)]">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+                {/* ⚠️ LE PICTOGRAMME A REMPLACÉ LE NUMÉRO. La numérotation
+                    venait de la liste de sept formats, où elle disait « une
+                    seule offre lue d'un bout à l'autre » ; sur deux cartes,
+                    « 01 » et « 02 » ne comptent plus rien et occupaient la
+                    place où l'œil cherche l'identité de la carte.
+                    ⚠️ L'ICÔNE FAIT EXACTEMENT LA HAUTEUR DU BLOC DE TEXTE, et
+                    c'est ce qui l'aligne. Elle était centrée dessus, à 40 puis
+                    48px : son haut tombait alors SOUS le sur-titre et son bas
+                    AU-DESSUS de la ligne du titre — elle ne s'alignait donc sur
+                    ni l'un ni l'autre et paraissait flotter entre les deux.
+
+                    Hauteurs additionnées : sur-titre 13,8px (0.72rem à 1,2
+                    d'interligne) + 8px de `mt-2` + titre 37,5px en dessous de
+                    768px, 45 au-dessus. Soit 59,3 et 66,8 — d'où 3.7rem et
+                    4.2rem, et `items-start` pour que les deux hauts coïncident.
+                    Les deux bords de l'icône tombent ainsi pile sur le haut du
+                    sur-titre et le bas du titre.
+
+                    ⚠️ Changer le corps du titre casse cet alignement en
+                    silence : refaire l'addition. */}
+                <div className="flex items-start gap-5">
+                  <span
+                    aria-hidden="true"
+                    className="picto h-[3.7rem] w-[3.7rem] shrink-0 text-[var(--gold)] transition-colors group-hover:text-[var(--gold-soft)] md:h-[4.2rem] md:w-[4.2rem]"
+                    style={{ "--picto": `url(${groupe.picto})` } as CSSProperties}
+                  />
                   <span className="min-w-0 flex-1">
                     <span className="type-eyebrow font-title block text-muted-foreground">
                       {groupe.surtitre}
