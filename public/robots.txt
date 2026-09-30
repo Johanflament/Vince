@@ -1,0 +1,27 @@
+# robots.txt de Magic Vince.
+#
+# Le site tient sur une seule page. Ce fichier n'a donc presque rien à dire, et
+# c'est très bien : il existe surtout pour que les deux décisions ci-dessous
+# soient écrites quelque part au lieu d'être reprises à zéro un jour de doute.
+#
+# ⚠️ AUCUN `Disallow` POUR /home-v2, /home-v3 NI /mentions-legales — et surtout
+# ne pas en ajouter « pour bien faire ». Ces trois pages portent déjà une balise
+# `robots: noindex` dans le `head()` de leur route, et c'est la bonne façon de
+# les tenir hors des résultats. Un `Disallow` ferait exactement l'inverse : il
+# empêche Google de CHARGER la page, donc de LIRE le `noindex` qu'elle contient.
+# L'URL peut alors rester indexée — sans titre ni description, du seul fait
+# qu'un lien pointe vers elle. Pour désindexer une page, il faut la laisser
+# explorer.
+#
+# ⚠️ PAS DE SITEMAP, ET PAS DE LIGNE `Sitemap:` ICI. Deux raisons, dans cet
+# ordre. D'abord un plan de site n'apporte rien à un site d'une seule URL
+# indexable, atteinte dès la racine : il sert à faire découvrir des pages
+# profondes, et il n'y en a aucune. Ensuite un `<loc>` de sitemap doit être une
+# URL ABSOLUE : il faudrait y recopier l'adresse publique du site, qui n'est
+# aujourd'hui qu'une supposition (`SITE_URL`, en tête de src/routes/__root.tsx).
+# Un `<loc>` désignant un autre hôte que celui qui sert le sitemap est rejeté
+# sans appel par Google, et cela ferait un deuxième endroit à corriger le jour
+# du vrai nom de domaine. À reconsidérer si le site gagne de vraies pages.
+
+User-agent: *
+Allow: /

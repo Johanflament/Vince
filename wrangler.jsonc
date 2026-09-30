@@ -1,0 +1,21 @@
+// Nom du Worker Cloudflare. Sans ce fichier, Nitro le déduit du dépôt Git, si
+// bien qu'un simple renommage sur GitHub changerait aussi le nom du Worker — et
+// un Worker ne se renomme pas, il faut le recréer. Le figer ici rend le nom
+// indépendant du dépôt.
+//
+// Ce nom est aussi l'ADRESSE du site : vince.<sous-domaine>.workers.dev. Et
+// c'est une clé : déployer sous un nom déjà pris ÉCRASE le Worker qui le porte.
+// Ce projet est la copie d'un autre site de magicien, lui-même copié d'un
+// troisième : c'est exactement par là que le nom du Worker a voyagé de dépôt en
+// dépôt sans être changé, et a failli publier un site par-dessus l'autre.
+// PREMIÈRE CHOSE À CHANGER sur toute copie, avant même le premier déploiement.
+//
+// Cloudflare exige par ailleurs que le nom de l'application dans son tableau de
+// bord corresponde exactement à celui-ci, sinon le déploiement échoue.
+//
+// Le reste de la configuration (main, assets, compatibility_date, nodejs_compat)
+// est généré au build dans .output/server/wrangler.json : ne pas le dupliquer
+// ici, Nitro l'écraserait en avertissant.
+{
+  "name": "vince",
+}

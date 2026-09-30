@@ -1,0 +1,67 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+.output
+.vinxi
+.tanstack/**
+.nitro
+*.local
+
+# Wrangler / Cloudflare
+.wrangler/
+.dev.vars
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Originaux photo et vidéo, hors dépôt par décision explicite.
+# Ce dossier est l'ATELIER : on y dépose les fichiers bruts sortis de l'appareil
+# ou du téléphone, et on en fabrique les dérivés de src/assets/photos/, qui sont
+# les seuls que le site importe. 87 Mo au dernier compte.
+# Le commiter l'inscrirait DÉFINITIVEMENT dans l'historique git, y compris si on
+# le retirait ensuite — d'où ce choix, valable pour la suite.
+# Corollaire : ces originaux n'existent que sur la machine de Johan. Les
+# sauvegarder ailleurs ne regarde pas git.
+src/assets/album/
+
+# Originaux photo pleine définition — MÊME RAISON que le dossier ci-dessus.
+# Ils servent à régénérer les dérivés de src/assets/photos/ (redimensionnement
+# et passage en WebP) ; le site n'en importe aucun, Vite ne les empaquette donc
+# pas. 52 Mo qui, une fois commités, resteraient DÉFINITIVEMENT dans
+# l'historique même après suppression — il faudrait réécrire tout le dépôt.
+# ⚠️ Corollaire assumé : ces originaux n'existent que sur la machine de Johan.
+# Les sauvegarder ailleurs ne regarde pas git.
+src/assets/photos-sources/
+
+# Vidéos brutes — 157 Mo, et AUCUNE N'EST IMPORTÉE par le code : le site les
+# lit depuis le bucket R2, en URL absolue (voir src/lib/medias.ts). Les copies
+# locales ne sont qu'un dépôt de travail.
+# Deux raisons de les exclure plutôt qu'une : le poids définitif dans
+# l'historique, et le fait que `Trailer-Hero-Vince-Magicien.mp4` pèse 65 Mo,
+# au-dessus du seuil à partir duquel GitHub émet un avertissement (50 Mo).
+# ⚠️ Corollaire : hors du bucket R2, ces fichiers n'existent que sur la machine
+# de Johan.
+src/assets/*.mp4
+src/assets/*.m4v
+
+# Le projet tourne sous bun : bun.lock fait foi.
+# Laisser cohabiter deux verrous revient à laisser diverger deux arbres de
+# dépendances selon l'outil qui installe.
+package-lock.json

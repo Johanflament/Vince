@@ -1,0 +1,322 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-magenta: var(--magenta);
+  --color-teal: var(--teal);
+  --color-orange: var(--orange);
+  --font-display: "Playfair Display", Georgia, serif;
+  /* Géométrique du hero et de la barre de navigation. Séparée de --font-display
+     pour que le reste du site garde ses titres Playfair : la maquette ne couvre
+     que le haut de page, harmoniser plus bas serait un autre chantier. */
+  --font-title: "Montserrat", system-ui, sans-serif;
+  /* Écriture manuscrite de la signature posée à droite du hero.
+     Caveat et NON Qwitcher Grypen, qui occupait cette variable jusqu'ici sans
+     être appelée nulle part : Qwitcher est une calligraphie formelle à fort
+     contraste plein/délié, alors que la maquette montre une écriture courante,
+     monolinéaire, à peine penchée — la main de quelqu'un, pas une plume
+     d'apparat. Caveat en est le plus proche parmi les fontes Google.
+     La graisse 500 plutôt que 400 : en 400 le trait se délave sur le noir. */
+  --font-script: "Caveat", "Segoe Script", cursive;
+  --font-sans: "Source Sans 3", system-ui, sans-serif;
+}
+
+:root {
+  --radius: 0.75rem;
+
+  /* NOIR & BLANC + OR CHAMPAGNE.
+     Trois valeurs relevées au pixel sur la maquette du hero, et rien d'autre :
+       #0c0c0c → le fond, un noir NEUTRE (chroma 0, pas un bleu ni un brun) ;
+       #deb780 → l'or, seule couleur de la charte ;
+       #ffffff → le blanc des titres, des liens de nav et des textes.
+     Tout le reste de ce bloc est dérivé de ces trois-là.
+
+     Le chroma des neutres est à ZÉRO, volontairement. La version précédente les
+     teintait vers le bleu nuit (C ≈ 0.05) ; la maquette, elle, ne teinte rien.
+     Un gris légèrement bleuté à côté d'un or chaud se voit immédiatement — il
+     verdit l'or par contraste simultané. Ne pas « réchauffer » ces gris. */
+  --background: oklch(0.1543 0 0);
+  --foreground: oklch(1 0 0);
+
+  --card: oklch(0.2 0 0);
+  --card-foreground: oklch(1 0 0);
+
+  --popover: oklch(0.2 0 0);
+  --popover-foreground: oklch(1 0 0);
+
+  /* L'aplat des boutons pleins : l'or lui-même, pas une version sourde.
+     La maquette pose #deb780 en aplat, avec un texte NOIR par-dessus — c'est
+     l'inversion la plus visible depuis la charte cuivre, où le bouton était
+     foncé et le texte clair. */
+  --primary: oklch(0.8013 0.0845 75.61);
+  /* ⚠️ NOIR, et ce n'est pas négociable : `--primary-foreground` ne sert nulle
+     part sur le fond de page, il sert EXCLUSIVEMENT de couleur de texte sur
+     l'or (`bg-[var(--gold)] text-primary-foreground`, une dizaine d'endroits).
+     Sur l'ancien cuivre (L 0.69) le blanc tenait péniblement à 3.2:1 ; sur cet
+     or (L 0.80) il tomberait à 1.6:1, soit un bouton illisible. En noir, le
+     même bouton monte à 12.9:1. */
+  --primary-foreground: oklch(0.1543 0 0);
+
+  --secondary: oklch(0.25 0 0);
+  --secondary-foreground: oklch(1 0 0);
+
+  --muted: oklch(0.23 0 0);
+  /* 8.7:1 sur le fond — au-dessus des 4.5:1 exigés pour du texte courant, ce
+     qui autorise à s'en servir pour de vrais paragraphes et pas seulement pour
+     des légendes. */
+  --muted-foreground: oklch(0.72 0 0);
+
+  /* Or profond, pour les survols et le bas des dégradés. */
+  --accent: oklch(0.62 0.07 75.61);
+  --accent-foreground: oklch(0.1543 0 0);
+
+  --destructive: oklch(0.55 0.18 25);
+  --destructive-foreground: oklch(1 0 0);
+
+  /* Les filets de la maquette sont de l'or atténué, pas un gris. */
+  --border: oklch(0.8013 0.0845 75.61 / 0.32);
+  --input: oklch(0.28 0 0);
+  --ring: oklch(0.8013 0.0845 75.61);
+
+  /* Bespoke tokens */
+  /* --gold = #deb780, relevé sur le bouton de nav, le mot accentué du titre et
+     le « Vince » du logo : c'est une seule et même valeur aux trois endroits. */
+  --gold: oklch(0.8013 0.0845 75.61);
+  /* --gold-soft = #edcba0, l'or éclairci du haut des dégradés. */
+  --gold-soft: oklch(0.8607 0.0683 73.24);
+  /* --magenta et --teal sont des noms hérités de la charte d'origine et ne
+     désignent plus ni magenta ni turquoise depuis longtemps : ce sont l'or
+     profond et l'or clair. Renommer ces deux tokens toucherait les composants
+     shadcn générés, d'où le statu quo — mais ne pas se fier à leur nom. */
+  --magenta: oklch(0.62 0.07 75.61);
+  --teal: oklch(0.8607 0.0683 73.24);
+  --orange: oklch(0.8013 0.0845 75.61);
+
+  --gradient-gold: linear-gradient(135deg, oklch(0.8607 0.0683 73.24), oklch(0.8013 0.0845 75.61));
+  /* Dégradé des boutons pleins. Volontairement TRÈS court — la maquette pose un
+     aplat, et les trois relevés faits dessus (#dfb881, #e0b77e, #e0ba82) ne
+     s'écartent que du bruit de compression. On garde une amorce de dégradé pour
+     que le bouton ne soit pas parfaitement plat, pas pour qu'il se voie. */
+  --gradient-copper: linear-gradient(135deg, oklch(0.8313 0.0764 74.4), oklch(0.7713 0.0885 76.5));
+  /* Fond de scène : deux halos gris très sourds sur le noir. Ils étaient bleus
+     et ils portaient la teinte de la charte ; ici ils ne servent plus qu'à
+     creuser le fond, d'où le chroma à zéro. */
+  --gradient-stage:
+    radial-gradient(60% 80% at 50% 0%, oklch(0.3 0 0 / 0.45), transparent 60%),
+    radial-gradient(50% 70% at 100% 100%, oklch(0.24 0 0 / 0.4), transparent 60%),
+    linear-gradient(180deg, oklch(0.1543 0 0), oklch(0.11 0 0));
+  /* 0.28 et non 0.35 : l'or est plus clair de 11 points de luminance que le
+     cuivre qu'il remplace, donc à opacité égale le halo pesait plus lourd. */
+  --shadow-glow: 0 30px 80px -20px oklch(0.8013 0.0845 75.61 / 0.28);
+  --shadow-card: 0 40px 80px -30px oklch(0 0 0 / 0.6);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+  /* Rien ne doit pouvoir glisser latéralement sous le doigt : il suffit qu'une
+     section déborde de quelques pixels pour que toute la page devienne
+     déplaçable de gauche à droite.
+
+     `clip` ET NON `hidden`, et ce n'est pas un détail : `overflow: hidden` fait
+     de la page un CONTENEUR DE DÉFILEMENT, ce qui neutralise `position: sticky`
+     pour tout ce qu'elle contient. La vidéo, qui repose sur un bloc collant pour
+     s'agrandir au défilement, ne collait donc pas du tout sur téléphone : elle
+     traversait l'écran au lieu de rester en place, et son agrandissement
+     paraissait arriver trop tard — mesuré, son bord haut descendait à −357px.
+     `clip` découpe exactement pareil sans rendre quoi que ce soit défilable.
+
+     La règle n'est plus bornée aux petits écrans : `clip` étant sans effet sur
+     le collage, il n'y a plus de raison de s'en priver ailleurs. */
+  html,
+  body {
+    overflow-x: clip;
+    overscroll-behavior-x: none;
+  }
+  ::selection {
+    background-color: oklch(0.8013 0.0845 75.61 / 0.35);
+    color: oklch(1 0 0);
+  }
+}
+
+@utility font-script {
+  font-family: var(--font-script);
+  /* 500 : ne demander que des graisses RÉELLEMENT chargées dans `__root.tsx`.
+     Une graisse absente ne déclenche pas d'erreur — le navigateur retombe en
+     silence sur la `cursive` générique du système, et le texte s'affiche dans
+     une écriture quelconque qui ressemble vaguement à ce qu'on voulait. */
+  font-weight: 500;
+  /* Pas de `font-style: italic` : l'écriture est déjà penchée par dessin. Le
+     demander en plus fait synthétiser une oblique par-dessus, qui déforme les
+     lettres. */
+  /* Pas de `line-height` non plus : il écraserait l'interligne posé par
+     l'appelant. La hauteur de ligne revient donc au contexte. */
+  letter-spacing: 0;
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+/* Pas d'`@utility font-title` ici : `--font-title` est déclarée dans
+   `@theme inline`, ce qui suffit à Tailwind pour générer la classe. En définir
+   une seconde à la main créait un doublon dans la feuille compilée.
+   Conséquence utile : la classe générée par le thème est émise APRÈS les
+   utilitaires ci-dessous, donc `class="type-action font-title"` bascule bien
+   ces libellés dans la géométrique — c'est ce qui habille le hero et la barre
+   de navigation sans toucher au reste du site. */
+
+/* Les icônes fournies sont des PNG d'une seule couleur sur fond transparent.
+   Plutôt que de les afficher telles quelles — leur couleur d'origine jurerait
+   avec l'or de la charte — on ne garde que leur silhouette : le PNG sert de
+   masque alpha et c'est `currentColor` qui les peint. Elles suivent donc la
+   couleur du texte, y compris au survol, et une seule image sert partout.
+   C'est aussi ce qui rend les icônes de `src/assets/icones/` utilisables telles
+   quelles, quelle que soit leur couleur d'export.
+
+   Chaque usage pose son dessin dans --picto. */
+@utility picto {
+  display: inline-block;
+  flex: none;
+  background-color: currentColor;
+  mask-image: var(--picto);
+  -webkit-mask-image: var(--picto);
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+}
+
+@utility type-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@utility type-action {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@utility text-gradient-gold {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility bg-stage {
+  background: var(--gradient-stage);
+}
+
+@utility shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+@utility shadow-card-lg {
+  box-shadow: var(--shadow-card);
+}
+
+/* Halo doré qui s'écarte lentement du bouton de lecture de la vidéo : une
+   pulsation longue et de faible amplitude, qui signale le bouton sans jamais
+   clignoter. Ce n'est pas une ombre portée mais un anneau qui s'élargit en se
+   dissipant, d'où le passage de 0 à 14px avec l'opacité qui tombe à zéro.
+
+   La couleur est celle de l'or de la charte, écrite en clair plutôt que via
+   `var(--gold)` : une animation d'ombre interpole mal les variables CSS. Si
+   `--gold` change, changer les deux valeurs ci-dessous à la main. */
+@keyframes halo-or {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 oklch(0.8013 0.0845 75.61 / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 14px oklch(0.8013 0.0845 75.61 / 0);
+  }
+}
+
+@utility pulse-copper {
+  animation: halo-or 8s ease-out infinite;
+}
+
+/* Hors couche, donc prioritaire sur l'utilitaire ci-dessus : qui a demandé
+   moins d'animations n'a pas à subir celle-ci. */
+@media (prefers-reduced-motion: reduce) {
+  .pulse-copper {
+    animation: none;
+  }
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility grain {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
+  }
+}
