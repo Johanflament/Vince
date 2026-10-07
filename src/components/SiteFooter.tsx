@@ -301,9 +301,17 @@ export function SiteFooter() {
                   }}
                 />
                 <p className="max-w-sm font-display text-xl leading-snug text-foreground/90 md:text-2xl">
-                  À quelques centimètres de vos invités ou face à une salle entière,{" "}
+                  {/* ⚠️ MÊME PHRASE QUE L'OUVERTURE DU BLOC « Mes prestations »
+                      (`Prestations.tsx`), coupée en deux pour que la seconde
+                      moitié passe en doré. La reprise est voulue — le pied de
+                      page referme sur la promesse de l'ouverture — mais elle
+                      n'est partagée par AUCUNE constante : modifier l'une sans
+                      l'autre fait dire deux choses différentes à la même page,
+                      et rien ne le signalerait. */}
+                  De la magie au plus près de vos invités au grand spectacle face à une salle
+                  entière,{" "}
                   <em className="font-normal not-italic text-[var(--gold)]">
-                    la même envie : que l’on reparle de votre soirée le lendemain.
+                    un seul but : vous laisser un souvenir inoubliable.
                   </em>
                 </p>
               </div>

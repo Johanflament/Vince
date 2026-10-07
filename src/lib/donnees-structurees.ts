@@ -360,15 +360,19 @@ export function donneesStructureesAccueil({
         name: "Spectacles de scène",
         serviceType: "Spectacle de magie sur scène",
         description:
-          "Spectacle de magie et d’humour sur scène, de 30 minutes à 1 h 15 : version familiale dès trois ans, ou version tout public adulte.",
+          "Spectacle de magie et d’humour sur scène, de 30 minutes à 1 h 15 : version familiale dès cinq ans, ou version tout public adulte.",
         provider: { "@id": idPersonne },
         areaServed: zone,
-        // `suggestedMinAge: 3` est la seule donnée d'âge du site, et elle est
-        // affirmée trois fois : « à partir de trois ans » dans le texte,
-        // « Dès trois ans » dans la fiche, et dans une réponse de FAQ. Pas de
-        // `suggestedMaxAge` : le site dit l'inverse d'une borne haute — « les
-        // parents rient autant que les enfants ».
-        audience: { "@type": "PeopleAudience", suggestedMinAge: 3 },
+        // ⚠️ `suggestedMinAge` EST UNE DÉCLARATION, pas une estimation : il doit
+        // valoir exactement l'âge écrit sur la page, qui l'affirme à trois
+        // endroits — « à partir de l'âge de 5 ans » dans le texte de la
+        // section, « Familial dès cinq ans » dans sa fiche, et une réponse de
+        // la FAQ. Le site a dit trois pendant un temps ; Vince a tranché pour
+        // cinq et les quatre endroits ont été alignés le même jour.
+        //
+        // Pas de `suggestedMaxAge` : le site dit l'inverse d'une borne haute,
+        // puisque le même spectacle existe en version tout public adulte.
+        audience: { "@type": "PeopleAudience", suggestedMinAge: 5 },
         hasOfferCatalog: catalogue("Les formats du spectacle", [
           "Anniversaire à domicile",
           "Arbre de Noël",

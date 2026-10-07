@@ -56,7 +56,7 @@ const groupes = [
     href: "#close-up",
     picto: icoCloseup,
     description:
-      "Je passe d’un groupe à l’autre, cartes et pièces en main, à quelques centimètres des regards. Rien à installer : la magie se déplace avec moi.",
+      "Je me déplace parmi vos invités, au plus près des regards, rien à installer et la magie prend vie.",
     occasions: ["Mariages", "Anniversaires", "Soirées privées", "Fêtes de famille"],
   },
   {
@@ -65,7 +65,7 @@ const groupes = [
     href: "#spectacles",
     picto: icoScene,
     description:
-      "Un spectacle de magie et d’humour de 30 minutes à 1 h 15, en version familiale dès trois ans ou tout public adulte. Un espace dégagé et une prise de courant suffisent.",
+      "Un show scénique dynamique mêlant l’humour à la magie, format de 30 min à 1 h 15. Spectacles pour enfants et/ou adultes selon les demandes. Un espace dégagé pouvant accueillir l’installation.",
     occasions: ["Séminaires", "Team Building", "Arbres de Noël", "Écoles & centres de loisirs"],
   },
 ];
@@ -163,14 +163,34 @@ export function Prestations() {
             transition={{ duration: 0.7 }}
           >
             <p className="type-eyebrow font-title text-[var(--gold)]">I — Mes prestations</p>
+            {/* LE TITRE EN DEUX LIGNES POSÉES À LA MAIN : le nom de l'univers
+                en blanc, ce qu'il recouvre en doré juste en dessous. C'est le
+                même basculement de couleur que le h1 du hero.
+
+                ⚠️ AUCUNE DES DEUX LIGNES NE PORTE DE POINT. La version
+                précédente — « Deux univers, / un même magicien. » — était UNE
+                phrase coupée en deux, d'où la virgule puis le point. Ces deux
+                lignes-ci sont deux fragments indépendants : un point sur la
+                seconde seulement ferait croire que la première s'y rattache.
+
+                ⚠️ LA SECONDE LIGNE MESURE 553px À 48px (`md:text-5xl`), mesurée
+                sur les chasses réelles de Playfair Display — contre 423 à
+                l'ancienne. La colonne de droite en fait 663 à 1280px de
+                fenêtre, donc elle tient ; mais elle n'en fait plus que 513 à
+                1024px, où `lg` vient de s'activer. Entre 1024 et 1092px de
+                fenêtre, cette ligne passe donc sur deux, et le titre sur trois.
+                Rien ne déborde et rien ne se chevauche — c'est le seul effet.
+                Allonger ce texte ou monter ce corps élargit cette bande. */}
             <h2 className="mt-5 font-display text-4xl leading-[1.04] md:text-5xl">
-              Deux univers,
+              L’univers de Vince
               <br />
-              <em className="font-normal not-italic text-[var(--gold)]">un même magicien.</em>
+              <em className="font-normal not-italic text-[var(--gold)]">
+                Sur scène ou à votre table
+              </em>
             </h2>
             <p className="mt-6 max-w-xl text-lg font-light leading-relaxed text-muted-foreground">
-              À quelques centimètres de vos invités ou face à une salle entière, c’est la même envie
-              : que l’on reparle de votre soirée le lendemain.
+              De la magie au plus près de vos invités au grand spectacle face à une salle entière,
+              un seul but : vous laisser un souvenir inoubliable.
             </p>
           </motion.div>
 

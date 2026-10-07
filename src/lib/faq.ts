@@ -70,7 +70,11 @@ export const faqs: QuestionFrequente[] = [
   {
     question: "Le spectacle est-il réservé aux enfants ?",
     reponse:
-      "Non. Il existe en version familiale, qui se suit dès trois ans, et en version tout public adulte pour un gala ou une soirée d’entreprise. Dans les deux cas, l’humour s’adresse à tout le monde.",
+      // ⚠️ « CINQ ANS » DOIT RESTER D'ACCORD avec trois autres endroits : le
+      // texte et la fiche de la section « Spectacles de scène »
+      // (`HomeEditorialSections.tsx`) et le `Service` des données structurées.
+      // Le site disait « trois ans » ; Vince a tranché pour cinq.
+      "Non. Il existe en version familiale, qui se suit dès cinq ans, et en version tout public adulte pour un gala ou une soirée d’entreprise. Dans les deux cas, l’humour s’adresse à tout le monde.",
     // ⚠️ À VALIDER PAR VINCE.
     structuree: false,
   },

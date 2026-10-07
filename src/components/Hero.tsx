@@ -636,18 +636,27 @@ export function Hero() {
             <span className="block italic text-[var(--gold)]">ma signature.</span>
           </motion.h1>
 
-          {/* Sous-titre. `max-w` plutôt qu'un <br> forcé : la coupe de la
-              maquette (après « spectacles ») tombe d'elle-même à cette largeur,
-              et sur un téléphone le texte se répartit tout seul au lieu de
-              garder une coupe pensée pour un grand écran. */}
+          {/* Sous-titre. `max-w` plutôt qu'un <br> forcé : la phrase se
+              répartit d'elle-même, et sur un téléphone elle se recoupe au lieu
+              de garder une coupe pensée pour un grand écran.
+
+              ⚠️ ELLE TIENT SUR UNE SEULE LIGNE SUR GRAND ÉCRAN, ET DE JUSTESSE.
+              53 caractères contre 89 à la version précédente : mesurée sur les
+              chasses réelles de Montserrat, elle fait 503px au corps maximum de
+              la `clamp` (1,2rem) pour 528 disponibles — 24px de marge, soit
+              4,6 %. La mesure est prise en graisse 400 alors que le rendu est
+              en 300, donc la marge réelle est un peu plus large.
+
+              Conséquence : trois ou quatre caractères de plus la font repasser
+              à deux lignes, et la seconde n'aurait qu'un mot. Toute retouche de
+              cette phrase, du corps ou de `max-w` se vérifie à la mesure. */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="mx-auto mt-6 max-w-[33rem] text-center font-title text-[clamp(1rem,1.15vw,1.2rem)] font-light leading-relaxed text-foreground/90 md:mx-0 md:mt-7 md:text-left"
           >
-            Au milieu de vos invités ou sur scène, je mêle magie, surprises, rires et
-            émerveillement.
+            Créons ensemble l’impossible pour vivre l’impensable.
           </motion.p>
 
           {/* Les deux appels à l'action.

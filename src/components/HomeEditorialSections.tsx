@@ -180,31 +180,30 @@ const formats: Format[] = [
     // au bon endroit. C'est aussi lui qui donne son sujet à la section pour les
     // moteurs de recherche.
     nom: "Close-up",
-    accroche: "Tout se joue dans vos mains.",
+    // L'accroche a dit « Tout se joue dans vos mains. » Elle pose maintenant
+    // le paradoxe du close-up plutôt que son décor : on regarde de tout près,
+    // et c'est précisément pour cela qu'on ne voit rien.
+    //
+    // ⚠️ LES POINTS DE SUSPENSION SONT LE CARACTÈRE U+2026, pas trois points
+    // d'affilée. Trois points se coupent en fin de ligne et s'espacent mal.
+    accroche: "Vous voyez tout et pourtant…",
     video: { src: VIDEO_CLOSE_UP, titre: "Bande-annonce du close-up de Vince" },
-    // DEUX PARAGRAPHES, DEUX PUBLICS : le privé puis l'entreprise. Le texte
-    // fourni par Vince sépare nettement les deux — « Soirée privée » d'un
-    // côté, « Pour une soirée d'entreprise réussie » de l'autre — et c'est
-    // une vraie distinction commerciale : on ne cherche pas la même chose pour
-    // un mariage et pour un vernissage. Les fondre en un seul paragraphe
-    // aurait fait passer l'un des deux visiteurs à côté de sa réponse.
+    // DEUX PARAGRAPHES, DEUX PUBLICS : le privé puis l'entreprise. C'est une
+    // vraie distinction commerciale — on ne cherche pas la même chose pour un
+    // mariage et pour un vernissage — et les fondre ferait passer l'un des deux
+    // visiteurs à côté de sa réponse.
     //
-    // À LA PREMIÈRE PERSONNE, contrairement au texte reçu qui parle de Vince
-    // à la troisième (« Son spectacle garantit… »). Tout le site est au « je »
-    // sauf la biographie ; un magicien qui se décrit à la troisième personne
-    // au milieu de ses propres pages sonne comme une plaquette.
+    // ⚠️ TEXTE DE VINCE, REPRIS MOT POUR MOT. Il a demandé que la formulation
+    // ne soit pas retouchée : seules les fautes l'ont été. Pour mémoire, ce qui
+    // a été corrigé dans ce qu'il a fourni — « toute autres occasions
+    // susceptible » (accord) et « des cordes du mentalisme » (virgule
+    // manquante, qui faisait lire « les cordes du mentalisme »).
     //
-    // « à quelques centimètres de vos yeux » revient DEUX FOIS dans le texte
-    // fourni, une fois par public. Gardé une seule fois : à deux paragraphes
-    // d'intervalle, la formule se remarque et donne l'impression d'un copier-
-    // coller entre deux fiches.
-    //
-    // La personnalisation — thème, couleurs, produit à mettre en avant — est
-    // passée dans la FICHE plutôt qu'en fin de paragraphe, où elle se serait
-    // perdue. C'est le même parti que la sculpture de ballons côté spectacles.
+    // Ne pas « resserrer » ces phrases : la version précédente, plus courte et
+    // plus sèche, était de ma main et a été écartée.
     texte: [
-      "Mariage, anniversaire, soirée entre amis : je passe d'un groupe à l'autre et la magie se joue à quelques centimètres de vos yeux. Cartes, pièces, montres ou objets que vous me prêtez — de l'humour, de la surprise, et un souvenir dont vos invités reparleront le lendemain.",
-      "En entreprise — gala, vernissage, inauguration, séminaire ou simple repas — la même magie devient un moment clé de votre événement : interactive, rythmée, et assez proche pour que chacun y participe au lieu d'y assister.",
+      "Lors d’un mariage, anniversaire, fête familiale ou toute autre occasion susceptible d’émerveiller vos convives, je serai l’invité surprise et inattendu qui apportera un moment hors du temps afin de laisser un souvenir gravé à jamais. Et surtout faire de votre événement un instant inoubliable. Des pièces, des cartes, des cordes, du mentalisme, un cocktail magique à déguster sans modération.",
+      "En entreprise, galas, inaugurations, séminaires, team building ou simple repas entre collaborateurs, le close-up sera la clé de la cohésion et de l’émerveillement afin que chacun y participe au lieu d’y assister.",
     ],
     // ⚠️ FICHE PRATIQUE — chaque valeur est reprise d'une réponse de la FAQ
     // plus bas dans la page, jamais inventée. Durée, matériel et
@@ -284,34 +283,54 @@ const formats: Format[] = [
     // « Galas » en pointant vers cette section.
     surtitre: "Sur scène",
     nom: "Spectacles de scène",
-    // L'accroche a d'abord dit « Cinquante minutes, et personne ne s'ennuie »
-    // — fausse d'un quart d'heure — puis « Pour les petits, et pas seulement
-    // pour eux », qui partait encore des enfants pour concéder les adultes.
-    // Elle met maintenant les deux publics sur le même plan.
-    accroche: "Les adultes rient autant que les enfants.",
+    // L'accroche a dit « Cinquante minutes, et personne ne s'ennuie » — fausse
+    // d'un quart d'heure — puis « Pour les petits, et pas seulement pour eux »,
+    // qui partait des enfants pour concéder les adultes, puis « Les adultes
+    // rient autant que les enfants ». Elle ne nomme plus de public du tout :
+    // c'est le texte, juste en dessous, qui s'en charge en deux versions.
+    //
+    // ⚠️ POINTS DE SUSPENSION EN U+2026, comme l'accroche du close-up.
+    accroche: "Un show scénique à la hauteur de vos attentes…",
     video: {
       src: VIDEO_SPECTACLE_SCENE,
       titre: "Bande-annonce du spectacle de scène de Vince",
     },
-    // Texte fourni par Vince, resserré en deux paragraphes.
+    // TROIS PARAGRAPHES : le spectacle, puis la version enfants, puis la
+    // version adulte. Le rendu met le premier en chapeau et aligne les suivants
+    // (voir `PanneauFormat`) — la liste n'est pas bornée à deux, mais le
+    // troisième paragraphe se lit donc au même niveau que le second, ce qui
+    // tombe bien : les deux versions sont à égalité.
     //
-    // Ce qui en a été RETIRÉ, et pourquoi : « Il saura s'adapter à votre
-    // événement suivant le lieu et l'âge de vos enfants » — c'est déjà ce que
-    // dit le choix entre scène et salon, juste au-dessus. Et « arbres de Noël,
-    // anniversaires, goûters » : les pictogrammes des occasions, trente lignes
-    // plus bas, énumèrent exactement cela ; l'écrire aussi en toutes lettres
-    // faisait lire la même liste deux fois dans la même colonne.
+    // ⚠️ TEXTE DE VINCE, REPRIS MOT POUR MOT, comme côté close-up : seules les
+    // fautes ont été corrigées — « Noel » (tréma), « au rendez vous » (trait
+    // d'union), « effets impactant » et « tout les shows scénique » (accords).
     //
-    // La sculpture de ballons est passée dans la FICHE et non dans le texte :
-    // c'est une prestation en plus, pas une description du spectacle, et noyée
-    // en fin de paragraphe elle se serait perdue.
+    // ⚠️ UNE CORRECTION VA PLUS LOIN QUE L'ORTHOGRAPHE, et il faut le savoir :
+    // le texte fourni disait « pour rendre votre anniversaire […] en moments
+    // inoubliables ». « Rendre en » n'existe pas ; la seule réparation qui ne
+    // retire aucun mot était de passer à « transformer ». Si Vince préfère sa
+    // tournure, c'est « faire de votre anniversaire […] des moments
+    // inoubliables » qu'il faut écrire, pas revenir à « rendre ».
+    //
+    // ⚠️ « À PARTIR DE L'ÂGE DE 5 ANS » EST L'ÂGE DE RÉFÉRENCE DU SITE, et il
+    // est écrit à QUATRE endroits qui doivent rester d'accord : ici, la fiche
+    // quinze lignes plus bas, une réponse de la FAQ (`faq.ts`) et le `Service`
+    // des données structurées. Les trois premiers sont visibles sur la même
+    // page, les deux premiers dans la même colonne.
+    //
+    // Le site a longtemps dit « dès trois ans » partout ; ce texte-ci, fourni
+    // plus tard par Vince, dit cinq, et c'est lui qui a été retenu — les trois
+    // autres endroits ont été alignés dessus. Si l'âge change encore, les
+    // quatre se modifient ensemble : rien ne les relie dans le code, et aucun
+    // test, aucun lint ne verrait la contradiction.
     texte: [
-      "Un spectacle de magie et d’humour qui se joue devant une salle : arbre de Noël, gala, soirée d’entreprise ou anniversaire. Le public y monte sur scène autant qu’il applaudit.",
-      "En version familiale, la baguette, le chapeau et le lapin sont de rigueur, et l’on suit dès trois ans. En version adulte, l’humour et la complicité prennent le pas. Le format s’ajuste au lieu comme à la salle.",
+      "Pour vos arbres de Noël, soirée de gala, entreprise ou anniversaire, un spectacle participatif et visuel sera au rendez-vous pour votre soirée. L’humour viendra ajouter une touche conviviale à votre événement.",
+      "En version enfants, à partir de l’âge de 5 ans, un spectacle personnalisé vous est proposé pour transformer votre anniversaire, baptême et réunion de famille en moments inoubliables.",
+      "En version adulte, un show différent et plus ajusté saura ravir vos invités avec des effets impactants. Pour tous les shows scéniques, le format s’ajuste au lieu comme à la salle.",
     ],
     fiche: [
       { label: "Durée", valeur: "De 30 minutes à 1 h 15 (personnalisable)" },
-      { label: "Public", valeur: "Familial dès trois ans, ou tout public adulte" },
+      { label: "Public", valeur: "Familial dès cinq ans, ou tout public adulte" },
       { label: "Sur place", valeur: "Un espace dégagé et une prise de courant" },
       { label: "En plus", valeur: "Sculpture de ballons, sur demande" },
     ],
