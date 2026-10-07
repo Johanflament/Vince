@@ -12,6 +12,11 @@ import { ArrowDown, ArrowRight } from "lucide-react";
 import { ouvrirLaVideo } from "@/components/VideoPleinEcran";
 
 import heroBgImg from "@/assets/Background-Hero-MagicVince.webp";
+// ⚠️ LA SIGNATURE MANUSCRITE DU TITRE, et c'est UN MASQUE, pas une image.
+// Son RVB est blanc uni et seule sa couche alpha porte le tracé : elle est
+// peinte par l'utilitaire `picto`, exactement comme les icônes ci-dessous.
+// Ne pas la réencoder comme une image ordinaire. Voir le commentaire du rendu.
+import signatureImg from "@/assets/humour-ma-signature-masque.webp";
 // Icônes du hero. Ce sont des PNG d'une seule couleur sur fond transparent :
 // l'utilitaire `picto` ne garde que leur silhouette et les repeint en or
 // (voir styles.css), donc leur couleur d'export n'a aucune importance.
@@ -607,23 +612,86 @@ export function Hero() {
             </p>
           </motion.div>
 
-          {/* LE TITRE EST DU TEXTE, plus une image.
+          {/* LE TITRE : DEUX LIGNES DE TEXTE, PUIS UNE SIGNATURE DESSINÉE.
 
-              Il était jusqu'ici un PNG (`Titre-Hero.png`) portant un lettrage
-              dessiné. Ce que le passage au texte change, au-delà du visuel :
-              le h1 contient enfin des mots que Google indexe et qu'un lecteur
-              d'écran énonce, il reste net à toute densité d'écran, il se
-              redimensionne sans plafond de définition, et le hero ne sursaute
-              plus au chargement puisqu'il n'y a plus d'image à attendre.
+              Tout le titre a été un PNG (`Titre-Hero.png`), puis tout le titre
+              est passé en texte. Il est maintenant mi-chair mi-poisson, et c'est
+              délibéré : « La magie / est un art, » reste du texte, la réponse
+              manuscrite est une image.
 
-              Les quatre lignes sont posées à la main, pas laissées au retour
-              automatique : la coupe fait partie du dessin. « La magie / est un
-              art, » en romain blanc pose le constat, « l'humour / ma signature. »
-              en italique dorée y répond — c'est le basculement de graisse ET de
-              couleur qui fait la phrase, pas la taille.
+              Pourquoi la moitié haute reste du texte : elle est indexée, lue par
+              un lecteur d'écran, nette à toute densité, et redimensionnable sans
+              plafond de définition.
 
-              L'apostrophe est une vraie apostrophe typographique (U+2019) et
-              non une quote droite. */}
+              ⚠️ POURQUOI LA MOITIÉ BASSE NE PEUT PAS L'ÊTRE. Ce n'est pas une
+              police cursive avec un trait sous le mot : c'est un tracé unique où
+              « L'humour » et « ma signature » s'enchaînent, où le paraphe final
+              part du « e » et file sous les deux lignes. Aucune police ne produit
+              cela, et l'imiter avec un pseudo-élément donnerait un faux.
+
+              ⚠️ ELLE EST PEINTE PAR LE SITE, PAS PAR LE FICHIER. C'est un
+              MASQUE — RVB blanc uni, tracé dans la seule couche alpha — posé par
+              l'utilitaire `picto`, qui le remplit de `currentColor`. D'où
+              `text-[var(--gold)]` sur l'élément : la signature prend exactement
+              la couleur du texte doré qu'elle remplace, et suivra le jeton s'il
+              change.
+
+              Le fichier d'origine portait sa propre encre, relevée à
+              rgb(240,198,95) sur les pixels pleinement opaques, quand `--gold`
+              vaut rgb(222,183,128) — 41 points d'écart en distance RVB, presque
+              tout dans le bleu. Elle tirait donc au citron à côté du filet du
+              sur-titre, des cinq pictogrammes et du bouton d'appel à l'action
+              qui l'entourent. En ne gardant que l'alpha, le fichier est aussi
+              passé de 111 à 59 Ko, et son alpha est réencodé au bit près (écart
+              moyen 0,000, maximum 0, relevé sur le fichier écrit).
+
+              ⚠️ LE TEXTE LU N'EST PLUS DANS UN `alt`, IL EST DANS UN `sr-only`.
+              Un masque est un fond, pas une image : il n'a aucun texte de
+              remplacement. Sans ce `sr-only`, le h1 se lirait « La magie est un
+              art, » et s'arrêterait là — pour Google comme pour un lecteur
+              d'écran. Les deux éléments vont ensemble : l'un porte la forme et
+              est `aria-hidden`, l'autre porte les mots et ne se voit pas.
+
+              DIMENSIONS, calculées et non choisies. Le tracé remplit son fichier
+              (encre de 0,2 % à 99,7 % en largeur), de rapport 2,489 — d'où
+              `aspect-[1100/442]`, qui est celui du fichier, pour que
+              `mask-size: contain` tombe pile sur la boîte.
+
+              À `w-[6em]` la signature fait 2,41em de haut et dépasse de 37 % la
+              largeur de « est un art, » (4,376em, mesuré sur les chasses réelles
+              de Playfair) : elle sort de la colonne de texte comme sur la
+              maquette. Elle était à 5em, où elle n'en dépassait que de 14 % et
+              paraissait rentrée.
+
+              ⚠️ `-mt-[0.15em]` FAIT DEUX CHOSES À LA FOIS, et c'est pour cela
+              qu'on ne le touche pas à la légère.
+
+              Il POSITIONNE : la signature doit chevaucher « est un art, », pas
+              se ranger dessous. Le jambage du « L » monte à l'extrême gauche,
+              sous le « e » de « est » — qui n'a pas de descendante — donc le
+              chevauchement ne mord sur aucune lettre. Essayé à 0,25em : trop
+              remontée. 0,15em garde le contact en le desserrant.
+
+              Il RATTRAPE AUSSI DE LA HAUTEUR. Les deux lignes de texte
+              remplacées mesuraient 1,8em ; 1,8 + 2,41 ferait 4,21em contre 3,6 à
+              l'origine, soit 40px de plus au corps de 66px — dans un hero aligné
+              EN BAS sous une barre fixe de 96px, et dont une requête média rogne
+              déjà les marges sous 860px de haut. Le rappel ramène l'écart à
+              0,46em, et le sous-titre en dessous a resserré sa marge d'autant.
+              Descendre encore la signature se paie donc sur ce budget-là.
+
+              `-ml-[0.12em]` à partir de `md` : le paraphe du « L » part vers la
+              gauche, et sans ce décalage la signature paraît rentrée par rapport
+              aux deux lignes du dessus. En dessous de `md` tout est centré, donc
+              `mx-auto` reprend la main.
+
+              Plus de `<link rel="preload">` depuis le passage au masque : une
+              image de masque se charge à l'application du style, pas au parsing
+              du HTML. Pour 59 Ko sous la ligne de flottaison du regard, c'est
+              sans conséquence.
+
+              L'apostrophe du texte est une vraie apostrophe typographique
+              (U+2019), pas une quote droite. */}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -632,13 +700,32 @@ export function Hero() {
           >
             <span className="block">La magie</span>
             <span className="block">est un art,</span>
-            <span className="block italic text-[var(--gold)]">l’humour</span>
-            <span className="block italic text-[var(--gold)]">ma signature.</span>
+            <span className="sr-only">L’humour, ma signature.</span>
+            <span
+              aria-hidden="true"
+              style={{ "--picto": `url(${signatureImg})` } as CSSProperties}
+              className="picto mx-auto -mt-[0.15em] block aspect-[1100/442] w-[6em] max-w-full text-[var(--gold)] md:mx-0 md:-ml-[0.12em]"
+            />
           </motion.h1>
 
           {/* Sous-titre. `max-w` plutôt qu'un <br> forcé : la phrase se
               répartit d'elle-même, et sur un téléphone elle se recoupe au lieu
               de garder une coupe pensée pour un grand écran.
+
+              ⚠️ `mt-4` ET NON `mt-6 md:mt-7`, ET CE N'EST PAS UN ALIGNEMENT SUR
+              LES AUTRES BLOCS. L'écart au titre se mesurait bien à 24 et 28px
+              tant que le titre finissait sur une ligne de texte : la hauteur de
+              ligne valant 0,9, la dernière ligne laissait sous sa base tout le
+              talon de la police, et l'écart VU était plus grand que l'écart
+              posé. Le titre finit maintenant sur la signature manuscrite, dont
+              le tracé descend jusqu'au dernier pixel de son cadre — la jambe du
+              « g » de « signature » touche le bord bas. Il n'y a donc plus
+              aucun talon, et les 28px se voyaient en entier : le sous-titre
+              paraissait décroché.
+
+              16px rendent l'écart VU comparable à ce qu'il était. Toucher à
+              cette valeur sans regarder la signature au-dessus, c'est régler un
+              écart qu'on ne mesure pas.
 
               ⚠️ ELLE TIENT SUR UNE SEULE LIGNE SUR GRAND ÉCRAN, ET DE JUSTESSE.
               53 caractères contre 89 à la version précédente : mesurée sur les
@@ -654,7 +741,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-auto mt-6 max-w-[33rem] text-center font-title text-[clamp(1rem,1.15vw,1.2rem)] font-light leading-relaxed text-foreground/90 md:mx-0 md:mt-7 md:text-left"
+            className="mx-auto mt-4 max-w-[33rem] text-center font-title text-[clamp(1rem,1.15vw,1.2rem)] font-light leading-relaxed text-foreground/90 md:mx-0 md:text-left"
           >
             Créons ensemble l’impossible pour vivre l’impensable.
           </motion.p>
