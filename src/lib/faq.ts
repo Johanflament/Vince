@@ -18,11 +18,13 @@
  *  - la réponse n'est pas validée. Les deux dernières portaient la mention
  *    « À VALIDER PAR VINCE » : un contenu non confirmé peut s'afficher sur une
  *    page, il n'a rien à faire dans une déclaration lue par un moteur ;
- *  - la réponse dit quelque chose que le site n'a pas tranché. Celle sur les
- *    déplacements énumère Amiens, la Picardie, la Somme, l'Oise et l'Aisne,
- *    alors que la biographie situe Vince à Tours et que ses références
- *    clientes sont majoritairement de Touraine. Tant que la contradiction
- *    tient, la déclarer reviendrait à choisir un camp au nom de Vince.
+ *  - la réponse dit quelque chose que le site n'a pas tranché. C'était le cas
+ *    de celle sur les déplacements, qui énumère Amiens, la Picardie, la Somme,
+ *    l'Oise et l'Aisne pendant que la biographie situait Vince à TOURS : la
+ *    déclarer aurait été choisir un camp au nom de Vince. Il a tranché pour la
+ *    Picardie en réécrivant sa biographie, et elle est donc passée à `true`.
+ *    Ce motif-ci ne s'applique plus à aucune réponse ; il est gardé parce que
+ *    c'est un motif récurrent sur ce site, pas un incident clos.
  *
  * Repasser l'une d'elles à `true` la fait entrer dans le JSON-LD sans rien
  * d'autre à modifier.
@@ -37,16 +39,28 @@ export type QuestionFrequente = {
 export const faqs: QuestionFrequente[] = [
   {
     question: "Quelle est la durée d’une prestation ?",
+    // ⚠️ CETTE RÉPONSE NE DONNE PLUS DE CHIFFRE, et c'est le texte de Vince.
+    // Elle disait « se compte en heures » et « de 30 minutes à 1 h 15 » ; les
+    // deux fiches pratiques des sections portent donc seules l'information
+    // chiffrée — « De 30 minutes à 1 h 15 (personnalisable) » côté scène, « Le
+    // temps de votre cocktail et/ou de votre dîner » côté close-up. Elles ne
+    // sont plus la reprise d'une réponse de FAQ, elles sont la source.
+    //
+    // Conséquence à connaître : la question porte sur la durée et la réponse
+    // déclarée dans le `FAQPage` n'en donne aucune. Google l'affichera telle
+    // quelle en résultat enrichi.
     reponse:
-      "Elle s’adapte à votre événement. Le close-up accompagne un cocktail ou un dîner et se compte en heures ; le spectacle de scène dure de 30 minutes à 1 h 15, selon ce que vous souhaitez.",
+      "Elle s’adapte à votre événement, le close-up accompagne votre soirée ou dîner tout au long de la soirée. Le spectacle est en fonction de votre demande et du format choisi.",
     structuree: true,
   },
   {
     question: "Vous déplacez-vous partout en France ?",
     reponse:
       "Oui. J’interviens à Amiens et dans toute la Picardie — Beauvais, Compiègne, Saint-Quentin, Laon, Soissons — ainsi que dans la Somme, l’Oise et l’Aisne. Paris et Lille sont à une heure de train. Je me déplace partout en France et ponctuellement en Europe.",
-    // ⚠️ Picardie / Tours non tranché — voir l'en-tête.
-    structuree: false,
+    // ✅ Débloquée. Elle est restée hors du JSON-LD tant que la biographie
+    // situait Vince à Tours ; cette biographie dit maintenant « Il s'installe
+    // en Picardie », donc plus rien dans le dépôt ne contredit cette réponse.
+    structuree: true,
   },
   {
     question: "Combien de temps à l’avance faut-il réserver ?",

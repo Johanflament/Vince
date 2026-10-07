@@ -80,18 +80,31 @@ import { VIDEO_CLOSE_UP, VIDEO_SPECTACLE_SCENE } from "@/lib/medias";
  * catalogues n'en portent pas. Un `priceRange` inventé, même approximatif,
  * engage l'artiste sur une somme.
  *
- * ⚠️ `areaServed` VAUT « France », ET RIEN DE PLUS PRÉCIS — c'est le point le
- * plus délicat du fichier. Le dépôt se contredit sur la géographie : le titre,
- * la description, les mentions légales, le pied de page et une réponse de FAQ
- * situent Vince en PICARDIE, tandis que sa biographie le situe à TOURS
- * (installation en 2003, Groupement régional des Magiciens de Touraine) et que
- * sa liste de clients est majoritairement de Touraine et du Loir-et-Cher. Cette
- * contradiction n'est pas tranchée (voir README.md) et ce fichier n'est pas
- * l'endroit où la trancher : déclarer une région en JSON-LD, c'est en faire une
- * affirmation lisible par machine. « France » est la SEULE géographie sur
- * laquelle toutes les sources du dépôt s'accordent — la biographie dit « il se
- * déplace dans toute la France », la FAQ dit « partout en France ». Quand la
- * question sera tranchée, ajouter ici la région retenue, et alors seulement.
+ * ⚠️ `areaServed` VAUT ENCORE « France », ET RIEN DE PLUS PRÉCIS — mais plus
+ * pour la raison d'origine. Le dépôt se contredisait sur la géographie : le
+ * titre, la description, les mentions légales, le pied de page et une réponse
+ * de FAQ situaient Vince en PICARDIE, tandis que sa biographie le situait à
+ * TOURS (installation en 2003, Groupement régional des Magiciens de Touraine).
+ * Déclarer une région en JSON-LD, c'est en faire une affirmation lisible par
+ * machine, et « France » était la seule géographie sur laquelle toutes les
+ * sources s'accordaient.
+ *
+ * ✅ VINCE A TRANCHÉ POUR LA PICARDIE en réécrivant sa biographie. Le blocage
+ * est donc levé, et c'est ce qui a fait passer à `true` la réponse de FAQ sur
+ * les déplacements (`faq.ts`).
+ *
+ * ⚠️ MAIS « France » EST MAINTENANT UN CHOIX, PLUS UNE ABSTENTION. La question
+ * a été posée — « Picardie » (ancienne région, mais le mot qu'emploie tout le
+ * site), « Hauts-de-France » (la région administrative actuelle), les trois
+ * départements que nomme la FAQ, ou le statu quo — et « France » a été retenu
+ * sciemment. Ne pas « compléter » cette propriété en croyant qu'elle attend
+ * encore un arbitrage : le gain de référencement local a été mis en balance et
+ * écarté. La reposer, oui ; la trancher seul, non.
+ *
+ * Trois clients du bandeau restent de Touraine et du Loir-et-Cher (Crédit
+ * Agricole Touraine, Aquarium de Touraine, Maison de la Magie de Blois), et la
+ * liste des distinctions garde le G.R.M.T. Ce ne sont plus des contradictions :
+ * un artiste installé en Picardie garde les prix et les clients d'avant.
  */
 
 /*

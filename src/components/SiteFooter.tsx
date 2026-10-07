@@ -308,10 +308,9 @@ export function SiteFooter() {
                       n'est partagée par AUCUNE constante : modifier l'une sans
                       l'autre fait dire deux choses différentes à la même page,
                       et rien ne le signalerait. */}
-                  De la magie au plus près de vos invités au grand spectacle face à une salle
-                  entière,{" "}
+                  Sur scène ou à quelques centimètres,{" "}
                   <em className="font-normal not-italic text-[var(--gold)]">
-                    un seul but : vous laisser un souvenir inoubliable.
+                    le lendemain vous vous en souviendrez encore…
                   </em>
                 </p>
               </div>

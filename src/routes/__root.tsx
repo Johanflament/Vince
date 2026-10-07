@@ -36,11 +36,11 @@ const SITE_URL = "https://vince.johanflament69.workers.dev";
 // première chose que mesure Google. Les deux formats réellement présentés sont
 // le close-up et le spectacle de scène ; elle ne dit plus que ceux-là.
 //
-// ⚠️ « en Picardie » EST CONSERVÉ EN L'ÉTAT. Ce n'est pas une validation : le
-// dépôt se contredit (la biographie situe Vince à Tours, voir README.md) et la
-// question n'est pas tranchée. Corriger cette ligne dans un sens ou dans
-// l'autre serait la trancher ici, au milieu du <head>. Elle reste donc alignée
-// sur le reste du site en attendant l'arbitrage.
+// ✅ « en Picardie » EST MAINTENANT VALIDÉ. Cette ligne a longtemps été
+// conservée faute de mieux : le dépôt se contredisait, la biographie situant
+// Vince à Tours. Il a réécrit sa biographie en « Il s'installe en Picardie »,
+// donc le titre, la description, les mentions légales, le pied de page, la FAQ
+// et le récit disent désormais la même chose.
 const DESCRIPTION =
   "Vince, magicien en Picardie : close-up et spectacles de scène, pour un public familial comme adulte, à Amiens, Beauvais et alentour.";
 const TITRE = "Magic Vince — Magicien en Picardie";

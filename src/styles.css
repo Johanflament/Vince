@@ -146,6 +146,27 @@
   html {
     scroll-behavior: smooth;
   }
+
+  /* ⚠️ LA MAIN AU SURVOL DES BOUTONS, QUE TAILWIND v4 NE MET PLUS.
+     Sa préflight a retiré le `cursor: pointer` que la v3 posait sur `button` :
+     elle s'aligne désormais sur le défaut du navigateur, qui est la flèche.
+     Vérifié dans la feuille compilée — avant cette règle, le mot `cursor` n'y
+     apparaissait que dans des utilitaires, aucune règle ne visait `button`.
+
+     Le site mélange les deux balises pour des commandes qui se ressemblent :
+     « Demander un devis » est un `<a href>` et affichait la main, « Voir la
+     vidéo » juste à côté est un `<button>` et affichait la flèche. Deux boutons
+     identiques à l'œil, deux curseurs différents — et le second passait pour
+     inactif.
+
+     La règle est posée ici plutôt que classe par classe parce que le défaut est
+     faux pour TOUS les boutons du site : bande-annonce, accordéon de la FAQ,
+     vignettes de la galerie, envoi du formulaire, menu mobile. `:disabled` est
+     exclu, un bouton désactivé ne doit pas se présenter comme cliquable. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
   html,
   body {
     background-color: var(--color-background);

@@ -82,12 +82,24 @@ soit renommer celui du hero, soit lui faire ouvrir l'une des deux bandes-annonce
 
 **La biographie.** ✅ Texte de Vince en place : récit, distinctions et deux citations.
 
-**⚠️ TOURS OU PICARDIE — À TRANCHER.** La biographie fournie situe Vince à Tours (installation
-en 2003) et au Groupement régional des Magiciens de Touraine. Tout le reste du site le situe en
-**Picardie** : balise titre, description SEO, mentions légales, pied de page, bandeau de villes,
-réponse de FAQ sur les déplacements. Les deux ne peuvent pas être vrais en même temps pour un
-visiteur qui lit la page de haut en bas. Décider lequel corriger — la zone d'activité ou le texte
-de biographie — avant toute mise en ligne.
+**✅ TOURS OU PICARDIE — TRANCHÉ : LA PICARDIE.** La biographie situait Vince à Tours
+(installation en 2003) et au Groupement régional des Magiciens de Touraine, alors que tout le
+reste du site le situe en **Picardie** : balise titre, description SEO, mentions légales, pied de
+page, bandeau de villes, réponse de FAQ sur les déplacements. Vince a réécrit sa biographie en
+« Il s'installe en Picardie ». Deux conséquences déjà appliquées : la réponse de FAQ sur les
+déplacements entre dans le JSON-LD (`faq.ts`), et le commentaire du `<head>` ne porte plus de
+réserve.
+
+Il reste des traces de Touraine, qui ne sont **pas** des contradictions — un artiste installé
+ailleurs garde ses prix et ses clients d'avant : la liste des distinctions (deux concours
+G.R.M.T, le club régional) et trois entrées du bandeau clients (Crédit Agricole Touraine,
+Aquarium de Touraine, Maison de la Magie de Blois).
+
+**✅ `areaServed` RESTE « France », ET C'EST VOULU.** Le blocage est levé, la question a été posée
+— « Picardie », « Hauts-de-France », les trois départements de la FAQ (Somme, Oise, Aisne) ou le
+statu quo — et « France » a été retenu. La propriété n'attend donc plus rien : elle est moins
+précise que la page, jamais en contradiction avec elle, et le gain de référencement local a été
+écarté en connaissance de cause.
 
 **Les avis.** ✅ Le bloc `reviews` est désormais **vide**, et le bloc « Avis
 Google » ne s'affiche donc plus du tout. Il contenait les avis réels d'un autre

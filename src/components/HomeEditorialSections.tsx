@@ -48,7 +48,7 @@ import { faqs } from "@/lib/faq";
 // partout ailleurs, et c'est ce qui rend ces deux bandes graphiques : un
 // panneau noir de texte qui mord dans un champ lumineux.
 import closeupImg from "@/assets/photos/studio-silhouette-large.webp";
-import stageImg from "@/assets/photos/studio-eventail-envol-large.webp";
+import stageImg from "@/assets/photos/scene-caisse-apparition-rideau-large.webp";
 import gStudioConfettisLargeImg from "@/assets/photos/studio-eventail-confettis-large.webp";
 
 // Galerie principale.
@@ -107,9 +107,10 @@ import nSceneConfettisMicroCasqueLargeImg from "@/assets/photos/scene-confettis-
 import nSceneCaisseBoisApparitionImg from "@/assets/photos/scene-caisse-bois-apparition-vignette.webp";
 import nSceneCaisseBoisApparitionLargeImg from "@/assets/photos/scene-caisse-bois-apparition-large.webp";
 
-// ⚠️ Portrait de la biographie. Photographié SUR FOND NOIR, et c'est ce qui
-// permet son traitement — voir le commentaire du rendu.
-import bioImg from "@/assets/photos/portrait-vince-pieces-large.webp";
+// ⚠️ Portrait de la biographie. CE FICHIER N'EST PAS UNE PHOTO ORDINAIRE :
+// c'est un WebP à transparence dont la couche alpha porte tout le cliché et
+// dont le RVB est blanc uni. Voir le commentaire du rendu avant d'y toucher.
+import bioImg from "@/assets/photos/portrait-vince-cartes-cascade-large.webp";
 
 /**
  * ⚠️ `mise` CHOISIT LA MISE EN PAGE, et les deux ne sont pas interchangeables.
@@ -205,11 +206,17 @@ const formats: Format[] = [
       "Lors d’un mariage, anniversaire, fête familiale ou toute autre occasion susceptible d’émerveiller vos convives, je serai l’invité surprise et inattendu qui apportera un moment hors du temps afin de laisser un souvenir gravé à jamais. Et surtout faire de votre événement un instant inoubliable. Des pièces, des cartes, des cordes, du mentalisme, un cocktail magique à déguster sans modération.",
       "En entreprise, galas, inaugurations, séminaires, team building ou simple repas entre collaborateurs, le close-up sera la clé de la cohésion et de l’émerveillement afin que chacun y participe au lieu d’y assister.",
     ],
-    // ⚠️ FICHE PRATIQUE — chaque valeur est reprise d'une réponse de la FAQ
-    // plus bas dans la page, jamais inventée. Durée, matériel et
-    // personnalisation y sont déjà affirmés ; les répéter ici les met sous les
-    // yeux au moment où la question se pose, et surtout les deux endroits
-    // doivent rester d'accord. Modifier l'un, c'est modifier l'autre.
+    // ⚠️ FICHE PRATIQUE — aucune valeur n'est inventée, et les deux endroits
+    // qui parlent du même fait doivent rester d'accord : la modifier ici, c'est
+    // la modifier dans la FAQ, et réciproquement.
+    //
+    // ⚠️ LA DURÉE N'EST PLUS ADOSSÉE À LA FAQ. Toutes ces valeurs étaient
+    // reprises d'une réponse de FAQ, qui restait la source ; Vince a réécrit
+    // celle sur la durée et elle ne donne plus aucun chiffre. « Le temps de
+    // votre cocktail et/ou de votre dîner » est donc maintenant la SEULE
+    // affirmation chiffrée du site sur la durée du close-up — et le seul
+    // endroit où le mot « cocktail » subsiste. Ne pas la supprimer en croyant
+    // qu'elle redit la FAQ.
     // La fiche a porté un temps deux lignes « Particuliers » et « Entreprises »
     // qui énuméraient les occasions par public. Retirées : elles redisaient les
     // pictogrammes trente lignes plus bas, où « Mariages », « Anniversaires »,
@@ -243,24 +250,26 @@ const formats: Format[] = [
     id: "spectacles",
     // ⚠️ MISE COLONNE, et c'est une nécessité mesurée, pas un choix d'habillage.
     //
-    // Le sujet occupe x 11 %→85 % et y 3 %→100 % : il touche le haut et le bas
-    // du cadre. En bande pleine largeur, `object-cover` doit recadrer dans la
-    // HAUTEUR — sur un écran de 1920 pour une section de 780px, il n'en restait
-    // que 61 %, `scale-110` compris : la tête et les pieds étaient coupés.
+    // La photo est en 4:3 (1,333) et la boîte de la colonne en 6/5 (1,2) :
+    // `object-cover` montre donc TOUTE LA HAUTEUR et ne rogne que 10,0 % de la
+    // largeur. En bande pleine largeur il aurait fallu recadrer dans l'autre
+    // sens — sur un écran de 1920 pour une section de 780px, il ne serait resté
+    // que 54 % de la hauteur d'un 4:3, `scale-110` compris, et le bras levé
+    // comme la nappe seraient tombés hors cadre.
     //
-    // En colonne de droite, la boîte est plus haute que large par rapport à la
-    // photo, donc le recadrage passe dans la LARGEUR et la hauteur est vue en
-    // entier. C'est la seule mise en page qui montre ce cliché.
+    // Le cliché précédent était en 3:2 et imposait déjà ce choix ; celui-ci,
+    // plus carré, l'impose davantage.
     mise: "colonne",
-    // Texte À GAUCHE : la droite est plus vide encore (écart-type 9) mais la
-    // section précédente y a déjà son texte, et deux panneaux du même côté
-    // font perdre à la page son alternance. À gauche, le panneau ne recouvre
-    // que le guéridon et le seau, pas le magicien ni les confettis.
+    // Texte À GAUCHE : la section précédente a déjà le sien à droite, et deux
+    // panneaux du même côté font perdre à la page son alternance. En colonne,
+    // le texte ne recouvre de toute façon aucun pixel de la photo.
     texteADroite: false,
-    // ⚠️ COULEURS CONSERVÉES sur cette section, contrairement à l'autre : le
-    // violet du studio fait partie de la photo. Filtre léger seulement — un
-    // cran de saturation en moins pour qu'il ne hurle pas à côté de l'or, un
-    // cran de contraste en plus pour détacher les confettis.
+    // ⚠️ COULEURS CONSERVÉES sur cette section, contrairement à l'autre : les
+    // violets et le rose de la scène FONT la photo, c'est une vraie lumière de
+    // spectacle et non un fond de studio. Saturation moyenne relevée à 79 sur
+    // 255 — le cliché précédent montait à 120 — avec une pointe à 141 sur le
+    // rideau. Filtre léger seulement : un cran de saturation en moins pour que
+    // le rideau ne hurle pas à côté de l'or, un cran de contraste en plus.
     filtre: "saturate-[0.85] contrast-[1.06]",
     // ⚠️ PAS DE `voile` : en colonne, le texte est sur du noir franc. Le voile
     // précédent — un dégradé qui s'éteignait à 66 % pour ne pas noyer la
@@ -268,13 +277,14 @@ const formats: Format[] = [
     // n'arbitre plus entre la lisibilité du texte et la visibilité du sujet,
     // puisqu'ils n'occupent plus le même pixel.
     //
-    // ⚠️ CADRAGE CALCULÉ, à ne pas retoucher à l'œil. La boîte est en 6/5
-    // (1,2) et la photo en 3:2 (1,5006) : `object-cover` montre donc toute la
-    // hauteur et rogne 20,0 % de la largeur. Avec `object-position: 45%`, la
-    // fenêtre visible va de 9,0 % à 89,0 % de la photo — le sujet tenant de
-    // 11 % à 85 %, il reste 2 points d'air à sa gauche et 4 à sa droite.
-    // En dessous de 25 % ou au-dessus de 55 %, on lui coupe un bras.
-    cadrage: "object-[45%_50%]",
+    // ⚠️ PAS DE `cadrage`, ET C'EST UN RÉSULTAT, PAS UN OUBLI. Le cliché
+    // précédent était en 3:2 : la boîte en rognait 20 % de la largeur et il
+    // fallait viser à 45 % pour ne pas couper un bras. Celui-ci est en 4:3 et
+    // n'en perd que 10,0 %, 5 de chaque côté au centrage par défaut — la
+    // fenêtre va donc de 5 % à 95 % de la photo. Or le sujet y tient de 0 à
+    // 100 % : il n'y a plus de côté vide à privilégier, et les 5 % de gauche
+    // tombent de toute façon sous le fondu. Déplacer le point de visée ne ferait
+    // que décaler une coupe de 1 ou 2 % sans rien montrer de plus.
     // ⚠️ « SPECTACLES DE SCÈNE » ET NON « SPECTACLES ENFANTS ». La section ne
     // s'adresse plus au seul jeune public : le même spectacle se joue devant
     // une salle d'adultes — gala, soirée d'entreprise — comme devant des
@@ -349,21 +359,72 @@ const formats: Format[] = [
       { Icone: GraduationCap, label: "Écoles" },
     ],
     image: stageImg,
-    alt: "Vince en studio, éventail noir à la main, bras levé sous une pluie de confettis dans une lumière violette",
+    alt: "Vince sur scène, penché au-dessus d’une caisse en bois d’où jaillissent des boîtes noires et blanches, devant un rideau rose sous une lumière bleue",
   },
 ];
 
 // ── BIOGRAPHIE ──────────────────────────────────────────────────────────────
-// Texte fourni par Vince. Réagencé en trois paragraphes — origines, formation
-// et palmarès, spécialisation — et non dans l'ordre reçu : le récit d'origine
-// intercalait un paragraphe commercial (« il vous garantit de transformer
-// votre événement ») entre deux paragraphes biographiques. Cet argument-là est
-// déjà porté par les sections de formats juste au-dessus ; le répéter ici
-// affaiblissait les deux.
+// Texte fourni par Vince, repris MOT POUR MOT : il a demandé que la
+// formulation ne soit pas retouchée, seules les fautes l'ont été.
+//
+// Pour mémoire, ce qui a été corrigé dans ce qu'il a fourni : la virgule
+// d'apposition qui manquait après « magicien illusionniste », « en 2003, Il se
+// professionnalise » (virgule au lieu du point, alors que la majuscule qui
+// suit montre qu'une phrase s'ouvrait), le point absent après « croiseront sa
+// route », et « au delà des frontières » (trait d'union). La juxtaposition par
+// virgule de « dès son plus jeune âge, il fait sa première apparition » est du
+// français correct et elle est gardée.
+//
+// ⚠️ CE TEXTE REMET TOURS, APRÈS L'AVOIR RETIRÉ. Il faut connaître l'histoire
+// avant d'y toucher. La version d'origine disait « fait son apparition à Tours
+// en 2003 POUR S'Y INSTALLER DÉFINITIVEMENT » — ce qui contredisait de front le
+// titre, la description, les mentions légales, le pied de page et une réponse
+// de FAQ, qui situent tous Vince en PICARDIE. Une version intermédiaire a dit
+// « Il s'installe en Picardie », ce qui a levé la contradiction et débloqué
+// l'entrée de la réponse de FAQ sur les déplacements dans le JSON-LD.
+//
+// Celle-ci revient à Tours mais SANS « pour s'y installer définitivement » :
+// Tours y est une PREMIÈRE APPARITION, en 2003, suivie d'un parcours au passé.
+// Le texte ne dit plus où Vince est aujourd'hui. Ce n'est donc plus une
+// contradiction — c'est un silence, et le reste du site continue de dire
+// Picardie sans être démenti.
+//
+// ⚠️ MAIS LE SILENCE SE LIT COMME TOURS. Un visiteur qui lit « première
+// apparition à Tours », « Magiciens de Touraine », « Fédération Française des
+// Artistes Prestidigitateurs », puis trois concours, et qui voit juste en
+// dessous une liste de distinctions tourangelles et trois clients de Touraine
+// au bandeau, conclura que Vince exerce en Touraine — pendant que la balise
+// titre lui annonce « Magicien en Picardie ». La page ne se contredit plus,
+// mais elle n'affirme plus nulle part, dans son corps de texte, où il est basé.
+//
+// ⚠️ LA QUESTION A ÉTÉ POSÉE ET TRANCHÉE : ON LAISSE. Il a été proposé de
+// réinsérer « Il s'installe en Picardie » en tête du second paragraphe, et
+// Vince a préféré s'en tenir à son texte. Ne pas la rajouter de son propre
+// chef en croyant réparer un oubli.
+//
+// Rien n'en dépend mécaniquement : `areaServed` vaut « France » par décision
+// explicite elle aussi, et la réponse de FAQ déclarée énumère la Picardie sans
+// que ce paragraphe la démente. Mais c'est à ressortir au prochain passage sur
+// le référencement local, où le silence du corps de texte coûtera quelque
+// chose.
+//
+// « En cocktail » a quitté le récit. Voir `Prestations.tsx` : « cocktail & vin
+// d'honneur » n'est plus une requête à laquelle la page répond, et il ne reste
+// du mot que la ligne « Durée » de la fiche close-up.
 const recitBio = [
-  "Vince, magicien illusionniste passionné depuis son enfance, fait son apparition à Tours en 2003 pour s’y installer définitivement. Cet artiste de talent sait se distinguer par son côté dynamique, alliant parfaitement la magie à l’humour, pour ainsi laisser un souvenir magique à tous ceux qui croiseront sa route…",
-  "Il se professionnalise dans son art à l’âge de 20 ans, se perfectionne en intégrant le Groupement régional des Magiciens de Touraine (G.R.M.T) et rejoint la Fédération Française des Artistes Prestidigitateurs la même année. Aimant les défis, il participe à des concours qu’il remporte successivement en 2009, 2011 et 2012.",
-  "Au fil des années, Vincent se spécialise dans le close-up, pour faire vivre l’instant magique au plus près des spectateurs. Aujourd’hui, fort de son expérience, il se déplace dans toute la France et au-delà des frontières, sur scène, en cocktail ou en close-up.",
+  "Vince, magicien illusionniste, se passionne pour la magie dès son plus jeune âge, il fait sa première apparition à Tours en 2003. Il se professionnalise en intégrant le Groupement régional des Magiciens de Touraine (G.R.M.T) et rejoint la Fédération Française des Artistes Prestidigitateurs. Aimant les défis, il participe à des concours qu’il remporte successivement en 2009, 2011 et 2012.",
+  "Cet artiste de talent sait se faire distinguer par son côté dynamique, alliant parfaitement la magie à l’humour, pour laisser ainsi un souvenir magique à tous ceux qui croiseront sa route. Fort de ses expériences, il se déplace dans toute la France et au-delà des frontières, sur scène ou en close-up.",
+  // ⚠️ CETTE PHRASE NE VENAIT PAS DU DERNIER TEXTE DE VINCE, elle a été
+  // explicitement reconduite. Elle appartenait à une version antérieure, et le
+  // texte suivant ne la reprenait pas — parce qu'il avait été écrit depuis une
+  // copie plus ancienne, pas pour la retirer. Vince a confirmé qu'elle reste.
+  //
+  // C'est la seule ligne du récit qui s'adresse AU VISITEUR, et la seule au
+  // présent : les deux paragraphes du dessus racontent un parcours à la
+  // troisième personne et au passé. Elle sert de sortie à la section. La
+  // supprimer laisse la biographie se terminer sur « sur scène ou en
+  // close-up. », c'est-à-dire sur une énumération.
+  "Aujourd’hui, la magie est toujours là, il ne vous reste plus qu’un pas pour la découvrir.",
 ];
 
 const distinctions = [
@@ -771,11 +832,20 @@ function FormatColonne({ format }: { format: Format }) {
       className="grain relative scroll-mt-24 overflow-clip lg:grid lg:grid-cols-[minmax(0,46%)_minmax(0,54%)] lg:items-center"
     >
       {/* ── PHOTO, PETITS ÉCRANS : une bande en haut ────────────────────────
-          En 3:2, la proportion native du fichier : aucun recadrage du tout, et
-          donc le sujet entier. Sur un téléphone il n'y a pas deux colonnes à
-          partager, la question du recadrage ne se pose plus. Le fondu du bas la
-          raccorde au texte qui suit. */}
-      <div className="relative aspect-[3/2] w-full lg:hidden">
+          ⚠️ EN 4/3, LA PROPORTION NATIVE DU FICHIER, et c'est tout l'intérêt :
+          `object-cover` n'a alors rien à rogner et le sujet est vu en entier.
+          Sur un téléphone il n'y a pas deux colonnes à partager, la question du
+          recadrage ne se pose pas.
+
+          C'était `aspect-[3/2]` du temps du cliché précédent, qui était lui-même
+          en 3:2. Le nouveau est en 4:3 : laissée à 3/2, la boîte lui aurait
+          rogné 11 % de la HAUTEUR, c'est-à-dire la main levée en haut et la
+          nappe en bas. Cette proportion suit donc le fichier — la changer sans
+          changer la photo, ou l'inverse, remet un recadrage là où il n'y en a
+          pas besoin.
+
+          Le fondu du bas la raccorde au texte qui suit. */}
+      <div className="relative aspect-[4/3] w-full lg:hidden">
         <img
           src={format.image}
           alt={format.alt}
@@ -806,7 +876,25 @@ function FormatColonne({ format }: { format: Format }) {
           fenêtre, et la section deviendrait impossible à voir d'un coup d'œil.
           À 960px de large elle plafonne à 800px de haut. En dessous de 1780px
           de fenêtre la borne ne joue pas : la photo remplit sa colonne. */}
-      <div className="hidden h-full items-center justify-end lg:flex">
+      {/* ⚠️ `items-start` ET NON `items-center` : LA PHOTO EST COLLÉE EN HAUT,
+          et c'est ce qui la raboute à la section du dessus.
+
+          Elle était centrée dans la rangée. Or la hauteur de la rangée est
+          donnée par la COLONNE DE TEXTE — sur-titre, titre en `text-6xl`,
+          accroche, trois paragraphes, fiche de quatre lignes, quatre
+          pictogrammes et le bouton de bande-annonce, plus 160px de `py-20` —
+          qui dépasse largement les 800px de la photo. Tout l'excédent se
+          partageait moitié au-dessus, moitié en dessous : d'où une bande noire
+          de plus de cent pixels entre le bas de la bande pleine largeur du
+          close-up et le haut de cette photo.
+
+          Collée en haut, son bord supérieur coïncide avec le bord inférieur de
+          la section précédente, dont la photo est en `absolute inset-0` et
+          couvre donc son cadre jusqu'au dernier pixel. Les deux images se
+          touchent. Tout l'excédent est passé en dessous, où il ne sépare rien.
+
+          ⚠️ LE FONDU DU HAUT A ÉTÉ RETIRÉ POUR LA MÊME RAISON — voir plus bas. */}
+      <div className="hidden h-full items-start justify-end lg:flex">
         {/* ⚠️ LA PHOTO EST COLLANTE, et deux conditions le permettent.
             D'abord la section est en `overflow-clip` et non `overflow-hidden` :
             `hidden` crée un conteneur de défilement, par rapport auquel le
@@ -848,19 +936,29 @@ function FormatColonne({ format }: { format: Format }) {
               premiers pour cent), creuse au milieu (24 points au plus fort) et
               se pose en douceur. Aucun palier ne saute de plus d'un quart.
 
-              ⚠️ LES POSITIONS SONT MESURÉES SUR LA PHOTO, pas choisies. Relevé
-              par tranches de 5 % de la boîte : de 0 à 30 %, le fond est un
-              studio uniforme à 176 de gris et les seuls pixels sombres — le
-              guéridon et le seau — vivent sous 54 % de hauteur. LE MAGICIEN NE
-              COMMENCE QU'À 30 % (le sommet du sombre y passe de 54 % à 22 %,
-              puis à 3 % vers 52 %). Les trente premiers pour cent sont donc de
-              la plage libre, et c'est exactement ce que le fondu occupe à
-              pleine force.
+              ⚠️ LES POSITIONS SONT MESURÉES SUR LA PHOTO, pas choisies — et
+              elles ont été REVÉRIFIÉES sur le nouveau cliché, qui n'a rien de
+              commun avec celui pour lequel la courbe avait été tracée. L'ancien
+              était un studio dont les trente premiers pour cent étaient un fond
+              uniforme à 176 de gris, vides de tout sujet. Celui-ci est plein
+              d'un bord à l'autre : relevé par tranches de 5 %, sa luminance ne
+              descend jamais sous 90 ni ne dépasse 153.
 
-              Il s'éteint à 46 % et non à 30 % : s'arrêter au bord du sujet,
-              c'est y créer la marche qu'on cherche à supprimer. À 30 % il ne
-              pèse plus que 22 %, à 38 % plus que 8 % — un voile qui s'efface
-              sur son bras tendu, pas un masque. Ne pas le raccourcir sous 40 %.
+              Reportés sur la boîte, ses repères tombent pourtant presque
+              exactement sur les paliers existants. Le voile vaut 68 % à 6,9 % de
+              la boîte, où FINIT LE RIDEAU (6,7 %) ; il est retombé à 22 % à
+              13,8 %, où COMMENCE LA CAISSE (14,4 %) ; il s'éteint à 46 %, où
+              COMMENCE LE VISAGE (47,8 %). La courbe avale donc le rideau rose —
+              le plus clair et le plus saturé du cliché, et ce qu'il a de moins
+              à dire — et laisse intacts la caisse, la main et le magicien.
+
+              Cet accord est une chance, pas un calcul : il ne survivra pas à un
+              troisième cliché. Toute nouvelle photo demande de refaire ce
+              relevé, faute de quoi le fondu mangera un sujet sans prévenir.
+
+              Il s'éteint à 46 % et non au bord du sujet : s'arrêter là, c'est y
+              créer la marche qu'on cherche à supprimer. Ne pas le raccourcir
+              sous 40 %.
 
               Écrit en style EN LIGNE et non en classes : sept paliers en
               `color-mix` ne s'expriment pas avec `from`/`via`/`to`, qui n'en
@@ -883,14 +981,48 @@ function FormatColonne({ format }: { format: Format }) {
             }}
           />
 
-          {/* Fondus HAUT et BAS, volontairement courts et partiels.
-              Le sommet du sujet est à 3 % de la hauteur du cadre : un fondu
-              généreux lui noircirait la main levée. 5 % à 70 % d'opacité en
-              haut suffit à effacer l'arête sans l'atteindre vraiment ; en bas on
-              peut aller à 12 %, il n'y a que le sol. */}
+          {/* ── FONDU DU HAUT, le raccord avec la section précédente ────────
+              ⚠️ IL A TROIS FOIS LA LONGUEUR DE L'ANCIEN, ET IL NE FAIT PAS LA
+              MÊME CHOSE. Celui d'avant mesurait 5 % de hauteur à 70 % d'opacité
+              et servait à effacer une arête contre le noir de la page. Depuis
+              que la photo est collée en haut de sa rangée, elle ne touche plus
+              du noir mais la bande pleine largeur de la section du dessus : il
+              ne s'agit plus d'effacer un bord, il s'agit de FONDRE DEUX IMAGES
+              l'une dans l'autre, et cela demande de la course.
+
+              ⚠️ 20 % ET PAS DAVANTAGE, et la borne haute est le visage. Relevé
+              sur le cliché : le sommet du crâne est à 6 % de la hauteur du
+              cadre et les lunettes à 20 %. À 20 % le fondu ne pèse plus rien
+              quand il les atteint — il assombrit le bras levé et le haut du
+              fond bleu, pas le regard. Essayé à 30 % : la tête s'empâte. Essayé
+              à 12 % : on revoit la couture.
+
+              La courbe reprend celle du fondu gauche — six paliers, départ
+              franc puis extinction longue — pour la même raison : trois paliers
+              laissent un coude visible au milieu. Et le `color-mix` garde la
+              teinte du fond constante en ne faisant varier que l'alpha, sans
+              quoi l'interpolation vers `transparent` passe par un gris laiteux.
+
+              ⚠️ CE FONDU DÉPEND DE `items-start`. Si la photo redevient centrée
+              dans sa rangée, elle retrouve du noir au-dessus d'elle et 20 % de
+              voile n'ont plus aucun sens : revenir alors aux 5 % d'origine.
+
+              Fondu du BAS conservé tel quel : lui a toujours du noir en face, et
+              il peut aller à 12 % et à pleine force parce qu'il n'y a là que la
+              nappe, relevée à 60 de luminance moyenne. */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 h-[5%] bg-gradient-to-b from-background/70 to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 h-[20%]"
+            style={{
+              backgroundImage:
+                "linear-gradient(to bottom," +
+                " var(--background) 0%," +
+                " color-mix(in oklab, var(--background) 74%, transparent) 25%," +
+                " color-mix(in oklab, var(--background) 46%, transparent) 45%," +
+                " color-mix(in oklab, var(--background) 24%, transparent) 65%," +
+                " color-mix(in oklab, var(--background) 9%, transparent) 82%," +
+                " transparent 100%)",
+            }}
           />
           <div
             aria-hidden="true"
@@ -1188,12 +1320,16 @@ function FormatStory({ format }: { format: (typeof formats)[number] }) {
  * raconté par son propre auteur au « je » sonne faux dès qu'il énumère ses
  * prix. Ne pas « harmoniser » la voix ici.
  *
- * ⚠️ CE TEXTE SITUE VINCE À TOURS ET EN TOURAINE (installation en 2003,
- * Groupement régional des Magiciens de Touraine), alors que tout le reste du
- * site — SEO, mentions légales, pied de page, bandeau de villes — le situe en
- * PICARDIE. L'un des deux est faux et il faut trancher : un visiteur qui lit
- * « magicien en Picardie » en haut de page et « installé à Tours » au milieu
- * ne croit plus ni l'un ni l'autre. Voir README.md.
+ * ✅ CE TEXTE SITUE VINCE EN PICARDIE, comme le reste du site. Il l'a longtemps
+ * situé à Tours et en Touraine (« son apparition à Tours en 2003 », Groupement
+ * régional des Magiciens de Touraine) pendant que le titre, la description, les
+ * mentions légales et le pied de page le situaient en Picardie — un visiteur
+ * qui lisait les deux ne croyait plus ni l'un ni l'autre. Vince a tranché pour
+ * la Picardie, et c'est cette version-ci.
+ *
+ * ⚠️ NE PAS RÉINTRODUIRE TOURS ICI sans reprendre `areaServed` dans
+ * `donnees-structurees.ts` et la réponse de FAQ sur les déplacements : les deux
+ * dépendent de ce paragraphe, et c'est lui qui les a débloquées.
  */
 function Biographie() {
   return (
@@ -1206,85 +1342,126 @@ function Biographie() {
                 Il était dans une carte arrondie avec une ombre portée. Il n'a
                 plus ni cadre, ni coins, ni ombre : il ÉMERGE DE LA PAGE.
 
-                ⚠️ CE QUI REND CELA POSSIBLE EST DANS LE FICHIER, PAS DANS LE CSS.
+                ⚠️ CE QUI REND CELA POSSIBLE EST DANS LE FICHIER, PAS DANS LE
+                CSS. La couche ALPHA du WebP porte tout le cliché — elle vaut sa
+                luminance — et son RVB est BLANC UNI. Le cliché est en noir et
+                blanc rigoureux (écart entre canaux mesuré à 0,00 sur toute la
+                surface), et sur un gris les deux descriptions sont équivalentes :
+                un pixel gris à 40 % et du blanc à 40 % d'opacité donnent le même
+                rendu sur du noir.
 
-                `mix-blend-screen` donne, pour chaque pixel, 1 − (1 − photo) ×
-                (1 − fond) : là où la photo vaut ZÉRO, le résultat EST le fond,
-                au bit près. Le noir devient donc littéralement transparent, et
-                le raccord ne se voit pas parce qu'il n'existe pas.
+                ⚠️ CE N'EST PLUS `mix-blend-screen`, ET C'EST UN CHOIX MESURÉ.
+                Le portrait précédent employait ce mode : il donne 1 − (1 − photo)
+                × (1 − fond), donc un pixel à zéro rend le fond au bit près. Il
+                avait deux défauts que celui-ci n'a pas.
 
-                Mais « zéro » doit être zéro. La photo sortait du studio avec
-                des noirs à 1 ou 2 sur 255 — invisibles à l'œil nu sur l'image,
-                et pourtant suffisants : en mode écran sur un fond à 12, un
-                pixel à 1 rend 13, un pixel à 4 rend 16. Sur toute la surface,
-                ce delta de 1 à 4 dessinait un rectangle légèrement plus clair
-                que la page. Le fichier est donc réencodé avec une courbe qui
-                écrase tout ce qui est sous 5 : 85 % de ses pixels valent
-                maintenant exactement 0, et l'écart au fond y est de 0,00.
+                D'abord, « zéro » devait être zéro, et la compression ne le
+                garantit pas. Ce cliché-ci sort du studio avec un fond à 10,0–11,1
+                de moyenne et 22 au maximum sur les quatre coins : en mode écran
+                sur une page à 12, un pixel à 22 rend 32. On lui a donc soustrait
+                un point noir de 24, ce qui met 71,6 % de ses pixels à zéro exact
+                — mais réencodé en WebP avec perte, 5 556 pixels LOIN DE TOUT
+                SUJET remontaient au-dessus de zéro. Montée à 92, la qualité les
+                ramenait à 37, au prix de 98 Ko. La couche alpha, elle, est
+                compressée SANS PERTE par libwebp : relevé sur le fichier écrit,
+                le nombre de pixels transparents remontés est de ZÉRO.
 
-                ⚠️ NE PAS RÉENCODER CETTE PHOTO SANS REFAIRE CET ÉCRASEMENT.
-                Un simple redimensionnement fera revenir le rectangle, sans que
-                rien ne le signale ailleurs qu'à l'œil.
+                Ensuite, `mix-blend-mode` est isolé par tout contexte
+                d'empilement d'un ancêtre — c'est exactement ce qui a interdit ce
+                mode pour la photo de `Prestations.tsx`, dont la colonne était en
+                `position: sticky`. La transparence cuite ne dépend de rien.
 
-                Le haut est recadré de 15 % et le bas de 8 % : relevé par bandes,
-                la photo n'avait AUCUN pixel au-dessus de 25 avant y = 20 % ni
-                après y = 85 %. C'était du noir payé au poids du fichier et de
-                la hauteur de page.
+                ⚠️ NE PAS RÉENCODER CE FICHIER COMME UNE PHOTO ORDINAIRE : un
+                simple redimensionnement lui rendrait son fond noir opaque, et
+                rien ne le signalerait ailleurs qu'à l'œil.
 
-                Deux choses à ne pas faire :
-                 - remettre `overflow-hidden` + `rounded` : il n'y a plus de
-                   bord à arrondir, et le coin trancherait dans du vide ;
-                 - donner un fond opaque et clair à un ancêtre proche. Le
-                   mélange se fait avec ce qui est DESSOUS dans le même contexte
-                   d'empilement ; sur du clair, le sujet disparaîtrait.
+                RECADRAGE, relevé bande par bande sur la source : le contenu va
+                de x 7,6 % à 81,7 % et de y 5,0 % à 100 %. La source est donc
+                coupée de 6 % à 84 % en largeur et de 3,5 % en haut, ce qui laisse
+                environ 1,5 % d'air au-dessus de la première carte et rien en bas,
+                où le pied touche le bord. Les 16 % de droite et les 15 % de haut
+                qui tombent étaient du noir pur payé au poids du fichier.
 
-                Sur un navigateur sans `mix-blend-mode` — il n'en reste pas —
-                l'image s'afficherait telle quelle : un rectangle noir sur un
-                fond noir. La dégradation est invisible. */}
+                ⚠️ LE FONDU DU BAS EST CUIT DANS L'ALPHA, PAS POSÉ EN CSS. Le
+                sujet descend jusqu'au dernier pixel — 15 % de la largeur encore
+                opaque sur la dernière bande — et la photo se coupait donc net.
+                L'alpha est maintenant multiplié par une rampe en `smoothstep`
+                qui part de 70 % de la hauteur et atteint zéro à 98 %, les deux
+                derniers pour cent étant francs pour qu'aucun voile ne subsiste
+                au ras du bord. Relevé sur le fichier écrit : alpha moyen 59 à
+                70 %, 26 à 80 %, 7 à 90 %, 0,0 à partir de 98 %.
+
+                Un dégradé CSS par-dessus aurait fait la même chose À UNE CHOSE
+                PRÈS : peint avec `--background`, il aurait aussi effacé le bas
+                du halo doré, qui vit DERRIÈRE l'image. Cuit dans l'alpha, le
+                fondu laisse passer ce qu'il y a dessous au lieu de le recouvrir.
+
+                Conséquence : la rampe part de 70 %, donc le bas des jambes et
+                les pieds ne se lisent plus. C'est voulu. Les rallonger demande
+                de régénérer le fichier, pas de retoucher le CSS.
+
+                Une chose à ne pas faire : remettre `overflow-hidden` + `rounded`.
+                Il n'y a plus de bord à arrondir et le coin trancherait dans du
+                vide. */}
             {/* ⚠️ IL DÉBORDE DE SA COLONNE, VERS LE HAUT ET SUR LES CÔTÉS, et
                 ce n'est possible que parce que ses bords sont transparents : un
                 débordement se verrait aussitôt sur une image encadrée.
 
-                `-mt-12` le fait monter de 48px au-dessus de la ligne où
-                démarre « Biographie », dans la colonne d'en face. Les 48px ne
-                sont pas 48px de sujet : le recadrage laisse environ 5 % de noir
-                au-dessus des pièces, soit une trentaine de pixels invisibles à
-                cette taille. Le sommet visible dépasse donc le mot d'une
-                quinzaine de pixels — « très légèrement », ce qui était la
-                demande. Il remonte dans le `py-28` de la section, largement
-                assez profond pour l'absorber.
+                `-mt-8` le fait monter de 32px au-dessus de la ligne où démarre
+                « Biographie », dans la colonne d'en face. Ces 32px ne sont pas
+                32px de sujet : le recadrage laisse 1,5 % d'air au-dessus de la
+                première carte, soit 13px à la taille de rendu. Le sommet visible
+                dépasse donc le mot d'une vingtaine de pixels — « très
+                légèrement », ce qui était la demande. C'était `-mt-12` du temps
+                du portrait précédent, dont le recadrage laissait 5 % de noir en
+                haut ; à recadrage plus serré, marge plus courte, sinon le
+                dépassement doublait.
 
                 `w-[115%]` avec `-ml-[7.5%]` l'élargit de part et d'autre. Vers
                 la droite il prend 35px sur les 64 de gouttière, il ne touche
                 donc pas la colonne de texte ; vers la gauche il mord sur le
                 rembourrage de page, sans jamais sortir de la fenêtre.
 
+                ⚠️ CE PORTRAIT EST PLUS HAUT QUE LE PRÉCÉDENT, et c'est lui qui
+                commande désormais la hauteur de la section. Le cliché est un
+                PLEIN PIED là où l'autre était un buste : rapport 0,639 contre
+                0,866. Dans la colonne de gauche élargie à 544px, il fait 852px
+                de haut contre 628 — 224 de plus, que la colonne de droite ne
+                rattrape pas. Réduire `w-[115%]` est le seul levier qui raccourcit
+                la section sans recadrer le sujet.
+
                 Tout est en `lg:` : en dessous, les deux colonnes sont empilées,
                 le portrait n'a plus de titre à dépasser et déborderait dans le
                 vide. */}
-            <div className="relative lg:-ml-[7.5%] lg:-mt-12 lg:w-[115%]">
+            <div className="relative lg:-ml-[7.5%] lg:-mt-8 lg:w-[115%]">
               {/* Halo doré derrière le sujet, très faible. Il ne se lit pas
                   comme une lumière mais comme une profondeur, et c'est ce qui
                   raccroche un noir et blanc à une charte dorée. 9 % seulement :
-                  le halo passe SOUS une image dont 85 % est transparente, donc
+                  le halo passe SOUS une image dont 71,6 % est transparente, donc
                   il s'affiche presque en entier — au-delà, on voit une tache
                   et non une profondeur. Il s'éteint bien avant les bords, sans
-                  quoi il redessinerait le rectangle qu'on vient d'effacer. */}
+                  quoi il redessinerait le rectangle qu'on vient d'effacer.
+
+                  ⚠️ IL A ÉTÉ DÉPLACÉ AVEC LA PHOTO. Le portrait précédent était
+                  un buste centré, d'où un halo à 50 % 40 %. Ici la masse du
+                  sujet est relevée à x 56–82 % et y 27–100 % du cadre : centré,
+                  le halo éclairait la cascade de cartes et laissait le corps
+                  dans le noir. */}
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "radial-gradient(46% 34% at 50% 40%, color-mix(in oklab, var(--gold) 9%, transparent), transparent 70%)",
+                    "radial-gradient(50% 36% at 60% 58%, color-mix(in oklab, var(--gold) 9%, transparent), transparent 70%)",
                 }}
               />
               <img
                 src={bioImg}
-                alt="Vince en costume sombre, surgissant du noir, trois pièces en suspension au-dessus de ses mains ouvertes"
-                width={1212}
-                height={1400}
+                alt="Vince en chemise blanche, le buste cambré, rattrapant d’une main une cascade de cartes qui tombe devant lui"
+                width={1000}
+                height={1566}
                 loading="lazy"
-                className="relative w-full mix-blend-screen"
+                className="relative w-full"
               />
             </div>
 
