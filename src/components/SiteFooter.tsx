@@ -47,15 +47,28 @@ const villes = [
   "Paris",
 ];
 
-// Même ordre que la barre de navigation, PLUS « Avis » : cette entrée a quitté
-// la barre au profit de « Galerie », et le pied de page est désormais le seul
-// endroit d'où l'on atteint la section des avis. Ne pas l'y supprimer.
+// Même ordre que la barre de navigation, et exactement les mêmes entrées.
+//
+// ⚠️ « AVIS » A ÉTÉ RETIRÉ PARCE QU'IL N'Y EN A PLUS AUCUN. L'entrée avait
+// quitté la barre de navigation au profit de « Galerie », et ce pied de page
+// était le dernier endroit d'où l'on atteignait la section — un commentaire
+// disait même ici de ne pas l'y supprimer.
+//
+// Ce qui a changé : le tableau `reviews` de `HomeEditorialSections.tsx` est
+// vide depuis qu'on en a retiré les avis du précédent artiste, et le bloc ne
+// s'affiche donc plus du tout. Le lien n'était pas mort pour autant, et c'est
+// le piège : l'ancre `#avis` porte la section qui contient AUSSI la FAQ, donc
+// cliquer « Avis » menait bel et bien quelque part — sur « Questions
+// fréquentes ». Un libellé qui promet une chose et en montre une autre.
+//
+// À REMETTRE LE JOUR OÙ VINCE FOURNIT SES VRAIS AVIS GOOGLE : remplir
+// `reviews` fait réapparaître le bloc tout seul, et cette entrée redevient
+// juste. L'ancre `#avis` n'a pas bougé, il n'y a que cette ligne à rajouter.
 const navigation = [
   { label: "Close-up", hash: "#close-up" },
   { label: "Spectacles de scène", hash: "#spectacles" },
   { label: "Biographie", hash: "#biographie" },
   { label: "Galerie", hash: "#galerie" },
-  { label: "Avis", hash: "#avis" },
 ];
 
 function EmblemeAnime() {
@@ -263,7 +276,34 @@ export function SiteFooter() {
           les colonnes sont effectivement côte à côte. */}
       <section className="relative">
         <div className="relative mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-24">
-          <div className="grid gap-14 sm:grid-cols-2 lg:grid-cols-[minmax(0,5fr)_repeat(3,minmax(0,2fr))] lg:gap-0 lg:divide-x lg:divide-border">
+          {/* ⚠️ LES TROIS COLONNES DE DROITE NE SONT PLUS ÉGALES, et c'est
+              l'adresse de courriel qui l'impose. Elles étaient en
+              `repeat(3,2fr)`, soit 218px chacune dont 80 de rembourrage : 138px
+              utiles. « contact@magicvince.com » en mesure 145 en Source Sans 3
+              à 14px, plus 25 pour l'icône et son écart, soit 170 — l'adresse
+              était donc coupée EN PLEIN MILIEU D'UN MOT, « contact@magicvin »
+              puis « ce.com ». « Picardie · Hauts-de-France », 172px avec son
+              icône, se coupait de même.
+
+              La colonne du milieu passe donc à 3fr et le rembourrage des trois
+              à `px-8`. Ce que cela donne, mesuré sur un conteneur de 1200px :
+
+                Explorer    200px → 136 utiles, le plus long libellé
+                            (« Spectacles de scène ») en fait 113 : 23 de marge
+                Me joindre  300px → 236 utiles, l'adresse en fait 170 : 66 de marge
+                Zone        200px → 136 utiles, contre 138 avant — inchangé
+
+              ⚠️ LA COLONNE DE MARQUE PAIE LA DIFFÉRENCE, de 545 à 500px, et
+              c'était la seule à pouvoir le faire. Vérifié : la citation y tient
+              toujours en QUATRE lignes (276px de large au lieu de 321, Playfair
+              24px, coupes recalculées mot à mot), soit 132px de haut contre 192
+              pour le portrait d'à côté — c'est donc le portrait qui commande la
+              hauteur, et il n'a pas bougé.
+
+              Toute entrée plus longue dans ces colonnes se vérifie à la mesure :
+              il n'y a plus de marge nulle part pour un mot insécable de plus de
+              136px. */}
+          <div className="grid gap-14 sm:grid-cols-2 lg:grid-cols-[minmax(0,5fr)_minmax(0,2fr)_minmax(0,3fr)_minmax(0,2fr)] lg:gap-0 lg:divide-x lg:divide-border">
             {/* La colonne d'identité prend les DEUX colonnes sous 1024px :
                 le portrait et la phrase se lisent côte à côte, et une demi-
                 largeur ne suffirait à aucun des deux. */}
@@ -300,44 +340,67 @@ export function SiteFooter() {
                     backgroundPosition: "49% 0%",
                   }}
                 />
-                <p className="max-w-sm font-display text-xl leading-snug text-foreground/90 md:text-2xl">
-                  {/* ⚠️ MÊME PHRASE QUE L'OUVERTURE DU BLOC « Mes prestations »
-                      (`Prestations.tsx`), coupée en deux pour que la seconde
-                      moitié passe en doré. La reprise est voulue — le pied de
-                      page referme sur la promesse de l'ouverture — mais elle
-                      n'est partagée par AUCUNE constante : modifier l'une sans
-                      l'autre fait dire deux choses différentes à la même page,
-                      et rien ne le signalerait. */}
-                  Sur scène ou à quelques centimètres,{" "}
-                  <em className="font-normal not-italic text-[var(--gold)]">
-                    le lendemain vous vous en souviendrez encore…
-                  </em>
-                </p>
-              </div>
+                {/* ⚠️ LA PHRASE ET LES RÉSEAUX FORMENT UNE SEULE COLONNE, à
+                    DROITE du portrait. Les deux boutons vivaient sous la
+                    rangée entière, donc sous le portrait et calés sur le bord
+                    gauche de la colonne : ils pendaient dans le vide, à
+                    trente-six pixels d'une photo qui ne leur devait rien,
+                    pendant que la phrase d'à côté s'arrêtait beaucoup plus
+                    haut.
 
-              <div className="mt-9 flex gap-3">
-                <a
-                  href="https://www.facebook.com/magicvince.magicvince"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Magic Vince sur Facebook"
-                  className="grid h-11 w-11 place-items-center rounded-md border border-border text-muted-foreground transition-colors hover:border-[var(--gold)] hover:bg-[var(--gold)]/10 hover:text-[var(--gold)]"
-                >
-                  <Facebook size={17} />
-                </a>
-                <a
-                  href="https://www.youtube.com/@vincentzaragoza2415"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Magic Vince sur YouTube"
-                  className="grid h-11 w-11 place-items-center rounded-md border border-border text-muted-foreground transition-colors hover:border-[var(--gold)] hover:bg-[var(--gold)]/10 hover:text-[var(--gold)]"
-                >
-                  <Youtube size={17} />
-                </a>
+                    Sous la phrase, ils ferment le bloc au lieu de le
+                    prolonger — et le pied de page y GAGNE EN HAUTEUR. Avant :
+                    rangée de 192px (c'est le portrait qui commandait) plus 36
+                    de marge plus 44 de boutons, soit 272. Maintenant : la
+                    colonne de texte fait 132 + 28 + 44 = 204px, et c'est elle
+                    qui commande puisqu'elle dépasse le portrait de 12px. 68px
+                    de moins.
+
+                    `flex-wrap` est une soupape, pas un effet recherché : les
+                    deux boutons demandent 100px et la colonne de texte n'en
+                    offre jamais moins de 136, relevé à 320px de fenêtre, le
+                    cas le plus serré du site. Si un troisième réseau arrive
+                    un jour, il passera à la ligne au lieu de déborder. */}
+                <div>
+                  <p className="max-w-sm font-display text-xl leading-snug text-foreground/90 md:text-2xl">
+                    {/* ⚠️ MÊME PHRASE QUE L'OUVERTURE DU BLOC « Mes prestations »
+                        (`Prestations.tsx`), coupée en deux pour que la seconde
+                        moitié passe en doré. La reprise est voulue — le pied de
+                        page referme sur la promesse de l'ouverture — mais elle
+                        n'est partagée par AUCUNE constante : modifier l'une sans
+                        l'autre fait dire deux choses différentes à la même page,
+                        et rien ne le signalerait. */}
+                    Sur scène ou à quelques centimètres,{" "}
+                    <em className="font-normal not-italic text-[var(--gold)]">
+                      le lendemain vous vous en souviendrez encore…
+                    </em>
+                  </p>
+
+                  <div className="mt-7 flex flex-wrap gap-3">
+                    <a
+                      href="https://www.facebook.com/magicvince.magicvince"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Magic Vince sur Facebook"
+                      className="grid h-11 w-11 place-items-center rounded-md border border-border text-muted-foreground transition-colors hover:border-[var(--gold)] hover:bg-[var(--gold)]/10 hover:text-[var(--gold)]"
+                    >
+                      <Facebook size={17} />
+                    </a>
+                    <a
+                      href="https://www.youtube.com/@vincentzaragoza2415"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Magic Vince sur YouTube"
+                      className="grid h-11 w-11 place-items-center rounded-md border border-border text-muted-foreground transition-colors hover:border-[var(--gold)] hover:bg-[var(--gold)]/10 hover:text-[var(--gold)]"
+                    >
+                      <Youtube size={17} />
+                    </a>
+                  </div>
+                </div>
               </div>
             </FadeIn>
 
-            <FadeIn delay={0.08} className="lg:px-10">
+            <FadeIn delay={0.08} className="lg:px-8">
               <p className="type-eyebrow font-title text-foreground">Explorer</p>
               <ul className="mt-7 space-y-4">
                 {navigation.map((entree) => (
@@ -354,7 +417,7 @@ export function SiteFooter() {
               </ul>
             </FadeIn>
 
-            <FadeIn delay={0.16} className="lg:px-10">
+            <FadeIn delay={0.16} className="lg:px-8">
               <p className="type-eyebrow font-title text-foreground">Me joindre</p>
               <ul className="mt-7 space-y-4 text-sm">
                 <li>
@@ -367,9 +430,25 @@ export function SiteFooter() {
                   </a>
                 </li>
                 <li>
+                  {/* ⚠️ PLUS DE `break-all`, ET IL NE DOIT PAS REVENIR. C'est
+                      lui qui coupait l'adresse en « contact@magicvin » puis
+                      « ce.com » : il autorise la coupe À N'IMPORTE QUEL
+                      caractère, y compris au milieu du nom de domaine. Il
+                      masquait le vrai problème, qui était une colonne trop
+                      étroite — voir le commentaire de la grille plus haut.
+
+                      La colonne offre maintenant 236px utiles pour une adresse
+                      qui en mesure 170, icône comprise, mesurée sur les chasses
+                      réelles de Source Sans 3. Aux largeurs inférieures à
+                      1024px la grille passe à deux colonnes de 268px, puis à
+                      une seule : l'adresse tient partout.
+
+                      Si elle s'allonge un jour, élargir la colonne — ne pas
+                      remettre une classe de coupe. Une adresse coupée en deux
+                      n'est plus recopiable à l'œil. */}
                   <a
                     href="mailto:contact@magicvince.com"
-                    className="inline-flex items-start gap-2.5 break-all text-muted-foreground transition-colors hover:text-[var(--gold)]"
+                    className="inline-flex items-start gap-2.5 text-muted-foreground transition-colors hover:text-[var(--gold)]"
                   >
                     <Mail size={15} className="mt-1 shrink-0" aria-hidden="true" />
                     contact@magicvince.com
@@ -386,7 +465,7 @@ export function SiteFooter() {
                 sont des mots-clés pour le référencement local autant qu'une
                 information, et douze puces auraient fait une colonne deux
                 fois plus haute que ses voisines. */}
-            <FadeIn delay={0.24} className="lg:pl-10">
+            <FadeIn delay={0.24} className="lg:pl-8">
               <p className="type-eyebrow font-title text-foreground">Zone d’intervention</p>
               <p className="mt-7 text-sm leading-relaxed text-muted-foreground">
                 {villes.join(" · ")}
