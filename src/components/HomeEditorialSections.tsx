@@ -52,14 +52,10 @@ import stageImg from "@/assets/photos/scene-caisse-apparition-rideau-large.webp"
 import gStudioConfettisLargeImg from "@/assets/photos/studio-eventail-confettis-large.webp";
 
 // Galerie principale.
-import gStudioBrasImg from "@/assets/photos/studio-bras-ouverts-vignette.webp";
-import gStudioBrasLargeImg from "@/assets/photos/studio-bras-ouverts-large.webp";
 import gGalaRireImg from "@/assets/photos/closeup-gala-rire-vignette.webp";
 import gGalaRireLargeImg from "@/assets/photos/closeup-gala-rire-large.webp";
 import gMariagePierreImg from "@/assets/photos/closeup-mariage-mur-pierre-vignette.webp";
 import gMariagePierreLargeImg from "@/assets/photos/closeup-mariage-mur-pierre-large.webp";
-import gFoulardImg from "@/assets/photos/scene-foulard-bleu-vignette.webp";
-import gFoulardLargeImg from "@/assets/photos/scene-foulard-bleu-large.webp";
 import gEventailImg from "@/assets/photos/studio-eventail-envol-vignette.webp";
 import gEventailLargeImg from "@/assets/photos/studio-eventail-envol-large.webp";
 import gTableeImg from "@/assets/photos/tablee-restaurant-groupe-vignette.webp";
@@ -74,38 +70,51 @@ import gBarGroupeImg from "@/assets/photos/closeup-bar-groupe-vignette.webp";
 import gBarGroupeLargeImg from "@/assets/photos/closeup-bar-groupe-large.webp";
 import gParticipationImg from "@/assets/photos/spectacle-enfants-participation-vignette.webp";
 import gParticipationLargeImg from "@/assets/photos/spectacle-enfants-participation-large.webp";
-// Portrait de la section Biographie.
 
-// ── Les douze photos ajoutées en septembre 2026, placées en tête de galerie.
-// Trois viennent d'un reportage professionnel, les neuf autres de captations
-// sur le vif. Voir l'avertissement au-dessus de `gallery`.
+// Les photos de septembre 2026 encore en place. Elles étaient douze ; cinq ont
+// été retirées en octobre à la demande de Vince, dont deux des trois clichés de
+// reportage signé — il ne reste que la pièce au creux de la main.
 import nCloseupCocktailRireInviteeImg from "@/assets/photos/closeup-cocktail-rire-invitee-vignette.webp";
 import nCloseupCocktailRireInviteeLargeImg from "@/assets/photos/closeup-cocktail-rire-invitee-large.webp";
 import nCloseupCocktailPieceMainImg from "@/assets/photos/closeup-cocktail-piece-main-vignette.webp";
 import nCloseupCocktailPieceMainLargeImg from "@/assets/photos/closeup-cocktail-piece-main-large.webp";
-import nCloseupTableBallesRougesImg from "@/assets/photos/closeup-table-balles-rouges-vignette.webp";
-import nCloseupTableBallesRougesLargeImg from "@/assets/photos/closeup-table-balles-rouges-large.webp";
 import nCloseupFlammeOmbrePorteeImg from "@/assets/photos/closeup-flamme-ombre-portee-vignette.webp";
 import nCloseupFlammeOmbrePorteeLargeImg from "@/assets/photos/closeup-flamme-ombre-portee-large.webp";
 import nSceneCaisseLumiereRougeImg from "@/assets/photos/scene-caisse-lumiere-rouge-vignette.webp";
 import nSceneCaisseLumiereRougeLargeImg from "@/assets/photos/scene-caisse-lumiere-rouge-large.webp";
-import nSceneCordeRideauxRosesImg from "@/assets/photos/scene-corde-rideaux-roses-vignette.webp";
-import nSceneCordeRideauxRosesLargeImg from "@/assets/photos/scene-corde-rideaux-roses-large.webp";
 import nSceneSpectatriceInviteeImg from "@/assets/photos/scene-spectatrice-invitee-vignette.webp";
 import nSceneSpectatriceInviteeLargeImg from "@/assets/photos/scene-spectatrice-invitee-large.webp";
 import nSpectacleEnfantFoulardRougeImg from "@/assets/photos/spectacle-enfant-foulard-rouge-vignette.webp";
 import nSpectacleEnfantFoulardRougeLargeImg from "@/assets/photos/spectacle-enfant-foulard-rouge-large.webp";
-import nCloseupBoitesPredictionImg from "@/assets/photos/closeup-boites-prediction-vignette.webp";
-import nCloseupBoitesPredictionLargeImg from "@/assets/photos/closeup-boites-prediction-large.webp";
-import nSpectacleBallonGrangeImg from "@/assets/photos/spectacle-ballon-grange-vignette.webp";
-import nSpectacleBallonGrangeLargeImg from "@/assets/photos/spectacle-ballon-grange-large.webp";
-import nSceneSeauMicroCasqueImg from "@/assets/photos/scene-seau-micro-casque-vignette.webp";
-import nSceneSeauMicroCasqueLargeImg from "@/assets/photos/scene-seau-micro-casque-large.webp";
-import nSceneConfettisMicroCasqueImg from "@/assets/photos/scene-confettis-micro-casque-vignette.webp";
-import nSceneConfettisMicroCasqueLargeImg from "@/assets/photos/scene-confettis-micro-casque-large.webp";
-// Ajoutée après coup, insérée au milieu de la galerie et non en tête.
 import nSceneCaisseBoisApparitionImg from "@/assets/photos/scene-caisse-bois-apparition-vignette.webp";
 import nSceneCaisseBoisApparitionLargeImg from "@/assets/photos/scene-caisse-bois-apparition-large.webp";
+
+// ── Le lot d'octobre 2026. Huit photos sont arrivées, CINQ sont restées.
+//
+// ⚠️ DEUX SONT REPARTIES AUSSITÔT POUR UNE RAISON QUI N'EST PAS ESTHÉTIQUE :
+// elles portaient en bas à gauche le bandeau « ✦ Contenu généré par l'IA »,
+// incrusté dans le pixel par Google Photos après un montage automatique. Sur
+// la galerie d'un magicien, publier une photo de prestation qui se déclare
+// fabriquée dit exactement le contraire de ce que le site raconte. Une
+// troisième, le cocktail d'entreprise, faisait doublon avec la photo de
+// l'invitée qui rit, remise à son rang d'origine.
+//
+// ⚠️ DEUX DES CINQ RESTANTES PORTENT LA SIGNATURE D'UN PHOTOGRAPHE, elle aussi
+// incrustée : « Romain Vignane Photographies » en bas à droite de
+// `scene-duo-decor-foret`, « Aline.Saclier » en haut à gauche de
+// `scene-duo-foulard-vert`. Rien n'a été recadré pour les faire disparaître —
+// retirer la signature d'un photographe n'est pas une décision d'intégration.
+// Les cessions restent à obtenir.
+import oSceneDuoFoulardVertImg from "@/assets/photos/scene-duo-foulard-vert-vignette.webp";
+import oSceneDuoFoulardVertLargeImg from "@/assets/photos/scene-duo-foulard-vert-large.webp";
+import oSceneDuoDecorForetImg from "@/assets/photos/scene-duo-decor-foret-vignette.webp";
+import oSceneDuoDecorForetLargeImg from "@/assets/photos/scene-duo-decor-foret-large.webp";
+import oSalleGuirlandesImg from "@/assets/photos/salle-guirlandes-public-vignette.webp";
+import oSalleGuirlandesLargeImg from "@/assets/photos/salle-guirlandes-public-large.webp";
+import oSceneRideauBleuImg from "@/assets/photos/scene-rideau-bleu-salle-vignette.webp";
+import oSceneRideauBleuLargeImg from "@/assets/photos/scene-rideau-bleu-salle-large.webp";
+import oCloseupTableBleImg from "@/assets/photos/closeup-table-ble-convives-vignette.webp";
+import oCloseupTableBleLargeImg from "@/assets/photos/closeup-table-ble-convives-large.webp";
 
 // ⚠️ Portrait de la biographie. CE FICHIER N'EST PAS UNE PHOTO ORDINAIRE :
 // c'est un WebP à transparence dont la couche alpha porte tout le cliché et
@@ -495,47 +504,60 @@ const gallery: Photo[] = [
   //                                        portrait, qui s'y ferait couper la
   //                                        tête et les jambes.
   //
-  // Vérification : 9 portraits pour 12 tuiles carrées sur les quatre motifs,
-  // 15 paysages pour 12 bandes. Les trois carrés en trop (motif 4) reçoivent
-  // des paysages, ce qui ne coûte qu'un rognage latéral.
+  // Un carré peut recevoir un paysage — cela ne coûte qu'un rognage latéral —
+  // mais l'inverse est interdit.
   //
-  // ⚠️ LES DOUZE PHOTOS AJOUTÉES EN SEPTEMBRE 2026 OUVRENT LA GALERIE, mais
-  // pas exactement douze d'affilée : elles comptent SEPT portraits alors que
-  // les deux premiers motifs n'offrent que six carrés. La douzième — la caisse
-  // en lumière rouge — est donc descendue en tête du motif 3, sur le grand
-  // carré, et une photo existante en paysage (la tablée) remonte prendre sa
-  // place sur la dernière bande du motif 2. Toutes les nouvelles sont ainsi
-  // dans les treize premières, et aucune n'est déformée.
+  // COMPTE DES FORMES, à refaire avant tout déplacement : 6 portraits pour 11
+  // tuiles carrées, 15 paysages pour 10 bandes. Les CINQ carrés en trop
+  // reçoivent les cinq paysages de rapport 1,33, ceux qui perdent le moins au
+  // rognage — 25 % de largeur contre 33 pour un 3:2.
   //
-  // ⚠️ DEUX RÉSERVES AVANT MISE EN LIGNE, à lever avec Vince :
+  // ⚠️ VINGT ET UNE PHOTOS, ET 21 N'EST PAS UN MULTIPLE DE SIX. Le dernier
+  // motif n'a que TROIS tuiles et la mosaïque laisserait un trou ; c'est
+  // `MOTIFS_FIN` qui s'en charge, et il impose à ces trois-là d'être une BANDE
+  // puis DEUX CARRÉS — l'inverse de l'ordre habituel. Voir son commentaire.
   //
-  //  1. DROITS PHOTO. Trois de ces clichés — le cocktail avec l'invitée qui
-  //     rit, la pièce au creux de la main, la table aux balles rouges —
-  //     viennent d'un reportage professionnel signé, et le nom du photographe
-  //     figurait dans leur fichier d'origine. Leur publication en ligne
-  //     suppose une cession de droits.
-  //  2. DROIT À L'IMAGE. Plusieurs montrent des visages parfaitement
-  //     reconnaissables, dont celui d'un enfant appelé sur scène. C'est la même
-  //     réserve qui tient trois photos de cocktail de mariage hors de cette
-  //     liste, plus bas : leur diffusion n'était pas confirmée.
+  // HISTORIQUE DU CONTENU, parce qu'il explique des trous dans la série :
+  // la galerie a compté 24 photos, puis 23 (neuf retirées, huit ajoutées en
+  // octobre 2026), puis 21. Trois des huit nouvelles sont reparties aussitôt :
+  // deux portaient le bandeau « Contenu généré par l'IA » incrusté par Google
+  // Photos, la troisième faisait doublon avec la photo de l'invitée qui rit,
+  // remise à son rang d'origine. Leurs fichiers WebP ont été supprimés ; les
+  // JPEG d'origine restent dans `src/assets/photos/`, non versionnés.
+  //
+  // ⚠️ RÉSERVES AVANT MISE EN LIGNE, à lever avec Vince :
+  //
+  //  1. DEUX PHOTOGRAPHES SONT NOMMÉS DANS L'IMAGE MÊME. `scene-duo-decor-foret`
+  //     porte « Romain Vignane Photographies » en bas à droite,
+  //     `scene-duo-foulard-vert` porte « Aline.Saclier » en haut à gauche. Rien
+  //     n'a été recadré pour les faire disparaître.
+  //  2. DROITS PHOTO. `closeup-cocktail-piece-main` et
+  //     `closeup-cocktail-rire-invitee` viennent d'un reportage professionnel
+  //     signé.
+  //  3. DROIT À L'IMAGE. Plusieurs clichés montrent des visages parfaitement
+  //     reconnaissables, dont ceux d'enfants appelés sur scène et d'une salle
+  //     entière de public.
 
   // ── Motif 1 — l'aperçu : ce qu'on voit sans déplier ───────────
-  {
-    src: nCloseupTableBallesRougesImg,
-    grand: nCloseupTableBallesRougesLargeImg,
-    alt: "Vince penché vers une invitée, deux balles rouges posées sur la table, devant un rideau rouge",
-  },
   {
     src: nSpectacleEnfantFoulardRougeImg,
     grand: nSpectacleEnfantFoulardRougeLargeImg,
     alt: "Un enfant appelé sur scène déploie un grand foulard rouge devant Vince",
   },
   {
-    src: nSceneConfettisMicroCasqueImg,
-    grand: nSceneConfettisMicroCasqueLargeImg,
-    alt: "Vince, micro-casque sur la tête, lâche une pluie de confettis sous les rideaux bleus",
+    src: oSceneDuoFoulardVertImg,
+    grand: oSceneDuoFoulardVertLargeImg,
+    alt: "Vince et sa partenaire présentent un foulard vert au-dessus d’une boîte rouge, sur un décor de sous-bois",
   },
   {
+    src: nCloseupFlammeOmbrePorteeImg,
+    grand: nCloseupFlammeOmbrePorteeLargeImg,
+    alt: "Une flamme dans la main de Vince projette son ombre en grand sur le mur derrière lui",
+  },
+  {
+    // ⚠️ REMISE À SON RANG D'ORIGINE, le quatrième. Elle avait été retirée en
+    // octobre avec huit autres, puis rappelée : c'est la photo que Vince a
+    // voulu retrouver exactement là où elle était.
     src: nCloseupCocktailRireInviteeImg,
     grand: nCloseupCocktailRireInviteeLargeImg,
     alt: "Une invitée éclate de rire pendant un tour de close-up, au milieu d’un cocktail",
@@ -546,56 +568,12 @@ const gallery: Photo[] = [
     alt: "Vince montre une pièce au creux de sa main à un invité, pendant un cocktail",
   },
   {
-    src: nSceneSpectatriceInviteeImg,
-    grand: nSceneSpectatriceInviteeLargeImg,
-    alt: "Une spectatrice invitée sur scène tend la main vers la table de Vince",
-  },
-
-  // ── Motif 2 ───────────────────────────────────────────────────
-  {
-    src: nCloseupFlammeOmbrePorteeImg,
-    grand: nCloseupFlammeOmbrePorteeLargeImg,
-    alt: "Une flamme dans la main de Vince projette son ombre en grand sur le mur derrière lui",
-  },
-  {
-    src: nSceneCordeRideauxRosesImg,
-    grand: nSceneCordeRideauxRosesLargeImg,
-    alt: "Vince tend une corde entre ses mains, seul en scène devant des rideaux roses",
-  },
-  {
-    src: nSceneSeauMicroCasqueImg,
-    grand: nSceneSeauMicroCasqueLargeImg,
-    alt: "Vince, micro-casque sur la tête, au-dessus d’un seau métallique posé sur un tabouret",
-  },
-  {
-    src: nCloseupBoitesPredictionImg,
-    grand: nCloseupBoitesPredictionLargeImg,
-    alt: "Une spectatrice tient une carte devant trois boîtes de prédiction empilées",
-  },
-  {
-    src: nSpectacleBallonGrangeImg,
-    grand: nSpectacleBallonGrangeLargeImg,
-    alt: "Vince présente un ballon blanc à des enfants, dans une grange",
-  },
-  {
     src: gTableeImg,
     grand: gTableeLargeImg,
     alt: "Une grande tablée de restaurant, une vingtaine de convives bras levés en fin de prestation",
   },
 
-  // ── Motif 3 ───────────────────────────────────────────────────────────
-  {
-    // ⚠️ INSÉRÉE ICI, AU MILIEU, ET PAS AILLEURS. Ajouter une photo décale
-    // toutes les suivantes d'un rang, donc CHANGE LEUR FORME DE TUILE : un
-    // portrait qui tenait sur un carré se retrouve sur une bande 2:1, tête et
-    // jambes coupées. Les trois portraits qui suivaient ont donc été
-    // redistribués — deux restent sur les carrés de ce motif, le troisième
-    // descend sur le grand carré du motif 4. Revérifier les 25 positions
-    // avant de déplacer quoi que ce soit ici.
-    src: nSceneCaisseBoisApparitionImg,
-    grand: nSceneCaisseBoisApparitionLargeImg,
-    alt: "Vince soulève le couvercle d’une caisse en bois sur scène, des panneaux en suspension au-dessus",
-  },
+  // ── Motif 2 ───────────────────────────────────────────────────
   {
     src: nSceneCaisseLumiereRougeImg,
     grand: nSceneCaisseLumiereRougeLargeImg,
@@ -607,42 +585,16 @@ const gallery: Photo[] = [
     alt: "Une flamme jaillit entre les mains de Vince pendant une soirée, un invité la fixe de tout près",
   },
   {
-    src: gGalaRireImg,
-    grand: gGalaRireLargeImg,
-    alt: "Vince présente une carte à une tablée de gala, un convive éclate de rire à côté de lui",
+    // Paysage sur une tuile carrée : rapport 1,33, le rognage latéral est de
+    // 25 % et le sujet est au centre du cadre.
+    src: oSceneRideauBleuImg,
+    grand: oSceneRideauBleuLargeImg,
+    alt: "Vince seul sur une petite scène devant un rideau bleu, face à une salle plongée dans le noir",
   },
   {
-    src: gMariagePierreImg,
-    grand: gMariagePierreLargeImg,
-    alt: "Close-up dans une salle aux murs de pierre, Vince entouré des invités d’un mariage",
-  },
-  {
-    cadrage: "50% 100%",
-    src: gFoulardImg,
-    grand: gFoulardLargeImg,
-    alt: "Vince sur la scène d’un théâtre, un foulard bleu entre les mains, entre ses deux guéridons",
-  },
-
-  // ── Motif 4 ───────────────────────────────────────────────────────────
-  {
-    src: gParticipationImg,
-    grand: gParticipationLargeImg,
-    alt: "Une enfant appelée sur scène tend la main vers Vince, devant un public d’enfants",
-  },
-  {
-    src: gStudioBrasImg,
-    grand: gStudioBrasLargeImg,
-    alt: "Vince en studio, bras grands ouverts derrière un guéridon, sur fond clair",
-  },
-  {
-    src: gBarGroupeImg,
-    grand: gBarGroupeLargeImg,
-    alt: "Vince présente un tour à un groupe de jeunes debout, dans la salle d’un bar",
-  },
-  {
-    src: gParapluieImg,
-    grand: gParapluieLargeImg,
-    alt: "Vince ouvre un parapluie multicolore sur scène, une petite fille à côté de lui face au public",
+    src: oCloseupTableBleImg,
+    grand: oCloseupTableBleLargeImg,
+    alt: "Vince penché au-dessus d’une table, deux convives suivent le tour de tout près",
   },
   {
     src: gSilhouetteImg,
@@ -650,9 +602,62 @@ const gallery: Photo[] = [
     alt: "Vince en contre-jour, réduit à sa silhouette, le bras tendu vers le côté",
   },
   {
+    src: gGalaRireImg,
+    grand: gGalaRireLargeImg,
+    alt: "Vince présente une carte à une tablée de gala, un convive éclate de rire à côté de lui",
+  },
+
+  // ── Motif 3 ───────────────────────────────────────────────────────────
+  {
+    // Paysage sur une tuile carrée, rapport 1,33.
+    src: nSceneCaisseBoisApparitionImg,
+    grand: nSceneCaisseBoisApparitionLargeImg,
+    alt: "Vince soulève le couvercle d’une caisse en bois sur scène, des panneaux en suspension au-dessus",
+  },
+  {
+    src: gParticipationImg,
+    grand: gParticipationLargeImg,
+    alt: "Une enfant appelée sur scène tend la main vers Vince, devant un public d’enfants",
+  },
+  {
+    // Paysage sur une tuile carrée, rapport 1,33.
+    src: nSceneSpectatriceInviteeImg,
+    grand: nSceneSpectatriceInviteeLargeImg,
+    alt: "Une spectatrice invitée sur scène tend la main vers la table de Vince",
+  },
+  {
+    src: gMariagePierreImg,
+    grand: gMariagePierreLargeImg,
+    alt: "Close-up dans une salle aux murs de pierre, Vince entouré des invités d’un mariage",
+  },
+  {
+    src: oSceneDuoDecorForetImg,
+    grand: oSceneDuoDecorForetLargeImg,
+    alt: "Vince et sa partenaire en costume sur une scène décorée en sous-bois, elle coiffée d’un haut-de-forme",
+  },
+  {
+    src: gBarGroupeImg,
+    grand: gBarGroupeLargeImg,
+    alt: "Vince présente un tour à un groupe de jeunes debout, dans la salle d’un bar",
+  },
+
+  // ── Motif de fin — TROIS TUILES : une bande puis deux carrés. ──────────
+  {
     src: gEventailImg,
     grand: gEventailLargeImg,
     alt: "Vince en studio, éventail noir à la main, sous une pluie de confettis et une lumière violette",
+  },
+  {
+    // Paysage sur une tuile carrée, rapport 1,33.
+    src: gParapluieImg,
+    grand: gParapluieLargeImg,
+    alt: "Vince ouvre un parapluie multicolore sur scène, une petite fille à côté de lui face au public",
+  },
+  {
+    // Paysage sur une tuile carrée, rapport 1,33.
+    src: oSalleGuirlandesImg,
+    grand: oSalleGuirlandesLargeImg,
+    alt: "Une salle décorée de guirlandes, un public d’enfants et d’adultes assis, bras levés",
   },
 ];
 
@@ -1856,6 +1861,49 @@ const MOTIF_TUILES = [
   "aspect-square md:col-span-2 md:aspect-[2/1]",
 ];
 
+/**
+ * LES MOTIFS DE FIN, pour les derniers motifs incomplets.
+ *
+ * ⚠️ POURQUOI ILS EXISTENT. Le compte des photos appartient à Vince, pas à la
+ * mosaïque : il a été de 24, puis 23, puis 21 en l'espace d'un échange. Dès
+ * qu'il n'est plus un multiple de six, `MOTIF_TUILES` amputé de ses dernières
+ * tuiles ne pave plus la grille et laisse un TROU en bas à droite, juste avant
+ * le bouton. C'est à la grille de s'adapter, pas à la galerie de s'arrondir.
+ *
+ * LA CONTRAINTE EST ARITHMÉTIQUE : sur quatre colonnes, les tuiles d'un motif
+ * doivent totaliser un multiple de 4 cases. La grande tuile 2×2 en consomme
+ * quatre à elle seule et en bloque deux sur DEUX rangées — c'est elle qui rend
+ * la plupart des restes impavables, et aucun motif de fin ne la reprend.
+ *
+ *   reste 3 → 2 + 1 + 1 = 4 cases : [a a b c]
+ *   reste 5 → 1 + 1 + 2 + 2 + 2 = 8 cases : [a b c c] puis [d d e e]
+ *
+ * Sur deux colonnes, les mêmes classes pavent aussi — vérifié par simulation du
+ * placement, case par case, dans les deux largeurs.
+ *
+ * ⚠️ CHAQUE MOTIF DE FIN IMPOSE SON PROPRE ORDRE DE FORMES, différent de
+ * l'ordinaire « trois carrés puis trois bandes ». Le motif de trois commence
+ * par une BANDE : la fin de `gallery` doit donc y poser un paysage, puis deux
+ * photos pour des carrés. Changer l'un sans l'autre couche un portrait dans une
+ * bande 2:1, où il perd la tête et les jambes.
+ *
+ * Restes NON traités : 1, 2 et 4. Le 4 pave déjà tout seul (les quatre
+ * premières tuiles de `MOTIF_TUILES` font deux rangées pleines). Le 1 ne peut
+ * pas être pavé sans une tuile pleine largeur, d'un rapport 4:1 qui couperait
+ * n'importe quelle photo. Le 2 le serait par deux bandes, mais il n'a jamais
+ * eu lieu et un motif de secours jamais vu est un motif jamais regardé.
+ */
+const MOTIFS_FIN: Record<number, string[]> = {
+  3: ["col-span-2 aspect-[2/1]", "aspect-square", "aspect-square"],
+  5: [
+    "aspect-square",
+    "aspect-square",
+    "col-span-2 aspect-[2/1]",
+    "col-span-2 aspect-[2/1]",
+    "col-span-2 aspect-[2/1]",
+  ],
+};
+
 function EditorialGallery() {
   const [expanded, setExpanded] = useState(false);
   const [active, setActive] = useState<number | null>(null);
@@ -1867,6 +1915,22 @@ function EditorialGallery() {
   const visible = expanded ? gallery : gallery.slice(0, APERCU);
   const restantes = gallery.length - APERCU;
   const ctaRef = useRef<HTMLDivElement>(null);
+
+  // Le dernier motif est-il incomplet, et d'une taille qu'on sait paver ? Si
+  // oui, ses tuiles prennent le motif de fin correspondant au lieu de la suite
+  // ordinaire — sans quoi la mosaïque se termine sur un trou. Voir le
+  // commentaire de `MOTIFS_FIN`.
+  //
+  // C'est calculé sur `visible` et non sur `gallery` : replié, l'aperçu fait
+  // six tuiles et le cas ne se présente pas ; c'est au dépliement qu'il
+  // apparaît.
+  const reste = visible.length % MOTIF_TUILES.length;
+  const motifFin = MOTIFS_FIN[reste];
+  const debutFin = visible.length - reste;
+  const tuileDe = (index: number) =>
+    motifFin && index >= debutFin
+      ? motifFin[index - debutFin]
+      : MOTIF_TUILES[index % MOTIF_TUILES.length];
 
   // En repliant, la page perd quatre rangées de vignettes D'UN COUP, et elles
   // disparaissent AU-DESSUS du point où l'on se trouve : le navigateur garde la
@@ -1925,7 +1989,7 @@ function EditorialGallery() {
               key={index}
               type="button"
               onClick={() => setActive(index)}
-              className={`group relative overflow-hidden bg-card ${MOTIF_TUILES[index % MOTIF_TUILES.length]}`}
+              className={`group relative overflow-hidden bg-card ${tuileDe(index)}`}
               aria-label={`Agrandir : ${photo.alt}`}
             >
               {/* `objectPosition` n'existe que pour les photos non rognées à la

@@ -173,16 +173,26 @@ export function Visionneuse({ photos, index, onIndex, onClose }: Props) {
             />
           )}
 
-          {/* Légende et compteur. La légende reprend le `alt` : il décrit déjà
-              la photo, le dédoubler dans un champ « titre » aurait créé deux
-              textes à maintenir pour la même image. */}
+          {/* ⚠️ PLUS DE LÉGENDE SOUS LA PHOTO, IL NE RESTE QUE LE COMPTEUR.
+              Elle reprenait le `alt`, qui décrivait déjà la photo — « Vince
+              penché au-dessus d'une table, deux convives suivent le tour de
+              tout près ». Lue à voix basse par le visiteur qui regarde
+              exactement cela, elle ne lui apprenait rien et parasitait l'image.
+
+              ⚠️ LE `alt` N'A PAS DISPARU POUR AUTANT, et il ne doit pas. Il
+              reste sur chaque `<img>` et sur l'`aria-label` des vignettes :
+              c'est le seul texte dont dispose un lecteur d'écran, et le seul
+              que Google lise pour comprendre une photo. Ce qui a été retiré,
+              c'est son AFFICHAGE, pas la description elle-même. Vider les `alt`
+              de `gallery` pour « finir le ménage » rendrait la galerie muette
+              pour une partie des visiteurs.
+
+              Le compteur reste, et il ne fait pas double emploi : lui seul dit
+              où l'on en est dans les vingt-trois. */}
           <div
             className="mt-5 flex max-w-[92vw] flex-col items-center gap-2 text-center"
             onClick={(event) => event.stopPropagation()}
           >
-            <p className="max-w-2xl text-sm font-light leading-snug text-muted-foreground">
-              {photo.alt}
-            </p>
             {nombre > 1 && (
               <p className="type-eyebrow text-[var(--gold)]">
                 {(index ?? 0) + 1} / {nombre}
