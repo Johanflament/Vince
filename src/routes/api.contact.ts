@@ -58,15 +58,36 @@ import type {} from "@tanstack/react-start";
  *  sans quoi la route deviendrait un relais de courrier ouvert. */
 const DESTINATAIRE = "contact@magicvince.com";
 
-/** Aucune boîte n'existe derrière cette adresse, elle ne sert qu'à signer
- *  l'envoi.
+/** ⚠️ C'EST LA MÊME ADRESSE QUE LE DESTINATAIRE, ET C'EST VOULU. Le message
+ *  part donc de la boîte de Vince vers la boîte de Vince ; seul le nom affiché
+ *  dit d'où il vient vraiment.
  *
- *  ⚠️ `no-reply` ET SURTOUT PAS `contact`. La même adresse en expéditeur et en
- *  destinataire — un message que `contact@magicvince.com` s'enverrait à
- *  lui-même — déclenche des heuristiques anti-spam chez IONOS pour rien. Le
- *  visiteur ne voit de toute façon jamais cette adresse : seul Vince la lit, et
- *  c'est `reply_to` qui porte celle à laquelle répondre. */
-const EXPEDITEUR = "Site Vince le Magicien <no-reply@magicvince.com>";
+ *  Ce fichier a d'abord utilisé `no-reply@magicvince.com`, par prudence : une
+ *  adresse d'expédition distincte évite les heuristiques anti-spam qui se
+ *  méfient d'un message qu'une boîte s'enverrait à elle-même. Résultat, TOUS
+ *  LES ENVOIS ONT REBONDI, avec ce motif d'IONOS :
+ *
+ *    550 Requested action not taken: mailbox unavailable
+ *    550 invalid DNS MX or A/AAAA resource record
+ *
+ *  L'étiquette est trompeuse — les MX de `magicvince.com` pointent vers
+ *  `mx00/mx01.ionos.fr`, qui ont tous deux un A, donc le critère annoncé par
+ *  IONOS est satisfait. La vraie cause est la première ligne : IONOS héberge
+ *  les boîtes de ce domaine, `no-reply@magicvince.com` n'en est pas une, et un
+ *  message qui se réclame d'une adresse inconnue du domaine qu'il héberge est
+ *  refusé. Le test qui l'a montré : un message de Resend lui-même, expédié
+ *  depuis `onboarding@resend.dev`, est arrivé sans encombre dans la même boîte
+ *  à la même période.
+ *
+ *  ⚠️ NE PAS REVENIR À UNE ADRESSE INVENTÉE — `no-reply@`, `site@`, `formulaire@`
+ *  — sans créer d'abord la boîte ou l'alias correspondant chez IONOS. C'est
+ *  l'erreur qui a coûté une soirée. Resend le déconseille d'ailleurs pour une
+ *  autre raison, visible dans ses « Insights » : une adresse qui annonce qu'on
+ *  ne peut pas répondre dégrade la confiance des boîtes de réception.
+ *
+ *  Le visiteur ne voit jamais cette adresse : seul Vince la lit, et c'est
+ *  `reply_to` qui porte celle à laquelle répondre. */
+const EXPEDITEUR = `Formulaire du site <${DESTINATAIRE}>`;
 
 const RESEND_URL = "https://api.resend.com/emails";
 
