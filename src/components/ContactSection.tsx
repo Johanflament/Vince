@@ -13,6 +13,50 @@ const formats = ["Close-up", "Spectacle de scène", "Je ne sais pas encore"];
 
 export function ContactSection() {
   const [sent, setSent] = useState(false);
+  const [envoi, setEnvoi] = useState(false);
+  const [erreur, setErreur] = useState<string | null>(null);
+
+  /** ⚠️ CE FORMULAIRE A LONGTEMPS MENTI. Son `onSubmit` se contentait de
+   *  `setSent(true)` : le visiteur lisait « Message envoyé ! Je vous réponds
+   *  sous 24 heures ouvrées » alors qu'aucun appel réseau n'était jamais parti.
+   *  Les demandes se perdaient en silence, et les gens attendaient une réponse
+   *  qui ne pouvait pas venir. Ne jamais remettre l'écran de confirmation sans
+   *  une réponse du serveur derrière.
+   *
+   *  La route est `src/routes/api.contact.ts` ; elle envoie par Resend et
+   *  explique pourquoi pas par Cloudflare. */
+  async function soumettre(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (envoi) return;
+    setEnvoi(true);
+    setErreur(null);
+
+    // Les champs sont lus par leur attribut `name` plutôt que par un état React
+    // par champ : le formulaire n'a aucune logique de saisie, en tenir sept en
+    // mémoire ne servirait qu'à les recopier.
+    const donnees = Object.fromEntries(new FormData(event.currentTarget));
+
+    try {
+      const reponse = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(donnees),
+      });
+      const resultat = (await reponse.json().catch(() => null)) as { erreur?: string } | null;
+      if (!reponse.ok) throw new Error(resultat?.erreur ?? "Envoi impossible.");
+      setSent(true);
+    } catch (e) {
+      // Le repli donne l'adresse en clair : un formulaire en panne ne doit pas
+      // faire perdre un client, il doit dire où écrire autrement.
+      setErreur(
+        e instanceof Error && e.message !== "Failed to fetch"
+          ? e.message
+          : "L'envoi a échoué. Écrivez-moi directement à contact@magicvince.com.",
+      );
+    } finally {
+      setEnvoi(false);
+    }
+  }
 
   return (
     <section
@@ -166,10 +210,7 @@ export function ContactSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSent(true);
-            }}
+            onSubmit={soumettre}
             className="rounded-3xl border border-border bg-card/40 backdrop-blur p-8 md:p-10"
           >
             {sent ? (
@@ -254,11 +295,38 @@ export function ContactSection() {
                   />
                 </div>
 
+                {/* CHAMP PIÈGE. Invisible à l'œil, retiré du parcours clavier
+                    et ignoré des lecteurs d'écran : un visiteur ne peut pas le
+                    remplir. Un robot qui remplit tout ce qu'il trouve, si — et
+                    la route jette alors le message en répondant 200, pour ne
+                    pas lui apprendre qu'il a été repéré.
+
+                    ⚠️ `hidden` du HTML, et non `type="hidden"` : un champ de
+                    type caché est le premier que remplit un robot, et le
+                    `sr-only` le laisserait atteignable à la tabulation. */}
+                <div hidden aria-hidden="true">
+                  <label htmlFor="website">Ne remplissez pas ce champ</label>
+                  <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                </div>
+
+                {/* L'erreur se place AVANT le bouton : après, elle serait sous
+                    la ligne de flottaison sur un téléphone, et le visiteur
+                    cliquerait une deuxième fois sans jamais la lire. */}
+                {erreur && (
+                  <p
+                    role="alert"
+                    className="mt-6 rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+                  >
+                    {erreur}
+                  </p>
+                )}
+
                 <button
                   type="submit"
-                  className="mt-8 group inline-flex items-center gap-2 rounded-full bg-[var(--gold)] text-primary-foreground px-7 py-3.5 font-medium hover:shadow-glow transition-all"
+                  disabled={envoi}
+                  className="mt-8 group inline-flex items-center gap-2 rounded-full bg-[var(--gold)] text-primary-foreground px-7 py-3.5 font-medium hover:shadow-glow transition-all disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Envoyer la demande
+                  {envoi ? "Envoi en cours…" : "Envoyer la demande"}
                   <Send size={16} className="transition-transform group-hover:translate-x-0.5" />
                 </button>
               </>
