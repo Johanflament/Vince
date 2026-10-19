@@ -17,28 +17,40 @@ import type {} from "@tanstack/react-start";
  *  fonction `envoyer` ci-dessous : tout le reste du fichier est indépendant du
  *  transporteur.
  *
- *  ── POURQUOI UN SOUS-DOMAINE D'ENVOI ───────────────────────────────────────
+ *  ── LE DOMAINE D'ENVOI EST LA RACINE, ET C'EST UN POINT DÉLICAT ────────────
  *
- *  ⚠️ LE DOMAINE VÉRIFIÉ CHEZ RESEND EST `send.magicvince.com`, PAS LA RACINE,
- *  et ce n'est pas un détail d'organisation : `contact@magicvince.com` est une
- *  BOÎTE IONOS, et les MX de la racine pointent vers `mx00/mx01.ionos.fr`.
- *  Vérifier la racine chez Resend y poserait un MX de retour des rebonds, en
- *  conflit direct avec ceux d'IONOS — la boîte cesserait de recevoir. Sur le
- *  sous-domaine, les trois enregistrements (MX, SPF, DKIM) vivent sous `send.`
- *  et la racine n'est jamais touchée.
+ *  `contact@magicvince.com` est une BOÎTE IONOS : les MX de la racine pointent
+ *  vers `mx00/mx01.ionos.fr` et doivent y rester. Vérifier le domaine d'envoi à
+ *  la racine est donc la manœuvre risquée du dossier.
  *
- *  Conséquence visible : l'expéditeur porte `@send.magicvince.com`. Seul Vince
- *  le lit, et `reply_to` porte l'adresse du visiteur, donc « Répondre » fait ce
- *  qu'il faut. Ne pas « corriger » l'expéditeur en `@magicvince.com` : Resend
- *  refuserait l'envoi, le domaine n'étant pas vérifié.
+ *  Elle est passée parce que RESEND N'Y POSE NI MX NI SPF. Sa méthode actuelle
+ *  n'écrit que trois enregistrements, tous inoffensifs ici :
+ *
+ *    TXT   resend._domainkey   la clé DKIM — sélecteur distinct de `s1-ionos`
+ *                              et `s2-ionos`, les trois cohabitent
+ *    CNAME rsend               rsend-euw1.forge.rmta.net — chemin de retour
+ *    CNAME send                send.forge.rmta.net — hôte d'envoi
+ *
+ *  Le chemin de retour des rebonds passe par un CNAME, pas par un MX sur le
+ *  domaine : c'est ce qui rend la racine utilisable. Relevé après coup sur les
+ *  serveurs autoritaires : MX IONOS intacts, un seul SPF, celui d'IONOS.
+ *
+ *  ⚠️ NE JAMAIS ACTIVER « Enable Receiving » CHEZ RESEND. C'est ce bouton, et
+ *  lui seul, qui poserait des MX sur la racine — et la boîte de Vince cesserait
+ *  de recevoir. Le site n'a aucun besoin de recevoir du courrier.
+ *
+ *  Un sous-domaine `send.magicvince.com` a été essayé d'abord, par prudence. Il
+ *  donnait des noms absurdes (`send.send.magicvince.com`) pour une protection
+ *  dont la méthode actuelle de Resend rend inutile.
  *
  *  ── CE QU'IL FAUT AVOIR FAIT POUR QUE ÇA MARCHE ────────────────────────────
  *
- *  1. le domaine `send.magicvince.com` est vérifié chez Resend (trois
- *     enregistrements DNS, en DNS only chez Cloudflare) ;
- *  2. le secret est posé sur le Worker :
- *     `npx wrangler secret put RESEND_API_KEY`.
- *     Sans lui, la route répond 503 et le journal le dit.
+ *  1. `magicvince.com` est vérifié chez Resend, les trois enregistrements
+ *     ci-dessus en place et en DNS only chez Cloudflare ;
+ *  2. le secret `RESEND_API_KEY` est posé sur le Worker — par le tableau de
+ *     bord (Settings → Variables and Secrets, type Secret) ou par
+ *     `npx wrangler secret put RESEND_API_KEY`. Sans lui, la route répond 503
+ *     et le journal le dit.
  */
 
 /** La boîte de Vince, chez IONOS. C'est la seule adresse que cette route écrit,
@@ -47,9 +59,14 @@ import type {} from "@tanstack/react-start";
 const DESTINATAIRE = "contact@magicvince.com";
 
 /** Aucune boîte n'existe derrière cette adresse, elle ne sert qu'à signer
- *  l'envoi. `no-reply` plutôt que `contact` : même adresse en expéditeur et en
- *  destinataire déclenche des heuristiques anti-spam pour rien. */
-const EXPEDITEUR = "Site Vince le Magicien <no-reply@send.magicvince.com>";
+ *  l'envoi.
+ *
+ *  ⚠️ `no-reply` ET SURTOUT PAS `contact`. La même adresse en expéditeur et en
+ *  destinataire — un message que `contact@magicvince.com` s'enverrait à
+ *  lui-même — déclenche des heuristiques anti-spam chez IONOS pour rien. Le
+ *  visiteur ne voit de toute façon jamais cette adresse : seul Vince la lit, et
+ *  c'est `reply_to` qui porte celle à laquelle répondre. */
+const EXPEDITEUR = "Site Vince le Magicien <no-reply@magicvince.com>";
 
 const RESEND_URL = "https://api.resend.com/emails";
 
