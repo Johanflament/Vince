@@ -58,36 +58,46 @@ import type {} from "@tanstack/react-start";
  *  sans quoi la route deviendrait un relais de courrier ouvert. */
 const DESTINATAIRE = "contact@magicvince.com";
 
-/** ⚠️ C'EST LA MÊME ADRESSE QUE LE DESTINATAIRE, ET C'EST VOULU. Le message
- *  part donc de la boîte de Vince vers la boîte de Vince ; seul le nom affiché
- *  dit d'où il vient vraiment.
+/** ⚠️ L'EXPÉDITEUR EST SUR UN SOUS-DOMAINE, ET CE N'EST PAS UN CHOIX
+ *  D'ORGANISATION : c'est le seul moyen trouvé pour qu'IONOS accepte le
+ *  message. Lire ce qui suit avant d'y toucher, trois tentatives y sont
+ *  résumées.
  *
- *  Ce fichier a d'abord utilisé `no-reply@magicvince.com`, par prudence : une
- *  adresse d'expédition distincte évite les heuristiques anti-spam qui se
- *  méfient d'un message qu'une boîte s'enverrait à elle-même. Résultat, TOUS
- *  LES ENVOIS ONT REBONDI, avec ce motif d'IONOS :
+ *  Tous les envois depuis `@magicvince.com` rebondissaient, avec ce motif :
  *
  *    550 Requested action not taken: mailbox unavailable
  *    550 invalid DNS MX or A/AAAA resource record
  *
- *  L'étiquette est trompeuse — les MX de `magicvince.com` pointent vers
- *  `mx00/mx01.ionos.fr`, qui ont tous deux un A, donc le critère annoncé par
- *  IONOS est satisfait. La vraie cause est la première ligne : IONOS héberge
- *  les boîtes de ce domaine, `no-reply@magicvince.com` n'en est pas une, et un
- *  message qui se réclame d'une adresse inconnue du domaine qu'il héberge est
- *  refusé. Le test qui l'a montré : un message de Resend lui-même, expédié
- *  depuis `onboarding@resend.dev`, est arrivé sans encombre dans la même boîte
- *  à la même période.
+ *  L'étiquette est trompeuse. Les MX de `magicvince.com` pointent vers
+ *  `mx00/mx01.ionos.fr`, qui ont tous deux un A ; le critère que la page
+ *  postmaster d'IONOS annonce est donc satisfait, et celui du domaine
+ *  d'enveloppe de Resend aussi, ses MX résolvant vers des hôtes pourvus d'un A.
+ *  Plusieurs tours ont été perdus à vérifier des enregistrements corrects.
  *
- *  ⚠️ NE PAS REVENIR À UNE ADRESSE INVENTÉE — `no-reply@`, `site@`, `formulaire@`
- *  — sans créer d'abord la boîte ou l'alias correspondant chez IONOS. C'est
- *  l'erreur qui a coûté une soirée. Resend le déconseille d'ailleurs pour une
- *  autre raison, visible dans ses « Insights » : une adresse qui annonce qu'on
- *  ne peut pas répondre dégrade la confiance des boîtes de réception.
+ *  CE QUE LES ESSAIS ONT MONTRÉ, dans l'ordre :
+ *
+ *    onboarding@resend.dev        → REMIS
+ *    no-reply@magicvince.com      → rebond   (adresse inventée)
+ *    contact@magicvince.com       → rebond   (boîte réelle)
+ *
+ *  La variable n'est donc ni l'existence de l'adresse, ni son libellé : c'est
+ *  LE DOMAINE. IONOS héberge les boîtes de `magicvince.com` et refuse ce qui
+ *  s'en réclame sans venir de ses serveurs. Le message de Resend, expédié d'un
+ *  domaine qu'IONOS n'héberge pas, est passé sans encombre.
+ *
+ *  D'où `mail.magicvince.com` : un sous-domaine qu'IONOS n'héberge pas et ne
+ *  traite donc pas comme le sien. Il porte ses propres DKIM et chemin de retour
+ *  chez Resend ; la racine n'a aucun de ses enregistrements, ses MX et son SPF
+ *  restent ceux d'IONOS.
+ *
+ *  ⚠️ NE PAS « SIMPLIFIER » EN REVENANT À `@magicvince.com`. C'est la
+ *  manipulation qui casse tout, et elle casse en silence : la route répond 200,
+ *  Resend accepte, et le message rebondit chez IONOS sans que personne ne le
+ *  voie. Le seul endroit où cela se constate est le journal de Resend.
  *
  *  Le visiteur ne voit jamais cette adresse : seul Vince la lit, et c'est
  *  `reply_to` qui porte celle à laquelle répondre. */
-const EXPEDITEUR = `Formulaire du site <${DESTINATAIRE}>`;
+const EXPEDITEUR = "Formulaire du site <formulaire@mail.magicvince.com>";
 
 const RESEND_URL = "https://api.resend.com/emails";
 
