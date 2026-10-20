@@ -209,7 +209,11 @@ async function envoyer(cle: string, d: Demande): Promise<void> {
     body: JSON.stringify({
       from: EXPEDITEUR,
       to: [DESTINATAIRE],
-      subject: `Demande de devis — ${d.firstName} ${d.lastName ?? ""}`.trim(),
+      // ⚠️ TIRET SIMPLE `-` ET NON CADRATIN `—`, à la demande de Johan. Tout le
+      // reste du site emploie le cadratin ; celui-ci est l'exception, parce
+      // qu'un objet de courriel se lit dans une liste de messages, souvent sur
+      // un téléphone et dans une police qui n'est pas celle du site.
+      subject: `Demande de devis - ${d.firstName} ${d.lastName ?? ""}`.trim(),
       text: composer(d),
       // Le champ qui rend le dispositif utilisable : Vince appuie sur
       // « Répondre » dans sa boîte et sa réponse part chez le visiteur, sans
