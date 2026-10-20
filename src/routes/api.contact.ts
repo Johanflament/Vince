@@ -107,8 +107,69 @@ const DESTINATAIRE = "contact@magicvince.com";
  *  coûte rien et évite de tout refaire si ce montage devait être repris.
  *
  *  Le visiteur ne voit jamais cette adresse : seul Vince la lit, et c'est
- *  `reply_to` qui porte celle à laquelle répondre. */
-const EXPEDITEUR = `Formulaire du site <${DESTINATAIRE}>`;
+ *  `reply_to` qui porte celle à laquelle répondre.
+ *
+ *  ── POURQUOI PAS `contact@`, QUI SERAIT POURTANT PLUS SIMPLE ──────────────
+ *
+ *  Parce qu'IONOS classait alors TOUS les messages en indésirable, et les
+ *  en-têtes le disent sans ambiguïté. L'authentification était pourtant
+ *  parfaite :
+ *
+ *    dkim=pass  header.i=@magicvince.com header.s=resend
+ *    spf=pass   smtp.mailfrom=…@rsend.magicvince.com
+ *    dmarc=pass header.from=magicvince.com
+ *    iprev=pass policy.iprev=54.240.6.53
+ *
+ *  et malgré cela : `X-Spam-Flag: YES`, `UI-InboundReport: junk:10`, le score
+ *  maximal. Deux signaux de forme, qui n'ont rien à voir avec SPF ni DKIM :
+ *
+ *   1. `From` IDENTIQUE À `To`. Un message que l'adresse s'envoie à elle-même
+ *      en arrivant de l'extérieur est le schéma type de l'usurpation, et il
+ *      est pénalisé même quand DMARC passe.
+ *   2. `Reply-To` sur une adresse gratuite différente du `From`. « Écrit
+ *      depuis un domaine professionnel, répondez à un Gmail » est la signature
+ *      des arnaques au faux fournisseur.
+ *
+ *  Le second est inhérent au principe — on VEUT répondre au visiteur — mais il
+ *  n'est accablant qu'en compagnie du premier. `formulaire@` casse le premier
+ *  et désamorce le second : un `formulaire@` qui renvoie vers un visiteur est
+ *  banal.
+ *
+ *  ⚠️ `formulaire@magicvince.com` DOIT RESTER UNE ADRESSE VIVANTE. C'est un
+ *  transfert créé chez IONOS vers `contact@` : il ne stocke rien et renvoie
+ *  tout. Le supprimer ferait rebondir ce que les gens lui écriraient — c'est
+ *  exactement le reproche qui a fait abandonner `no-reply@` puis
+ *  `formulaire@mail.magicvince.com`. Une adresse d'expédition doit pouvoir
+ *  recevoir. */
+const ADRESSE_EXPEDITION = "formulaire@magicvince.com";
+
+/** LE NOM AFFICHÉ DE L'EXPÉDITEUR EST CELUI DU VISITEUR. La boîte de Vince
+ *  affiche donc « Johan FLAMENT » et non « Formulaire du site », ce qui rend
+ *  la liste des messages lisible d'un coup d'œil. C'est le motif qu'emploient
+ *  GitHub ou les forums.
+ *
+ *  ⚠️ CE NOM VIENT DU VISITEUR ET PART DANS UN EN-TÊTE, il est donc NETTOYÉ.
+ *  Un `<`, un `>` ou un guillemet casserait la grammaire de l'adresse, et un
+ *  saut de ligne permettrait d'injecter des en-têtes supplémentaires — une
+ *  copie cachée vers un tiers, par exemple. Resend reçoit du JSON, ce qui
+ *  arrête déjà l'essentiel, mais on ne fait pas reposer une barrière de
+ *  sécurité sur le format de transport d'un prestataire.
+ *
+ *  Le repli existe pour le cas où il ne resterait rien d'exploitable : un nom
+ *  entièrement composé de caractères retirés. */
+function nomAffiche(d: Demande): string {
+  const propre = `${d.firstName} ${d.lastName ?? ""}`
+    .replace(/[\r\n]+/g, " ")
+    .replace(/["<>@,;:\\]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 64);
+  return propre || "Formulaire du site";
+}
+
+function expediteur(d: Demande): string {
+  return `"${nomAffiche(d)}" <${ADRESSE_EXPEDITION}>`;
+}
 
 const RESEND_URL = "https://api.resend.com/emails";
 
@@ -207,7 +268,7 @@ async function envoyer(cle: string, d: Demande): Promise<void> {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: EXPEDITEUR,
+      from: expediteur(d),
       to: [DESTINATAIRE],
       // ⚠️ TIRET SIMPLE `-` ET NON CADRATIN `—`, à la demande de Johan. Tout le
       // reste du site emploie le cadratin ; celui-ci est l'exception, parce
