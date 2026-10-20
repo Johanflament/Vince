@@ -58,12 +58,30 @@ import type {} from "@tanstack/react-start";
  *  sans quoi la route deviendrait un relais de courrier ouvert. */
 const DESTINATAIRE = "contact@magicvince.com";
 
-/** ⚠️ L'EXPÉDITEUR EST SUR UN SOUS-DOMAINE, ET CE N'EST PAS UN CHOIX
- *  D'ORGANISATION : c'est le seul moyen trouvé pour qu'IONOS accepte le
- *  message. Lire ce qui suit avant d'y toucher, trois tentatives y sont
- *  résumées.
+/** ⚠️ EXPÉDITEUR ET DESTINATAIRE SONT LA MÊME ADRESSE, ET C'EST VOULU. Le
+ *  message part de la boîte de Vince vers la boîte de Vince ; seul le nom
+ *  affiché, « Formulaire du site », dit d'où il vient vraiment. Lire ce qui
+ *  suit avant d'y toucher : quatre tentatives y sont résumées.
  *
- *  Tous les envois depuis `@magicvince.com` rebondissaient, avec ce motif :
+ *  CE QUI REND CE CHOIX POSSIBLE : `include:amazonses.com` a été ajouté au SPF
+ *  de la racine. Resend expédie par Amazon SES, et l'IP qu'IONOS citait dans
+ *  ses refus — 54.240.3.26 — appartient à la plage 54.240.0.0/18 de cet
+ *  enregistrement. Le SPF consomme 4 requêtes DNS sur les 10 autorisées, et les
+ *  trois inclusions IONOS sont intactes : les envois de Vince depuis son
+ *  webmail ne sont pas affectés.
+ *
+ *  ⚠️ RETIRER CETTE INCLUSION CASSE LE FORMULAIRE EN SILENCE. La route répondra
+ *  200, Resend acceptera, et le message rebondira chez IONOS sans que rien ne
+ *  l'affiche côté site.
+ *
+ *  POURQUOI UNE ADRESSE INVENTÉE NE MARCHE PAS NON PLUS. Une version précédente
+ *  expédiait depuis `no-reply@magicvince.com`, puis depuis
+ *  `formulaire@mail.magicvince.com`. La première est refusée par IONOS, qui
+ *  héberge ce domaine et n'en connaît pas l'adresse ; la seconde passait, mais
+ *  aucune boîte n'existe derrière elle — un message qu'on lui adresserait
+ *  rebondirait. Une adresse d'expédition doit pouvoir recevoir.
+ *
+ *  Les envois depuis `@magicvince.com` rebondissaient avec ce motif :
  *
  *    550 Requested action not taken: mailbox unavailable
  *    550 invalid DNS MX or A/AAAA resource record
@@ -80,24 +98,17 @@ const DESTINATAIRE = "contact@magicvince.com";
  *    no-reply@magicvince.com      → rebond   (adresse inventée)
  *    contact@magicvince.com       → rebond   (boîte réelle)
  *
- *  La variable n'est donc ni l'existence de l'adresse, ni son libellé : c'est
- *  LE DOMAINE. IONOS héberge les boîtes de `magicvince.com` et refuse ce qui
- *  s'en réclame sans venir de ses serveurs. Le message de Resend, expédié d'un
- *  domaine qu'IONOS n'héberge pas, est passé sans encombre.
+ *  La variable n'était donc ni l'existence de l'adresse, ni son libellé : c'est
+ *  LE DOMAINE. IONOS héberge les boîtes de `magicvince.com` et refusait ce qui
+ *  s'en réclamait sans venir de ses serveurs — faute d'y être autorisé par le
+ *  SPF. L'inclusion d'Amazon SES lève précisément ce refus.
  *
- *  D'où `mail.magicvince.com` : un sous-domaine qu'IONOS n'héberge pas et ne
- *  traite donc pas comme le sien. Il porte ses propres DKIM et chemin de retour
- *  chez Resend ; la racine n'a aucun de ses enregistrements, ses MX et son SPF
- *  restent ceux d'IONOS.
- *
- *  ⚠️ NE PAS « SIMPLIFIER » EN REVENANT À `@magicvince.com`. C'est la
- *  manipulation qui casse tout, et elle casse en silence : la route répond 200,
- *  Resend accepte, et le message rebondit chez IONOS sans que personne ne le
- *  voie. Le seul endroit où cela se constate est le journal de Resend.
+ *  `mail.magicvince.com` reste vérifié chez Resend, inutilisé. Le laisser ne
+ *  coûte rien et évite de tout refaire si ce montage devait être repris.
  *
  *  Le visiteur ne voit jamais cette adresse : seul Vince la lit, et c'est
  *  `reply_to` qui porte celle à laquelle répondre. */
-const EXPEDITEUR = "Formulaire du site <formulaire@mail.magicvince.com>";
+const EXPEDITEUR = `Formulaire du site <${DESTINATAIRE}>`;
 
 const RESEND_URL = "https://api.resend.com/emails";
 
